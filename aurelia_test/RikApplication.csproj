@@ -8,8 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="ClientApp\app\components\newuser\newuser.ts" />
-    <None Remove="ClientApp\app\components\preparationround\preparationround.ts" />
+    <Compile Remove="ClientApp\app\components\newuser\**" />
+    <Compile Remove="ClientApp\app\components\preparationround\**" />
+    <Content Remove="ClientApp\app\components\newuser\**" />
+    <Content Remove="ClientApp\app\components\preparationround\**" />
+    <EmbeddedResource Remove="ClientApp\app\components\newuser\**" />
+    <EmbeddedResource Remove="ClientApp\app\components\preparationround\**" />
+    <None Remove="ClientApp\app\components\newuser\**" />
+    <None Remove="ClientApp\app\components\preparationround\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,11 +33,6 @@
     <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
     <ProjectReference Include="..\Factory\Factory.csproj" />
     <ProjectReference Include="..\Interfaces\Interfaces.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <TypeScriptCompile Include="ClientApp\app\components\newuser\newuser.ts" />
-    <TypeScriptCompile Include="ClientApp\app\components\preparationround\preparationround.ts" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">

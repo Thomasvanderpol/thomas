@@ -46,7 +46,7 @@ namespace BusinessLogic
             }
         }
 
-        public List<string> GetPlayers() // passing Bussiness object Here
+        public List<string> GetPlayers() 
         {
             try
             {

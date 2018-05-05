@@ -13,34 +13,6 @@ export class App {
             moduleId: PLATFORM.moduleName('../home/home'),
             nav: true,
             title: 'Home'
-        }, {
-            route: 'forum',
-            name: 'forum',
-            settings: { icon: 'education' },
-            moduleId: PLATFORM.moduleName('../forum/forum'),
-            nav: true,
-            title: 'Forum'
-        }, {
-            route: 'fetch-data',
-            name: 'fetchdata',
-            settings: { icon: 'th-list' },
-            moduleId: PLATFORM.moduleName('../fetchdata/fetchdata'),
-            nav: true,
-            title: 'Fetch data'
-        }, {
-            route: 'newuser',
-            name: 'newuser',
-            settings: { icon: 'education' },
-            moduleId: PLATFORM.moduleName('../newuser/newuser'),
-            nav: true,
-            title: 'New User'
-        }, {
-            route: 'preparationround',
-            name: 'preparationround',
-            settings: { icon: 'th-list' },
-            moduleId: PLATFORM.moduleName('../preparationround/preparationround'),
-            nav: false,
-            title: 'Preparation Round'
         }]);
 
         this.router = router;
