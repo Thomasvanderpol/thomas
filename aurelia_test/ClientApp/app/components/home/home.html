@@ -1,0 +1,55 @@
+
+<template>
+
+    <h1>Rik Application</h1>
+    <p>Welcome to your online rik game, please register a new player or select players to begin your game.</p>
+    <br />
+    <br />
+    <form>
+        <table>
+            <tr>
+                <th>Add a new player:</th>
+                <th><input type="text" ref="Player"></th>
+            </tr>
+
+        </table>
+
+        <button click.delegate="addPlayer(Player.value)">Submit</button>
+
+        <br />
+        <br />
+        <p> Select 4 players for the game</p>
+        <table>
+            <tr>
+                <th>
+                    <select ref="Player1">
+                        <option value="" disabled selected>Select player 1</option>
+                        <option repeat.for="player of players" value="${player}">${player}</option>
+                    </select>
+                </th>
+                <th>
+                    <select ref="Player2">
+                        <option value="" disabled selected>Select player 2</option>
+                        <option repeat.for="player of players" value="${player}">${player}</option>
+                    </select>
+                </th>
+                <th>
+                    <select ref="Player3">
+                        <option value="" disabled selected>Select player 3</option>
+                        <option repeat.for="player of players" value="${player}">${player}</option>
+                    </select>
+                </th>
+                <th>
+                    <select  ref="Player4">
+                        <option value="" disabled selected>Select player 4</option>
+                        <option repeat.for="player of players" value="${player}">${player}</option>
+                    </select>
+                </th>
+            </tr>
+        </table>
+        <br />
+        <button click.delegate="BeginGame(Player1.value,Player2.value,Player3.value,Player4.value)">Begin game!</button>
+        <p><span>${beginGame}</span></p>
+        
+    </form>
+</template>
