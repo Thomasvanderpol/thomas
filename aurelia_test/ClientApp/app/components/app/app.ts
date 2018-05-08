@@ -13,7 +13,15 @@ export class App {
             moduleId: PLATFORM.moduleName('../home/home'),
             nav: true,
             title: 'Home'
-        }]);
+        }, {
+            route: ['Game'],
+            name: 'Game',
+            settings: { icon: 'Game' },
+            moduleId: PLATFORM.moduleName('../Game/Game'),
+            nav: true,
+            title: 'Game'
+        }
+        ]);
 
         this.router = router;
     }

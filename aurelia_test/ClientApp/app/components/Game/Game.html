@@ -1,0 +1,33 @@
+﻿<template>
+    <require from="./Game.css"></require>
+    <div class="grid-container">
+        <div class="Speler3"><h1>Speler 3</h1></div>
+
+        <div class="Speler3Kaarten">
+            <img repeat.for="card of CardsPlayer1" src="${card}.jpg" style="position: relative; left: ${500-index*75} " />
+        </div>
+
+        <div class="Speler2"><h1>Speler 2</h1></div>
+
+        <div class="Speler2Kaarten">
+            <img repeat.for="card of CardsPlayer2" src="${card}.jpg" style="position: relative; " />
+           
+        </div>
+
+        <div class="Speelveld"><h1>speelveld</h1></div>
+
+        <div class="Speler4Kaarten">
+            <img repeat.for="card of CardsPlayer3" src="${card}.jpg" style="position: relative; " />
+           
+        </div>
+
+        <div class="Speler4"><h1>Speler 4</h1></div>
+
+        <div class="Speler1Kaarten">
+            <img repeat.for="card of CardsPlayer4" src="${card}.jpg" style="position: relative; " />
+        
+        </div>
+        <div class="Speler1"><h1>Speler 1</h1></div>
+
+    </div>
+</template>

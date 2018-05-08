@@ -1,0 +1,84 @@
+﻿.Speler3 {
+    grid-area: Speler3;
+}
+
+.Speler3Kaarten {
+    grid-area: Speler3Kaarten;
+    height: auto;
+    overflow: auto;
+}
+
+.Speler2 {
+    grid-area: Speler2;
+}
+
+.Speler2Kaarten {
+    grid-area: Speler2Kaarten;
+    height: 1000px;
+    width: 300px;
+    position: relative;
+}
+
+.Speelveld {
+    grid-area: Speelveld;
+    width: 3370px;
+}
+
+.Speler4 {
+    grid-area: Speler4;
+    position: relative;
+}
+
+.Speler4Kaarten {
+    grid-area: Speler4Kaarten;
+    height: 1000px;
+    width: 300px;
+    position: relative;
+}
+
+.Speler1Kaarten {
+    grid-area: Speler1Kaarten;
+    height: auto;
+    overflow: auto;
+}
+
+.Speler1 {
+    grid-area: Speler1;
+}
+
+
+
+.grid-container {
+    display: grid;
+    grid-template-areas: 'Speler3 Speler3 Speler3  Speler3 Speler3 ' 'Speler3Kaarten Speler3Kaarten  Speler3Kaarten Speler3Kaarten Speler3Kaarten' 'Speler2  Speler2Kaarten   Speelveld Speler4Kaarten Speler4' 'Speler1Kaarten  Speler1Kaarten Speler1Kaarten Speler1Kaarten Speler1Kaarten' 'Speler1 Speler1  Speler1 Speler1 Speler1';
+    grid-gap: 10px;
+    background-color: #2196F3;
+    padding: 10px;
+}
+
+    .grid-container > div {
+        background-color: rgba(255, 255, 255, 0.8);
+        text-align: center;
+        padding: 20px 0;
+        font-size: 30px;
+    }
+
+.Speler1Kaarten img {
+    float: top;
+    height: 259px;
+    width: 195px;
+}
+
+.Speler2Kaarten img {
+    height: auto;
+}
+
+.Speler3Kaarten img {
+    float: top;
+    height: 259px;
+    width: 195px;
+}
+
+.Speler4Kaarten img {
+    height: auto;
+}
