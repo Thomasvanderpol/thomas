@@ -15,7 +15,8 @@ namespace DataAccess
         public DbConnection()
         {
             myAdapter = new SqlDataAdapter();
-            conn = new SqlConnection(connectionString: "server=rikserver.database.windows.net;database=RikDatabase;uid=Thomasvanderpol;pwd=Stroopwafel1.;");
+            //conn = new SqlConnection(connectionString: "server=rikserver.database.windows.net;database=RikDatabase;uid=Thomasvanderpol;pwd=Stroopwafel1.;");
+            conn = new SqlConnection(connectionString: @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename= C:\Users\thoma\AppData\Local\Microsoft\Microsoft SQL Server Local DB\Instances\MSSQLLocalDB\KillerAppDB.mdf ;Integrated Security=True");
         }
 
        
