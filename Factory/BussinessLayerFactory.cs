@@ -21,6 +21,12 @@ namespace Factory
             IGameDA da = new GameDA(db);
             return new GameBL(da);
         }
+        static public CardBL CreateCardBL()
+        {
+            IDb db = new DbConnection();
+            ICardDA da = new CardDA(db);
+            return new CardBL(da);
+        }
 
 
     }

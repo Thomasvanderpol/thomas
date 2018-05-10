@@ -15,6 +15,7 @@ namespace RikApplication.Controllers
     {
         IGameBL igameBL = BussinessLayerFactory.CreateGameBL();
         IPlayerBL iplayerBL = BussinessLayerFactory.CreatePlayerBL();
+        ICardBL icardBL = BussinessLayerFactory.CreateCardBL();
         public IActionResult Index()
         {
             return View();
@@ -45,6 +46,12 @@ namespace RikApplication.Controllers
             }
             return gelukt;
         }
+        [HttpGet("[action]")]
+        public List<string> GetCards()
+        {
+            return icardBL.GetCards();
+        }
+       
 
     }
 }
