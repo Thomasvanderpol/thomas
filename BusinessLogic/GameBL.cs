@@ -22,5 +22,15 @@ namespace BusinessLogic
         {
             conn.BeginGame(PlayersInGame);
         }
+
+        public int GetCurrentGameID()
+        {
+            return conn.GetCurrentGameID();
+        }
+
+        public List<int> GetPlayersIDs()
+        {
+            return conn.GetPlayersIDs();
+        }
     }
 }

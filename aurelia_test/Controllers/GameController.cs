@@ -51,7 +51,21 @@ namespace RikApplication.Controllers
         {
             return icardBL.GetCards();
         }
-       
+        [HttpGet("[action]")]
+        public int GetCurrentGameID()
+        {
+            return igameBL.GetCurrentGameID();
+        }
 
+        [HttpGet("[action]")]
+        public List<int> GetPlayersIDs()
+        {
+            return igameBL.GetPlayersIDs();
+        }
+        [HttpGet("[action]/{CurrentGameID}/{Bid}/{playerID}")]
+        public void SubmitChoice(int CurrentGameID, string Bid, int playerID)
+        {
+
+        }
     }
 }

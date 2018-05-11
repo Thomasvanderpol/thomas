@@ -36,5 +36,40 @@ namespace DataAccess
             conn.executeInsertQuery(query, sqlParameters);
 
         }
+
+        public int GetCurrentGameID()
+        {
+            SqlDataReader dr;
+
+            string query = "SELECT TOP 1 GameID FROM Game ORDER BY GameID DESC";
+            SqlParameter[] sqlParameters = new SqlParameter[0];
+            dr = conn.executeSelectQuery(query, sqlParameters);
+            int GameID = 0;
+            while (dr.Read())
+            {
+                GameID = Convert.ToInt32(dr["GameID"]);
+            }
+
+            return GameID;
+        }
+
+        public List<int> GetPlayersIDs()
+        {
+            SqlDataReader dr;
+
+            string query = "SELECT TOP 1 Player1ID, Player2ID, Player3ID, Player4ID FROM Game ORDER BY GameID DESC";
+            SqlParameter[] sqlParameters = new SqlParameter[0];
+            dr = conn.executeSelectQuery(query, sqlParameters);
+            List<int> GameID = new List<int>();
+            while (dr.Read())
+            {
+                GameID.Add(Convert.ToInt32(dr["Player1ID"]));
+                GameID.Add(Convert.ToInt32(dr["Player2ID"]));
+                GameID.Add(Convert.ToInt32(dr["Player3ID"]));
+                GameID.Add(Convert.ToInt32(dr["Player4ID"]));
+            }
+
+            return GameID;
+        }
     }
 }

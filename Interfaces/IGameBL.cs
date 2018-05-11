@@ -6,6 +6,9 @@ namespace Interfaces
 {
     public interface IGameBL
     {
+        int GetCurrentGameID();
+
         void BeginGame(List<int> playersInGameObjecten);
+        List<int> GetPlayersIDs();
     }
 }

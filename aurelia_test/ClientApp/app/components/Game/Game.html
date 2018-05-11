@@ -1,12 +1,16 @@
 ﻿<template>
+    <style>
+        #${turn}{color: red}
+    </style>
     <require from="./Game.css"></require>
     <div class="grid-container">
         <div class="Speler3">
             <h2>
-                <select ref="Player3">
+                <select id="Player3" ref="Player3">
                     <option value="" disabled selected>player 3</option>
                     <option repeat.for="player of players" value="${player}">${player}</option>
                 </select>
+
             </h2>
         </div>
 
@@ -16,7 +20,7 @@
 
         <div class="Speler2">
             <h2>
-                <select ref="Player2">
+                <select id="Player2" ref="Player2">
                     <option value="" disabled selected>player 2</option>
                     <option repeat.for="player of players" value="${player}">${player}</option>
                 </select>
@@ -29,12 +33,33 @@
         </div>
 
         <div class="Speelveld">
-            <div id="begintext">
+            <div id="begintext" style="display: ${none}">
                 <h1>
                     If the 4 players are selected begin your game here:<br /><br />
-                    <button onclick = "myFunction()" click.delegate="BeginGame(Player1.value,Player2.value,Player3.value,Player4.value)">Begin game!</button>
+                    <button click.delegate="BeginGame(Player1.value,Player2.value,Player3.value,Player4.value)">Delen!</button>
 
                 </h1>
+            </div>
+            <div id="keuzeVoorbereidingsronde" style="display: ${nohide}">
+                <h3> What are you going to do?</h3>
+                <form>
+
+
+                    <input type="radio" name="choice" value="pas" checked.bind="choice"> pas       <br>
+                    <input type="radio" name="choice" value="rik" checked.bind="choice"> rik       <br>
+                    <input type="radio" name="choice" value="8 alleen" checked.bind="choice"> 8 alleen  <br>
+                    <input type="radio" name="choice" value="9 alleen" checked.bind="choice"> 9 alleen  <br>
+                    <input type="radio" name="choice" value="10 alleen" checked.bind="choice"> 10 alleen <br>
+                    <input type="radio" name="choice" value="11 alleen" checked.bind="choice"> 11 alleen <br>
+                    <input type="radio" name="choice" value="12 alleen" checked.bind="choice"> 12 alleen <br>
+                    <input type="radio" name="choice" value="13 alleen" checked.bind="choice"> 13 alleen <br>
+                    <button click.delegate="SubmitChoice(choice)">OK</button>
+                  
+
+                </form>
+                
+                
+
             </div>
         </div>
 
@@ -45,7 +70,7 @@
 
         <div class="Speler4">
             <h2>
-                <select ref="Player4">
+                <select id="Player4" ref="Player4">
                     <option value="" disabled selected>player 4</option>
                     <option repeat.for="player of players" value="${player}">${player}</option>
                 </select>
@@ -58,7 +83,7 @@
         </div>
         <div class="Speler1">
             <h2>
-                <select ref="Player1">
+                <select id="Player1" ref="Player1">
                     <option value="" disabled selected>player 1</option>
                     <option repeat.for="player of players" value="${player}">${player}</option>
                 </select>
@@ -66,16 +91,6 @@
         </div>
 
     </div>
-    <script>
-        function myFunction() {
-            var x = document.getElementById("begintext");
-            if (x.style.display === "none") {
-                x.style.display = "block";
-            } else {
-                x.style.display = "none";
-            }
-        }
-    </script>
 
 
 

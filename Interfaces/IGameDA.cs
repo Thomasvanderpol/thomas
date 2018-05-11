@@ -8,5 +8,7 @@ namespace Interfaces
     public interface IGameDA
     {
         void BeginGame(List<int> players);
+        int GetCurrentGameID();
+        List<int> GetPlayersIDs();
     }
 }
