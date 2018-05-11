@@ -32,5 +32,10 @@ namespace BusinessLogic
         {
             return conn.GetPlayersIDs();
         }
+
+        public void SubmitChoice(int currentGameID, string bid, int playerID)
+        {
+            conn.SubmitChoice(currentGameID, bid, playerID);
+        }
     }
 }

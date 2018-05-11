@@ -71,5 +71,22 @@ namespace DataAccess
 
             return GameID;
         }
+
+        public void SubmitChoice(int currentGameID, string bid, int playerID)
+        {
+            string query = "INSERT INTO Bids(GameTypeName, GameID, PlayerID) VALUES (@GameTypeName, @GameID, @PlayerID)";
+
+            SqlParameter[] sqlParameters = new SqlParameter[3];
+            sqlParameters[0] = new SqlParameter("@GameTypeName", SqlDbType.VarChar);
+            sqlParameters[0].Value = bid;
+            sqlParameters[1] = new SqlParameter("@GameID", SqlDbType.Int);
+            sqlParameters[1].Value = currentGameID;
+            sqlParameters[2] = new SqlParameter("@PlayerID", SqlDbType.Int);
+            sqlParameters[2].Value = playerID;
+          
+
+            conn.executeInsertQuery(query, sqlParameters);
+
+        }
     }
 }

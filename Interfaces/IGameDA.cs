@@ -10,5 +10,6 @@ namespace Interfaces
         void BeginGame(List<int> players);
         int GetCurrentGameID();
         List<int> GetPlayersIDs();
+        void SubmitChoice(int currentGameID, string bid, int playerID);
     }
 }

@@ -16,13 +16,10 @@ export class Game {
     public none: string;
     public nohide: string;
     public turn: string;
-    public ChoicePlayer1: string;
-    public ChoicePlayer2: string;
-    public ChoicePlayer3: string;
-    public ChoicePlayer4: string;
+    public Bid: string;
     public CurrentGameID: number;
     public players: string[];
-    public CurrentPlayerIDs: number[];
+    public playerIDs: number[];
 
     constructor(private http: HttpClient) {
 
@@ -67,36 +64,36 @@ export class Game {
 
 
     }
-
+    
     public async SubmitChoice(choice: string) {
+        this.Bid = choice;
 
         if (this.turn == "Player1") {
-            this.ChoicePlayer1 = choice;
+            
             this.turn = "Player2";
-            let result = await this.http.fetch('api/Game/SubmitChoice/' + this.CurrentGameID) + '/' + this.ChoicePlayer1 + '/' + this.CurrentPlayerIDs[0];
+            await this.http.fetch('api/Game/SubmitChoice/' + this.CurrentGameID + '/' + this.Bid + '/' + this.playerIDs[0]);
         }
         else if (this.turn == "Player2") {
-            this.ChoicePlayer2 = choice;
+            
             this.turn = "Player3";
-            let result = await this.http.fetch('api/Game/SubmitChoice/' + this.CurrentGameID) + '/' + this.ChoicePlayer2 + '/' + this.CurrentPlayerIDs[1];
+            await this.http.fetch('api/Game/SubmitChoice/' + this.CurrentGameID + '/' + this.Bid + '/' + this.playerIDs[1]);
         }
         else if (this.turn == "Player3") {
-            this.ChoicePlayer3 = choice;
+            
             this.turn = "Player4";
-            let result = await this.http.fetch('api/Game/SubmitChoice/' + this.CurrentGameID) + '/' + this.ChoicePlayer3 + '/' + this.CurrentPlayerIDs[2];
+            await this.http.fetch('api/Game/SubmitChoice/' + this.CurrentGameID + '/' + this.Bid + '/' + this.playerIDs[2]);
         }
         else if (this.turn == "Player4") {
-            this.ChoicePlayer4 = choice;
+            
             this.turn = "Player1";
-            let result = await this.http.fetch('api/Game/SubmitChoice/' + this.CurrentGameID) + '/' + this.ChoicePlayer4 + '/' + this.CurrentPlayerIDs[3];
-        }
+            await this.http.fetch('api/Game/SubmitChoice/' + this.CurrentGameID + '/' + this.Bid + '/' + this.playerIDs[3]);        }
     }
 
     public async GetData() {
         await this.GetCards();
 
         let Result = await this.http.fetch('api/Game/GetPlayersIDs');
-        this.CurrentPlayerIDs = await Result.json() as Array<number>;
+        this.playerIDs = await Result.json() as Array<number>;
         
         let result = await this.http.fetch('api/Game/GetCurrentGameID');
         this.CurrentGameID = await result.json() as number;

@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "49ebb106631f6ab7b699"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "20bc118c91c6972aae12"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -21204,40 +21204,36 @@ var Game = (function () {
     };
     Game.prototype.SubmitChoice = function (choice) {
         return __awaiter(this, void 0, void 0, function () {
-            var result, result, result, result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
+                        this.Bid = choice;
                         if (!(this.turn == "Player1")) return [3 /*break*/, 2];
-                        this.ChoicePlayer1 = choice;
                         this.turn = "Player2";
-                        return [4 /*yield*/, this.http.fetch('api/Game/SubmitChoice/' + this.CurrentGameID)];
+                        return [4 /*yield*/, this.http.fetch('api/Game/SubmitChoice/' + this.CurrentGameID + '/' + this.Bid + '/' + this.playerIDs[0])];
                     case 1:
-                        result = (_a.sent()) + '/' + this.ChoicePlayer1 + '/' + this.CurrentPlayerIDs[0];
+                        _a.sent();
                         return [3 /*break*/, 8];
                     case 2:
                         if (!(this.turn == "Player2")) return [3 /*break*/, 4];
-                        this.ChoicePlayer2 = choice;
                         this.turn = "Player3";
-                        return [4 /*yield*/, this.http.fetch('api/Game/SubmitChoice/' + this.CurrentGameID)];
+                        return [4 /*yield*/, this.http.fetch('api/Game/SubmitChoice/' + this.CurrentGameID + '/' + this.Bid + '/' + this.playerIDs[1])];
                     case 3:
-                        result = (_a.sent()) + '/' + this.ChoicePlayer2 + '/' + this.CurrentPlayerIDs[1];
+                        _a.sent();
                         return [3 /*break*/, 8];
                     case 4:
                         if (!(this.turn == "Player3")) return [3 /*break*/, 6];
-                        this.ChoicePlayer3 = choice;
                         this.turn = "Player4";
-                        return [4 /*yield*/, this.http.fetch('api/Game/SubmitChoice/' + this.CurrentGameID)];
+                        return [4 /*yield*/, this.http.fetch('api/Game/SubmitChoice/' + this.CurrentGameID + '/' + this.Bid + '/' + this.playerIDs[2])];
                     case 5:
-                        result = (_a.sent()) + '/' + this.ChoicePlayer3 + '/' + this.CurrentPlayerIDs[2];
+                        _a.sent();
                         return [3 /*break*/, 8];
                     case 6:
                         if (!(this.turn == "Player4")) return [3 /*break*/, 8];
-                        this.ChoicePlayer4 = choice;
                         this.turn = "Player1";
-                        return [4 /*yield*/, this.http.fetch('api/Game/SubmitChoice/' + this.CurrentGameID)];
+                        return [4 /*yield*/, this.http.fetch('api/Game/SubmitChoice/' + this.CurrentGameID + '/' + this.Bid + '/' + this.playerIDs[3])];
                     case 7:
-                        result = (_a.sent()) + '/' + this.ChoicePlayer4 + '/' + this.CurrentPlayerIDs[3];
+                        _a.sent();
                         _a.label = 8;
                     case 8: return [2 /*return*/];
                 }
@@ -21258,7 +21254,7 @@ var Game = (function () {
                         _a = this;
                         return [4 /*yield*/, Result.json()];
                     case 3:
-                        _a.CurrentPlayerIDs = (_c.sent());
+                        _a.playerIDs = (_c.sent());
                         return [4 /*yield*/, this.http.fetch('api/Game/GetCurrentGameID')];
                     case 4:
                         result = _c.sent();
