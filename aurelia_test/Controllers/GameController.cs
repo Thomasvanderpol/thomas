@@ -68,5 +68,17 @@ namespace RikApplication.Controllers
         {
             igameBL.SubmitChoice(CurrentGameID, Bid, playerIDs);
         }
+
+        [HttpGet("[action]/{Player}/{CurrentGameID}")]
+        public string GetBidPlayer(int Player, int CurrentGameID)
+        {
+            return igameBL.GetBidPlayer(Player, CurrentGameID);
+        }
+
+        [HttpGet("[action]/{CurrentGameID}")]
+        public List<string> GetBidsCurrentGame(int CurrentGameID)
+        {
+            return igameBL.GetBidsCurrentGame(CurrentGameID);
+        }
     }
 }

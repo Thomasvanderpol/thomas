@@ -20,6 +20,12 @@ export class Game {
     public CurrentGameID: number;
     public players: string[];
     public playerIDs: number[];
+    public Player1Bid: string;
+    public Player2Bid: string;
+    public Player3Bid: string;
+    public Player4Bid: string;
+    public tmp: string;
+    public BidsGame: string[];
 
     constructor(private http: HttpClient) {
 
@@ -64,42 +70,87 @@ export class Game {
 
 
     }
-    
+
     public async SubmitChoice(choice: string) {
         this.Bid = choice;
 
         if (this.turn == "Player1") {
-            
-            this.turn = "Player2";
             await this.http.fetch('api/Game/SubmitChoice/' + this.CurrentGameID + '/' + this.Bid + '/' + this.playerIDs[0]);
+            await this.getBidPlayer();
+            this.turn = "Player2";
+            this.tmp = "test";
         }
         else if (this.turn == "Player2") {
-            
-            this.turn = "Player3";
             await this.http.fetch('api/Game/SubmitChoice/' + this.CurrentGameID + '/' + this.Bid + '/' + this.playerIDs[1]);
+            await this.getBidPlayer();
+            this.turn = "Player3";
         }
         else if (this.turn == "Player3") {
-            
-            this.turn = "Player4";
             await this.http.fetch('api/Game/SubmitChoice/' + this.CurrentGameID + '/' + this.Bid + '/' + this.playerIDs[2]);
+            await this.getBidPlayer();
+            this.turn = "Player4";
         }
         else if (this.turn == "Player4") {
-            
+            await this.http.fetch('api/Game/SubmitChoice/' + this.CurrentGameID + '/' + this.Bid + '/' + this.playerIDs[3]);
+            await this.getBidPlayer();
             this.turn = "Player1";
-            await this.http.fetch('api/Game/SubmitChoice/' + this.CurrentGameID + '/' + this.Bid + '/' + this.playerIDs[3]);        }
+        }
+    
+        
     }
 
     public async GetData() {
         await this.GetCards();
 
-        let Result = await this.http.fetch('api/Game/GetPlayersIDs');
-        this.playerIDs = await Result.json() as Array<number>;
+        await this.GetPlayerIDs();
+
+        await this.GetCurrentGameID();
+
         
+        
+    }
+
+    public async GetBidsCurrentGame() {
+        let result = await this.http.fetch('api/Game/GetBidsCurrentGame/' + this.CurrentGameID);
+        this.BidsGame = await result.json() as Array<string>;
+    }
+
+    public async GetCurrentGameID() {
         let result = await this.http.fetch('api/Game/GetCurrentGameID');
         this.CurrentGameID = await result.json() as number;
+    }
 
+    public async GetPlayerIDs() {
+        let result = await this.http.fetch('api/Game/GetPlayersIDs');
+        this.playerIDs = await result.json() as Array<number>;
+    }
+    //VIERDE BREAKPOINT GAAT HET MIS, DIT DOET HET NIET, WEET NIET WAAROM????
+    public async getBidPlayer() {
+        let player = 0;
+        if (this.turn == "Player1") {
+            player = this.playerIDs[0];
+            let result = await this.http.fetch('api/Game/GetBidPlayer/' + player + '/' + this.CurrentGameID);
+            this.Player1Bid = await result.json() as string;
+            this.tmp = "hallo";
+        }
+        else if (this.turn == "Player2") {
+            player = this.playerIDs[1];
+            let Result = await this.http.fetch('api/Game/GetBidPlayer/' + player + '/' + this.CurrentGameID);
+            this.Player2Bid = await Result.json() as string;
+        }
+        else if (this.turn == "Player3") {
+            player = this.playerIDs[2];
+            let Result = await this.http.fetch('api/Game/GetBidPlayer/' + player + '/' + this.CurrentGameID);
+            this.Player3Bid = await Result.json() as string;
+        }
+        else if (this.turn == "Player4") {
+            player = this.playerIDs[3];
+            let Result = await this.http.fetch('api/Game/GetBidPlayer/' + player + '/' + this.CurrentGameID);
+            this.Player4Bid = await Result.json() as string;
+        }
 
-
+      
+       
     }
 
 

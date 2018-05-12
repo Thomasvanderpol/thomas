@@ -23,6 +23,16 @@ namespace BusinessLogic
             conn.BeginGame(PlayersInGame);
         }
 
+        public string GetBidPlayer(int player, int CurrentGameID)
+        {
+            return conn.GetBidPlayer(player, CurrentGameID);
+        }
+
+        public List<string> GetBidsCurrentGame(int currentGameID)
+        {
+            return conn.getBidsCurrentGame(currentGameID);
+        }
+
         public int GetCurrentGameID()
         {
             return conn.GetCurrentGameID();

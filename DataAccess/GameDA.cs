@@ -37,6 +37,38 @@ namespace DataAccess
 
         }
 
+        public string GetBidPlayer(int player, int CurrentGameID)
+        {
+            SqlDataReader dr;
+
+            string query = "SELECT GameTypeName FROM Bids WHERE GameID = " + CurrentGameID + " AND PlayerID = " + player;
+            SqlParameter[] sqlParameters = new SqlParameter[0];
+            dr = conn.executeSelectQuery(query, sqlParameters);
+            string Bid = "";
+            while (dr.Read())
+            {
+                Bid = dr["GameTypeName"].ToString();
+            }
+
+            return Bid;
+        }
+
+        public List<string> getBidsCurrentGame(int currentGameID)
+        {
+            SqlDataReader dr;
+
+            string query = "SELECT GameTypeName FROM Bids WHERE GameID = " + currentGameID;
+            SqlParameter[] sqlParameters = new SqlParameter[0];
+            dr = conn.executeSelectQuery(query, sqlParameters);
+            List<string> Bids = new List<string>();
+            while (dr.Read())
+            {
+                Bids.Add(dr["GameTypeName"].ToString());
+            }
+            
+            return Bids;
+        }
+
         public int GetCurrentGameID()
         {
             SqlDataReader dr;

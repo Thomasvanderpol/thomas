@@ -11,5 +11,7 @@ namespace Interfaces
         int GetCurrentGameID();
         List<int> GetPlayersIDs();
         void SubmitChoice(int currentGameID, string bid, int playerID);
+        string GetBidPlayer(int player, int CurrentGameID);
+        List<string> getBidsCurrentGame(int currentGameID);
     }
 }
