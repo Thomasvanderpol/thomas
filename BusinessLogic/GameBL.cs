@@ -38,6 +38,15 @@ namespace BusinessLogic
             return conn.GetCurrentGameID();
         }
 
+        public string GetHighestBidInGame(int currentGameID)
+        {
+            string HighestBid = "";
+            List<string> BidsInGame = conn.getBidsCurrentGame(currentGameID);
+            List<int> PlayersBidsInGame = conn.getPlayersBidsCurrentGame(currentGameID);
+
+            return HighestBid;
+        }
+
         public List<int> GetPlayersIDs()
         {
             return conn.GetPlayersIDs();

@@ -26,6 +26,7 @@ export class Game {
     public Player4Bid: string;
     public tmp: string;
     public BidsGame: string[];
+    public HighestBidGame: string;
 
     constructor(private http: HttpClient) {
 
@@ -107,7 +108,11 @@ export class Game {
         await this.GetCurrentGameID();
 
         
-        
+    
+    }
+    public async GetHighestBidInGame() {
+        let result = await this.http.fetch('api/Game/GetHighestBidInGame/' + this.CurrentGameID);
+        this.HighestBidGame = await result.json() as string;
     }
 
     public async GetBidsCurrentGame() {
@@ -124,7 +129,8 @@ export class Game {
         let result = await this.http.fetch('api/Game/GetPlayersIDs');
         this.playerIDs = await result.json() as Array<number>;
     }
-    //VIERDE BREAKPOINT GAAT HET MIS, DIT DOET HET NIET, WEET NIET WAAROM????
+
+    //result.json GAAT HET MIS, DIT DOET HET NIET, WEET NIET WAAROM????
     public async getBidPlayer() {
         let player = 0;
         if (this.turn == "Player1") {

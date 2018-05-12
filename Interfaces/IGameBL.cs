@@ -13,5 +13,6 @@ namespace Interfaces
         void SubmitChoice(int currentGameID, string bid, int playerID);
         string GetBidPlayer(int player, int CurrentGameID);
         List<string> GetBidsCurrentGame(int currentGameID);
+        string GetHighestBidInGame(int currentGameID);
     }
 }

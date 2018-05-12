@@ -85,6 +85,22 @@ namespace DataAccess
             return GameID;
         }
 
+        public List<int> getPlayersBidsCurrentGame(int currentGameID)
+        {
+            SqlDataReader dr;
+
+            string query = "SELECT PlayerID FROM Bids WHERE GameID = " + currentGameID;
+            SqlParameter[] sqlParameters = new SqlParameter[0];
+            dr = conn.executeSelectQuery(query, sqlParameters);
+            List<int> Bids = new List<int>();
+            while (dr.Read())
+            {
+                Bids.Add(Convert.ToInt32(dr["PlayerID"]));
+            }
+
+            return Bids;
+        }
+
         public List<int> GetPlayersIDs()
         {
             SqlDataReader dr;
