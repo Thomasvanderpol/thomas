@@ -126,5 +126,29 @@ namespace DataAccess
             conn.executeInsertQuery(query, sqlParameters);
 
         }
+
+        public List<BidLevelBO> GetLevelsBids()
+        {
+            List<BidLevelBO> LevelBids = new List<BidLevelBO>();
+
+            SqlDataReader dr;
+
+            string query = "SELECT LevelBidsID, GameTypeName FROM LevelBids";
+            SqlParameter[] sqlParameters = new SqlParameter[0];
+            dr = conn.executeSelectQuery(query, sqlParameters);
+            
+            while (dr.Read())
+            {
+                BidLevelBO bidlevel = new BidLevelBO();
+                bidlevel.LevelBidsID = Convert.ToInt32(dr["LevelBidsID"]);
+                bidlevel.GameTypeName = dr["GameTypeName"].ToString();
+                LevelBids.Add(bidlevel);
+            }
+
+          
+
+
+            return LevelBids;
+        }
     }
 }

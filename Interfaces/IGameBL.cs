@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BusinessObject;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -14,5 +15,6 @@ namespace Interfaces
         string GetBidPlayer(int player, int CurrentGameID);
         List<string> GetBidsCurrentGame(int currentGameID);
         string GetHighestBidInGame(int currentGameID);
+        
     }
 }
