@@ -12,7 +12,7 @@ namespace Interfaces
         List<int> GetPlayersIDs();
         void SubmitChoice(int currentGameID, string bid, int playerID);
         string GetBidPlayer(int player, int CurrentGameID);
-        List<string> getBidsCurrentGame(int currentGameID);
+        List<BidBO> getBidsCurrentGame(int currentGameID);
         List<int> getPlayersBidsCurrentGame(int currentGameID);
     }
 }

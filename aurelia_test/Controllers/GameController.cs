@@ -70,9 +70,11 @@ namespace RikApplication.Controllers
         }
 
         [HttpGet("[action]/{Player}/{CurrentGameID}")]
-        public string GetBidPlayer(int Player, int CurrentGameID)
+        public List<string> GetBidPlayer(int Player, int CurrentGameID)
         {
-            return igameBL.GetBidPlayer(Player, CurrentGameID);
+            List<string> bids = new List<string>();
+            bids.Add( igameBL.GetBidPlayer(Player, CurrentGameID));
+            return bids;
         }
 
         [HttpGet("[action]/{CurrentGameID}")]

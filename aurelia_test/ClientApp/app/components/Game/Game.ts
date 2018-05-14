@@ -20,13 +20,14 @@ export class Game {
     public CurrentGameID: number;
     public players: string[];
     public playerIDs: number[];
-    public Player1Bid: string;
-    public Player2Bid: string;
-    public Player3Bid: string;
-    public Player4Bid: string;
+    public Player1Bid: string[];
+    public Player2Bid: string[];
+    public Player3Bid: string[];
+    public Player4Bid: string[];
     public tmp: string;
     public BidsGame: string[];
     public HighestBidGame: string;
+  
 
     constructor(private http: HttpClient) {
 
@@ -136,23 +137,23 @@ export class Game {
         if (this.turn == "Player1") {
             player = this.playerIDs[0];
             let result = await this.http.fetch('api/Game/GetBidPlayer/' + player + '/' + this.CurrentGameID);
-            this.Player1Bid = await result.json() as string;
-            this.tmp = "hallo";
+            this.Player1Bid = await result.json() as Array<string>;
+            
         }
         else if (this.turn == "Player2") {
             player = this.playerIDs[1];
-            let Result = await this.http.fetch('api/Game/GetBidPlayer/' + player + '/' + this.CurrentGameID);
-            this.Player2Bid = await Result.json() as string;
+            let result = await this.http.fetch('api/Game/GetBidPlayer/' + player + '/' + this.CurrentGameID);
+            this.Player2Bid = await result.json() as Array<string>;
         }
         else if (this.turn == "Player3") {
             player = this.playerIDs[2];
-            let Result = await this.http.fetch('api/Game/GetBidPlayer/' + player + '/' + this.CurrentGameID);
-            this.Player3Bid = await Result.json() as string;
+            let result = await this.http.fetch('api/Game/GetBidPlayer/' + player + '/' + this.CurrentGameID);
+            this.Player3Bid = await result.json() as Array<string>;
         }
         else if (this.turn == "Player4") {
             player = this.playerIDs[3];
-            let Result = await this.http.fetch('api/Game/GetBidPlayer/' + player + '/' + this.CurrentGameID);
-            this.Player4Bid = await Result.json() as string;
+            let result = await this.http.fetch('api/Game/GetBidPlayer/' + player + '/' + this.CurrentGameID);
+            this.Player4Bid = await result.json() as Array<string>;
         }
 
       
@@ -162,5 +163,6 @@ export class Game {
 
 
 
-
 }
+
+

@@ -30,7 +30,13 @@ namespace BusinessLogic
 
         public List<string> GetBidsCurrentGame(int currentGameID)
         {
-            return conn.getBidsCurrentGame(currentGameID);
+            List<string> Bids = new List<string>();
+
+            foreach (BidBO bid in conn.getBidsCurrentGame(currentGameID))
+            {
+                Bids.Add(bid.GameTypeName);
+            }
+            return Bids;
         }
 
         public int GetCurrentGameID()
@@ -41,8 +47,8 @@ namespace BusinessLogic
         public string GetHighestBidInGame(int currentGameID)
         {
             string HighestBid = "";
-            List<string> BidsInGame = conn.getBidsCurrentGame(currentGameID);
-            List<int> PlayersBidsInGame = conn.getPlayersBidsCurrentGame(currentGameID);
+            List<BidBO> BidsInGame = conn.getBidsCurrentGame(currentGameID);
+           
 
             return HighestBid;
         }

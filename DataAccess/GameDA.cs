@@ -21,19 +21,7 @@ namespace DataAccess
 
         public void BeginGame(List<int> players)
         {
-            string query = "INSERT INTO Game(Player1ID, Player2ID, Player3ID, Player4ID) VALUES (@Player1ID, @Player2ID, @Player3ID, @Player4ID)";
-
-            SqlParameter[] sqlParameters = new SqlParameter[4];
-            sqlParameters[0] = new SqlParameter("@Player1ID", SqlDbType.Int);
-            sqlParameters[0].Value = players[0];
-            sqlParameters[1] = new SqlParameter("@Player2ID", SqlDbType.Int);
-            sqlParameters[1].Value = players[1];
-            sqlParameters[2] = new SqlParameter("@Player3ID", SqlDbType.Int);
-            sqlParameters[2].Value = players[2];
-            sqlParameters[3] = new SqlParameter("@Player4ID", SqlDbType.Int);
-            sqlParameters[3].Value = players[3];
-
-            conn.executeInsertQuery(query, sqlParameters);
+            
 
         }
 
@@ -53,17 +41,19 @@ namespace DataAccess
             return Bid;
         }
 
-        public List<string> getBidsCurrentGame(int currentGameID)
+        public List<BidBO> getBidsCurrentGame(int currentGameID)
         {
             SqlDataReader dr;
 
             string query = "SELECT GameTypeName FROM Bids WHERE GameID = " + currentGameID;
             SqlParameter[] sqlParameters = new SqlParameter[0];
             dr = conn.executeSelectQuery(query, sqlParameters);
-            List<string> Bids = new List<string>();
+            List<BidBO> Bids = new List<BidBO>();
             while (dr.Read())
             {
-                Bids.Add(dr["GameTypeName"].ToString());
+                BidBO bid = new BidBO();
+                bid.GameTypeName = dr["GameTypeName"].ToString();
+                Bids.Add(bid);
             }
             
             return Bids;

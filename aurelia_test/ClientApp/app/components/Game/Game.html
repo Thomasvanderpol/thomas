@@ -10,7 +10,7 @@
                     <option value="" disabled selected>player 3</option>
                     <option repeat.for="player of players" value="${player}">${player}</option>
                 </select>
-
+                ${Player3Bid}
             </h2>
         </div>
 
@@ -24,6 +24,7 @@
                     <option value="" disabled selected>player 2</option>
                     <option repeat.for="player of players" value="${player}">${player}</option>
                 </select>
+                ${Player2Bid}
             </h2>
         </div>
 
@@ -56,7 +57,7 @@
                     <button click.delegate="SubmitChoice(choice)">OK</button>
 
                     <button click.delegate="GetHighestBidInGame()">Test</button>
-                    
+                   
                 </form>
                 
                 
@@ -75,6 +76,7 @@
                     <option value="" disabled selected>player 4</option>
                     <option repeat.for="player of players" value="${player}">${player}</option>
                 </select>
+                ${Player4Bid}
             </h2>
         </div>
 
@@ -88,6 +90,7 @@
                     <option value="" disabled selected>player 1</option>
                     <option repeat.for="player of players" value="${player}">${player}</option>
                 </select>
+                ${Player1Bid}
             </h2>
         </div>
 
