@@ -53,6 +53,8 @@ namespace BusinessLogic
             List<BidLevelBO> BidsLevels = conn.GetLevelsBids();
             //method to decide which is the highest
 
+
+
             return HighestBid;
         }
 
@@ -64,7 +66,7 @@ namespace BusinessLogic
         public void SubmitChoice(int currentGameID, string bid, int playerID)
         {
             conn.SubmitChoice(currentGameID, bid, playerID);
-            List<BidLevelBO> BidsLevels = conn.GetLevelsBids();
+           
         }
     }
 }

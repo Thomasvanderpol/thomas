@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "8930aa3beca371fa599f"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "9c9ead22bc2b49d17302"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -21140,6 +21140,7 @@ var Game = (function () {
         this.CardsPlayer2 = ["R2", "R3", "R4", "R5", "R6", "R7", "R8", "R9", "R99", "RB", "RJ", "RK", "RZ"];
         this.CardsPlayer3 = ["K2", "K3", "K4", "K5", "K6", "K7", "K8", "K9", "K99", "KB", "KJ", "KK", "KZ"];
         this.CardsPlayer4 = ["H2", "H3", "H4", "H5", "H6", "H7", "H8", "H9", "H99", "HB", "HJ", "HK", "HZ"];
+        this.amountpasses = 0;
     }
     Game.prototype.activate = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -21168,11 +21169,203 @@ var Game = (function () {
                         _a.sent();
                         this.none = "none";
                         this.nohide = "";
+                        //reset all data 
+                        this.cards = [];
+                        this.Player1Cards = [];
+                        this.Player2Cards = [];
+                        this.Player3Cards = [];
+                        this.Player4Cards = [];
+                        this.nohide = "";
+                        this.CurrentGameID = 0;
+                        this.Player1Bid = [];
+                        this.Player2Bid = [];
+                        this.Player3Bid = [];
+                        this.Player4Bid = [];
+                        this.BidsGame = [];
+                        this.HighestBidGame = "";
+                        //bepaal wiens beurt het is, voor nu zet ik hem altijd op player 1
                         this.turn = "Player1";
+                        //get all data
                         return [4 /*yield*/, this.GetData()];
                     case 2:
+                        //get all data
+                        _a.sent();
+                        //can the player who is on turn. can he submit? if not:  player turn is next. if true: give him the choices
+                        return [4 /*yield*/, this.CanPlayerSubmit()];
+                    case 3:
+                        //can the player who is on turn. can he submit? if not:  player turn is next. if true: give him the choices
                         _a.sent();
                         return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Game.prototype.SubmitChoice = function (choice) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!(this.turn == "Player1")) return [3 /*break*/, 4];
+                        return [4 /*yield*/, this.http.fetch('api/Game/SubmitChoice/' + this.CurrentGameID + '/' + choice + '/' + this.playerIDs[0])];
+                    case 1:
+                        _a.sent();
+                        return [4 /*yield*/, this.getBidPlayer()];
+                    case 2:
+                        _a.sent();
+                        this.turn = "Player2";
+                        return [4 /*yield*/, this.CanPlayerSubmit()];
+                    case 3:
+                        _a.sent();
+                        return [3 /*break*/, 16];
+                    case 4:
+                        if (!(this.turn == "Player2")) return [3 /*break*/, 8];
+                        return [4 /*yield*/, this.http.fetch('api/Game/SubmitChoice/' + this.CurrentGameID + '/' + choice + '/' + this.playerIDs[1])];
+                    case 5:
+                        _a.sent();
+                        return [4 /*yield*/, this.getBidPlayer()];
+                    case 6:
+                        _a.sent();
+                        this.turn = "Player3";
+                        return [4 /*yield*/, this.CanPlayerSubmit()];
+                    case 7:
+                        _a.sent();
+                        return [3 /*break*/, 16];
+                    case 8:
+                        if (!(this.turn == "Player3")) return [3 /*break*/, 12];
+                        return [4 /*yield*/, this.http.fetch('api/Game/SubmitChoice/' + this.CurrentGameID + '/' + choice + '/' + this.playerIDs[2])];
+                    case 9:
+                        _a.sent();
+                        return [4 /*yield*/, this.getBidPlayer()];
+                    case 10:
+                        _a.sent();
+                        this.turn = "Player4";
+                        return [4 /*yield*/, this.CanPlayerSubmit()];
+                    case 11:
+                        _a.sent();
+                        return [3 /*break*/, 16];
+                    case 12:
+                        if (!(this.turn == "Player4")) return [3 /*break*/, 16];
+                        return [4 /*yield*/, this.http.fetch('api/Game/SubmitChoice/' + this.CurrentGameID + '/' + choice + '/' + this.playerIDs[3])];
+                    case 13:
+                        _a.sent();
+                        return [4 /*yield*/, this.getBidPlayer()];
+                    case 14:
+                        _a.sent();
+                        this.turn = "Player1";
+                        return [4 /*yield*/, this.CanPlayerSubmit()];
+                    case 15:
+                        _a.sent();
+                        _a.label = 16;
+                    case 16: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Game.prototype.getBidPlayer = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var player, result, _a, result, _b, result, _c, result, _d;
+            return __generator(this, function (_e) {
+                switch (_e.label) {
+                    case 0:
+                        player = 0;
+                        if (!(this.turn == "Player1")) return [3 /*break*/, 3];
+                        player = this.playerIDs[0];
+                        return [4 /*yield*/, this.http.fetch('api/Game/GetBidPlayer/' + player + '/' + this.CurrentGameID)];
+                    case 1:
+                        result = _e.sent();
+                        _a = this;
+                        return [4 /*yield*/, result.json()];
+                    case 2:
+                        _a.Player1Bid = (_e.sent());
+                        return [3 /*break*/, 12];
+                    case 3:
+                        if (!(this.turn == "Player2")) return [3 /*break*/, 6];
+                        player = this.playerIDs[1];
+                        return [4 /*yield*/, this.http.fetch('api/Game/GetBidPlayer/' + player + '/' + this.CurrentGameID)];
+                    case 4:
+                        result = _e.sent();
+                        _b = this;
+                        return [4 /*yield*/, result.json()];
+                    case 5:
+                        _b.Player2Bid = (_e.sent());
+                        return [3 /*break*/, 12];
+                    case 6:
+                        if (!(this.turn == "Player3")) return [3 /*break*/, 9];
+                        player = this.playerIDs[2];
+                        return [4 /*yield*/, this.http.fetch('api/Game/GetBidPlayer/' + player + '/' + this.CurrentGameID)];
+                    case 7:
+                        result = _e.sent();
+                        _c = this;
+                        return [4 /*yield*/, result.json()];
+                    case 8:
+                        _c.Player3Bid = (_e.sent());
+                        return [3 /*break*/, 12];
+                    case 9:
+                        if (!(this.turn == "Player4")) return [3 /*break*/, 12];
+                        player = this.playerIDs[3];
+                        return [4 /*yield*/, this.http.fetch('api/Game/GetBidPlayer/' + player + '/' + this.CurrentGameID)];
+                    case 10:
+                        result = _e.sent();
+                        _d = this;
+                        return [4 /*yield*/, result.json()];
+                    case 11:
+                        _d.Player4Bid = (_e.sent());
+                        _e.label = 12;
+                    case 12: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Game.prototype.CanPlayerSubmit = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var tmp;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        if (!(this.amountpasses = 3)) return [3 /*break*/, 1];
+                        tmp = "hallo";
+                        return [3 /*break*/, 12];
+                    case 1:
+                        this.getBidPlayer();
+                        if (!(this.turn == "Player1")) return [3 /*break*/, 4];
+                        if (!(this.Player1Bid[0] == "pas")) return [3 /*break*/, 3];
+                        this.turn = "Player2";
+                        this.amountpasses++;
+                        return [4 /*yield*/, this.CanPlayerSubmit()];
+                    case 2:
+                        _a.sent();
+                        _a.label = 3;
+                    case 3: return [3 /*break*/, 12];
+                    case 4:
+                        if (!(this.turn == "Player2")) return [3 /*break*/, 7];
+                        if (!(this.Player2Bid[0] == "pas")) return [3 /*break*/, 6];
+                        this.turn = "Player3";
+                        this.amountpasses++;
+                        return [4 /*yield*/, this.CanPlayerSubmit()];
+                    case 5:
+                        _a.sent();
+                        _a.label = 6;
+                    case 6: return [3 /*break*/, 12];
+                    case 7:
+                        if (!(this.turn == "Player3")) return [3 /*break*/, 10];
+                        if (!(this.Player3Bid[0] == "pas")) return [3 /*break*/, 9];
+                        this.turn = "Player4";
+                        this.amountpasses++;
+                        return [4 /*yield*/, this.CanPlayerSubmit()];
+                    case 8:
+                        _a.sent();
+                        _a.label = 9;
+                    case 9: return [3 /*break*/, 12];
+                    case 10:
+                        if (!(this.turn == "Player4")) return [3 /*break*/, 12];
+                        if (!(this.Player4Bid[0] == "pas")) return [3 /*break*/, 12];
+                        this.turn = "Player1";
+                        this.amountpasses++;
+                        return [4 /*yield*/, this.CanPlayerSubmit()];
+                    case 11:
+                        _a.sent();
+                        _a.label = 12;
+                    case 12: return [2 /*return*/];
                 }
             });
         });
@@ -21202,53 +21395,36 @@ var Game = (function () {
             });
         });
     };
-    Game.prototype.SubmitChoice = function (choice) {
+    Game.prototype.GetCurrentGameID = function () {
         return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        this.Bid = choice;
-                        if (!(this.turn == "Player1")) return [3 /*break*/, 3];
-                        return [4 /*yield*/, this.http.fetch('api/Game/SubmitChoice/' + this.CurrentGameID + '/' + this.Bid + '/' + this.playerIDs[0])];
+            var result, _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, this.http.fetch('api/Game/GetCurrentGameID')];
                     case 1:
-                        _a.sent();
-                        return [4 /*yield*/, this.getBidPlayer()];
+                        result = _b.sent();
+                        _a = this;
+                        return [4 /*yield*/, result.json()];
                     case 2:
-                        _a.sent();
-                        this.turn = "Player2";
-                        this.tmp = "test";
-                        return [3 /*break*/, 12];
-                    case 3:
-                        if (!(this.turn == "Player2")) return [3 /*break*/, 6];
-                        return [4 /*yield*/, this.http.fetch('api/Game/SubmitChoice/' + this.CurrentGameID + '/' + this.Bid + '/' + this.playerIDs[1])];
-                    case 4:
-                        _a.sent();
-                        return [4 /*yield*/, this.getBidPlayer()];
-                    case 5:
-                        _a.sent();
-                        this.turn = "Player3";
-                        return [3 /*break*/, 12];
-                    case 6:
-                        if (!(this.turn == "Player3")) return [3 /*break*/, 9];
-                        return [4 /*yield*/, this.http.fetch('api/Game/SubmitChoice/' + this.CurrentGameID + '/' + this.Bid + '/' + this.playerIDs[2])];
-                    case 7:
-                        _a.sent();
-                        return [4 /*yield*/, this.getBidPlayer()];
-                    case 8:
-                        _a.sent();
-                        this.turn = "Player4";
-                        return [3 /*break*/, 12];
-                    case 9:
-                        if (!(this.turn == "Player4")) return [3 /*break*/, 12];
-                        return [4 /*yield*/, this.http.fetch('api/Game/SubmitChoice/' + this.CurrentGameID + '/' + this.Bid + '/' + this.playerIDs[3])];
-                    case 10:
-                        _a.sent();
-                        return [4 /*yield*/, this.getBidPlayer()];
-                    case 11:
-                        _a.sent();
-                        this.turn = "Player1";
-                        _a.label = 12;
-                    case 12: return [2 /*return*/];
+                        _a.CurrentGameID = (_b.sent());
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Game.prototype.GetPlayerIDs = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var result, _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, this.http.fetch('api/Game/GetPlayersIDs')];
+                    case 1:
+                        result = _b.sent();
+                        _a = this;
+                        return [4 /*yield*/, result.json()];
+                    case 2:
+                        _a.playerIDs = (_b.sent());
+                        return [2 /*return*/];
                 }
             });
         });
@@ -21305,96 +21481,6 @@ var Game = (function () {
             });
         });
     };
-    Game.prototype.GetCurrentGameID = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var result, _a;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0: return [4 /*yield*/, this.http.fetch('api/Game/GetCurrentGameID')];
-                    case 1:
-                        result = _b.sent();
-                        _a = this;
-                        return [4 /*yield*/, result.json()];
-                    case 2:
-                        _a.CurrentGameID = (_b.sent());
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    Game.prototype.GetPlayerIDs = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var result, _a;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0: return [4 /*yield*/, this.http.fetch('api/Game/GetPlayersIDs')];
-                    case 1:
-                        result = _b.sent();
-                        _a = this;
-                        return [4 /*yield*/, result.json()];
-                    case 2:
-                        _a.playerIDs = (_b.sent());
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    //result.json GAAT HET MIS, DIT DOET HET NIET, WEET NIET WAAROM????
-    Game.prototype.getBidPlayer = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            var player, result, _a, result, _b, result, _c, result, _d;
-            return __generator(this, function (_e) {
-                switch (_e.label) {
-                    case 0:
-                        player = 0;
-                        if (!(this.turn == "Player1")) return [3 /*break*/, 3];
-                        player = this.playerIDs[0];
-                        return [4 /*yield*/, this.http.fetch('api/Game/GetBidPlayer/' + player + '/' + this.CurrentGameID)];
-                    case 1:
-                        result = _e.sent();
-                        _a = this;
-                        return [4 /*yield*/, result.json()];
-                    case 2:
-                        _a.Player1Bid = (_e.sent());
-                        return [3 /*break*/, 12];
-                    case 3:
-                        if (!(this.turn == "Player2")) return [3 /*break*/, 6];
-                        player = this.playerIDs[1];
-                        return [4 /*yield*/, this.http.fetch('api/Game/GetBidPlayer/' + player + '/' + this.CurrentGameID)];
-                    case 4:
-                        result = _e.sent();
-                        _b = this;
-                        return [4 /*yield*/, result.json()];
-                    case 5:
-                        _b.Player2Bid = (_e.sent());
-                        return [3 /*break*/, 12];
-                    case 6:
-                        if (!(this.turn == "Player3")) return [3 /*break*/, 9];
-                        player = this.playerIDs[2];
-                        return [4 /*yield*/, this.http.fetch('api/Game/GetBidPlayer/' + player + '/' + this.CurrentGameID)];
-                    case 7:
-                        result = _e.sent();
-                        _c = this;
-                        return [4 /*yield*/, result.json()];
-                    case 8:
-                        _c.Player3Bid = (_e.sent());
-                        return [3 /*break*/, 12];
-                    case 9:
-                        if (!(this.turn == "Player4")) return [3 /*break*/, 12];
-                        player = this.playerIDs[3];
-                        return [4 /*yield*/, this.http.fetch('api/Game/GetBidPlayer/' + player + '/' + this.CurrentGameID)];
-                    case 10:
-                        result = _e.sent();
-                        _d = this;
-                        return [4 /*yield*/, result.json()];
-                    case 11:
-                        _d.Player4Bid = (_e.sent());
-                        _e.label = 12;
-                    case 12: return [2 /*return*/];
-                }
-            });
-        });
-    };
     return Game;
 }());
 Game = __decorate([
@@ -21424,7 +21510,7 @@ exports.push([module.i, ".Speler3 {\r\n    grid-area: Speler3;\r\n    height: 90
 /***/ "app/components/Game/Game.html":
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = "<template>\r\n    <style>\r\n        #${turn}{color: red}\r\n    </style>\r\n    <require from=\"./Game.css\"></require>\r\n    <div class=\"grid-container\">\r\n        <div class=\"Speler3\">\r\n            <h2>\r\n                <select id=\"Player3\" ref=\"Player3\">\r\n                    <option value=\"\" disabled selected>player 3</option>\r\n                    <option repeat.for=\"player of players\" value=\"${player}\">${player}</option>\r\n                </select>\r\n                ${Player3Bid}\r\n            </h2>\r\n        </div>\r\n\r\n        <div class=\"Speler3Kaarten\">\r\n            <img repeat.for=\"card of CardsPlayer3\" src=\"${card}.jpg\" style=\"position: absolute; top: 110px; left: ${400+$index*50}px \" />\r\n        </div>\r\n\r\n        <div class=\"Speler2\">\r\n            <h2>\r\n                <select id=\"Player2\" ref=\"Player2\">\r\n                    <option value=\"\" disabled selected>player 2</option>\r\n                    <option repeat.for=\"player of players\" value=\"${player}\">${player}</option>\r\n                </select>\r\n                ${Player2Bid}\r\n            </h2>\r\n        </div>\r\n\r\n        <div class=\"Speler2Kaarten\">\r\n            <img repeat.for=\"card of CardsPlayer2\" src=\"${card}.jpg\" style=\"position: absolute; left: 40px; top: ${10+$index*30}px \" />\r\n\r\n        </div>\r\n\r\n        <div class=\"Speelveld\">\r\n            <div id=\"begintext\" style=\"display: ${none}\">\r\n                <h1>\r\n                    If the 4 players are selected begin your game here:<br /><br />\r\n                    <button click.delegate=\"BeginGame(Player1.value,Player2.value,Player3.value,Player4.value)\">Delen!</button>\r\n\r\n                </h1>\r\n            </div>\r\n            <div id=\"keuzeVoorbereidingsronde\" style=\"display: ${nohide}\">\r\n                <h3> What are you going to do?</h3>\r\n                <form>\r\n\r\n\r\n                    <input type=\"radio\" name=\"choice\" value=\"pas\" checked.bind=\"choice\"> pas       <br>\r\n                    <input type=\"radio\" name=\"choice\" value=\"rik\" checked.bind=\"choice\"> rik       <br>\r\n                    <input type=\"radio\" name=\"choice\" value=\"8 alleen\" checked.bind=\"choice\"> 8 alleen  <br>\r\n                    <input type=\"radio\" name=\"choice\" value=\"9 alleen\" checked.bind=\"choice\"> 9 alleen  <br>\r\n                    <input type=\"radio\" name=\"choice\" value=\"10 alleen\" checked.bind=\"choice\"> 10 alleen <br>\r\n                    <input type=\"radio\" name=\"choice\" value=\"11 alleen\" checked.bind=\"choice\"> 11 alleen <br>\r\n                    <input type=\"radio\" name=\"choice\" value=\"12 alleen\" checked.bind=\"choice\"> 12 alleen <br>\r\n                    <input type=\"radio\" name=\"choice\" value=\"13 alleen\" checked.bind=\"choice\"> 13 alleen <br>\r\n                    <button click.delegate=\"SubmitChoice(choice)\">OK</button>\r\n\r\n                    <button click.delegate=\"GetHighestBidInGame()\">Test</button>\r\n                   \r\n                </form>\r\n                \r\n                \r\n\r\n            </div>\r\n        </div>\r\n\r\n        <div class=\"Speler4Kaarten\">\r\n            <img repeat.for=\"card of CardsPlayer4\" src=\"${card}.jpg\" style=\"position: absolute; left: 40px; top: ${10+$index*30}px \" />\r\n\r\n        </div>\r\n\r\n        <div class=\"Speler4\">\r\n            <h2>\r\n                <select id=\"Player4\" ref=\"Player4\">\r\n                    <option value=\"\" disabled selected>player 4</option>\r\n                    <option repeat.for=\"player of players\" value=\"${player}\">${player}</option>\r\n                </select>\r\n                ${Player4Bid}\r\n            </h2>\r\n        </div>\r\n\r\n        <div class=\"Speler1Kaarten\">\r\n            <img repeat.for=\"card of CardsPlayer1\" src=\"${card}.jpg\" style=\"position: absolute; bottom: 95px; left: ${400+$index*50}px \" />\r\n\r\n        </div>\r\n        <div class=\"Speler1\">\r\n            <h2>\r\n                <select id=\"Player1\" ref=\"Player1\">\r\n                    <option value=\"\" disabled selected>player 1</option>\r\n                    <option repeat.for=\"player of players\" value=\"${player}\">${player}</option>\r\n                </select>\r\n                ${Player1Bid}\r\n            </h2>\r\n        </div>\r\n\r\n    </div>\r\n\r\n\r\n\r\n</template>";
+module.exports = "<template>\r\n    <style>\r\n        #${turn}{color: red}\r\n    </style>\r\n    <require from=\"./Game.css\"></require>\r\n    <div class=\"grid-container\">\r\n        <div class=\"Speler3\">\r\n            <h2>\r\n                <select id=\"Player3\" ref=\"Player3\">\r\n                    <option value=\"\" disabled selected>player 3</option>\r\n                    <option repeat.for=\"player of players\" value=\"${player}\">${player}</option>\r\n                </select>\r\n                ${Player3Bid}\r\n            </h2>\r\n        </div>\r\n\r\n        <div class=\"Speler3Kaarten\">\r\n            <img repeat.for=\"card of CardsPlayer3\" src=\"${card}.jpg\" style=\"position: absolute; top: 110px; left: ${400+$index*50}px \" />\r\n        </div>\r\n\r\n        <div class=\"Speler2\">\r\n            <h2>\r\n                <select id=\"Player2\" ref=\"Player2\">\r\n                    <option value=\"\" disabled selected>player 2</option>\r\n                    <option repeat.for=\"player of players\" value=\"${player}\">${player}</option>\r\n                </select>\r\n                ${Player2Bid}\r\n            </h2>\r\n        </div>\r\n\r\n        <div class=\"Speler2Kaarten\">\r\n            <img repeat.for=\"card of CardsPlayer2\" src=\"${card}.jpg\" style=\"position: absolute; left: 40px; top: ${10+$index*30}px \" />\r\n\r\n        </div>\r\n\r\n        <div class=\"Speelveld\">\r\n            <div id=\"begintext\" style=\"display: ${none}\">\r\n                <h1>\r\n                    If the 4 players are selected begin your game here:<br /><br />\r\n                    <button click.delegate=\"BeginGame(Player1.value,Player2.value,Player3.value,Player4.value)\">Delen!</button>\r\n\r\n                </h1>\r\n            </div>\r\n            <div id=\"keuzeVoorbereidingsronde\" style=\"display: ${nohide}\">\r\n                <h3> What are you going to do?</h3>\r\n                <form>\r\n\r\n\r\n                    <input type=\"radio\" name=\"choice\" value=\"pas\" checked.bind=\"choice\"> pas       <br>\r\n                    <input type=\"radio\" name=\"choice\" value=\"rik\" checked.bind=\"choice\"> rik       <br>\r\n                    <input type=\"radio\" name=\"choice\" value=\"8 alleen\" checked.bind=\"choice\"> 8 alleen  <br>\r\n                    <input type=\"radio\" name=\"choice\" value=\"9 alleen\" checked.bind=\"choice\"> 9 alleen  <br>\r\n                    <input type=\"radio\" name=\"choice\" value=\"10 alleen\" checked.bind=\"choice\"> 10 alleen <br>\r\n                    <input type=\"radio\" name=\"choice\" value=\"11 alleen\" checked.bind=\"choice\"> 11 alleen <br>\r\n                    <input type=\"radio\" name=\"choice\" value=\"12 alleen\" checked.bind=\"choice\"> 12 alleen <br>\r\n                    <input type=\"radio\" name=\"choice\" value=\"13 alleen\" checked.bind=\"choice\"> 13 alleen <br>\r\n                    <button click.delegate=\"SubmitChoice(choice)\">OK</button>\r\n\r\n                    <button click.delegate=\"GetHighestBidInGame()\">Test</button>\r\n\r\n                    \r\n                </form>\r\n                \r\n                \r\n\r\n            </div>\r\n        </div>\r\n\r\n        <div class=\"Speler4Kaarten\">\r\n            <img repeat.for=\"card of CardsPlayer4\" src=\"${card}.jpg\" style=\"position: absolute; left: 40px; top: ${10+$index*30}px \" />\r\n\r\n        </div>\r\n\r\n        <div class=\"Speler4\">\r\n            <h2>\r\n                <select id=\"Player4\" ref=\"Player4\">\r\n                    <option value=\"\" disabled selected>player 4</option>\r\n                    <option repeat.for=\"player of players\" value=\"${player}\">${player}</option>\r\n                </select>\r\n                ${Player4Bid}\r\n            </h2>\r\n        </div>\r\n\r\n        <div class=\"Speler1Kaarten\">\r\n            <img repeat.for=\"card of CardsPlayer1\" src=\"${card}.jpg\" style=\"position: absolute; bottom: 95px; left: ${400+$index*50}px \" />\r\n\r\n        </div>\r\n        <div class=\"Speler1\">\r\n            <h2>\r\n                <select id=\"Player1\" ref=\"Player1\">\r\n                    <option value=\"\" disabled selected>player 1</option>\r\n                    <option repeat.for=\"player of players\" value=\"${player}\">${player}</option>\r\n                </select>\r\n                ${Player1Bid}\r\n            </h2>\r\n        </div>\r\n\r\n    </div>\r\n\r\n\r\n\r\n</template>";
 
 /***/ }),
 

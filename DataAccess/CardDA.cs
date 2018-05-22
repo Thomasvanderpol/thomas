@@ -9,7 +9,7 @@ namespace DataAccess
 {
     public class CardDA : ICardDA
     {
-        public List<CardBO> cards = new List<CardBO>();
+      
         private IDb conn;
         public CardDA(IDb conn)
         {
@@ -18,11 +18,11 @@ namespace DataAccess
 
         public List<CardBO> GetCards()
         {
-            SqlDataReader dr;
-
+          
+            List<CardBO> cards = new List<CardBO>();
             string query = "SELECT * FROM Cards";
             SqlParameter[] sqlParameters = new SqlParameter[0];
-            dr = conn.executeSelectQuery(query, sqlParameters);
+            SqlDataReader dr = conn.executeSelectQuery(query, sqlParameters);
 
             while (dr.Read())
             {
