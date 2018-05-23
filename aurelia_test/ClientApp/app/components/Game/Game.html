@@ -1,12 +1,6 @@
 ﻿<template>
     <style>
-        #$ {
-            turn
-        }
-
-        {
-            color: red
-        }
+        #${turn}{color: red}
     </style>
     <require from="./Game.css"></require>
     <div class="grid-container">
@@ -50,13 +44,13 @@
             <div id="keuzeVoorbereidingsronde" style="display: ${nohide}">
                 <h3> What are you going to do?</h3>
                 <form>
-                    <!-- click.delegate op input radio maken-->
-                    <div repeat.for="ChoicePlayer of ChoicesPlayer">
-                        <input type="radio" name="choice" value=${ChoicePlayer} checked.bind="choice">${ChoicePlayer}<br />
-                        <button click.delegate="SubmitChoice(choice)">OK</button>
-                    </div>
 
+                    <select id="PlayerPreparation" ref="choice">
+                        <option value="" disabled selected>Make your choice</option>
+                        <option repeat.for="ChoicePlayer of ChoicesPlayer" value="${ChoicePlayer}">${ChoicePlayer}</option>
+                    </select><br />
 
+                    <button click.delegate="SubmitChoice(choice.value)">OK</button>
                     ${GameTypeGame}
                     ${GameTypePlayer}
                 </form>
