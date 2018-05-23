@@ -88,5 +88,11 @@ namespace RikApplication.Controllers
         {
             return igameBL.GetHighestBidInGame(CurrentGameID);
         }
+
+        [HttpGet("[action]/{CurrentGameID}")]
+        public List<string> GetChoicesPlayer(int CurrentGameID)
+        {
+            return igameBL.GetChoicesPlayer(CurrentGameID);
+        }
     }
 }

@@ -33,6 +33,40 @@ namespace BusinessLogic
             return conn.getBidsCurrentGame(currentGameID);
         }
 
+        public List<string> GetChoicesPlayer(int currentGameID)
+        {
+            List<string> ChoicesPlayer = new List<string>();
+            ChoicesPlayer.Add("pas");
+            BidBO highestBid = this.GetHighestBidInGame(currentGameID);
+            List<BidLevelBO> BidsLevels = conn.GetLevelsBids();
+            int count = 0;
+
+            if (highestBid.level == 1)
+            {
+                ChoicesPlayer.Add("rik");
+                ChoicesPlayer.Add("misère");
+            }
+            else
+            {
+                //bepaal de lijst van keuzes van deze speler door hoogste bieding
+                foreach (BidLevelBO bidlevel in BidsLevels)
+                {
+                    if (count == 2)
+                    {
+                        break;
+                    }
+                    else if (highestBid.level < bidlevel.LevelBidsID)
+                    {
+                        ChoicesPlayer.Add(bidlevel.GameTypeName);
+                        count++;
+                    }
+                }
+            }
+
+
+            return ChoicesPlayer;
+        }
+
         public int GetCurrentGameID()
         {
             return conn.GetCurrentGameID();

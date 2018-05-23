@@ -29,8 +29,10 @@ export class Game {
     public Player3Bid: string[];
     public Player4Bid: string[];
 
-    public BidsGame: string[];
+    public ChoicesPlayer: string[];
   
+    public BidsGame: string[];
+
 
 
 
@@ -74,7 +76,8 @@ export class Game {
         this.Player2Bid = [];
         this.Player3Bid = [];
         this.Player4Bid = [];
-        
+
+        this.ChoicesPlayer = ["pas", "rik", "misère"];
        
 
 
@@ -88,6 +91,18 @@ export class Game {
 
     }
 
+    //bepalen van de keuzes van een speler aan de hand van de hoogste bieding
+    public async GetChoicesPlayer() {
+        let result = await this.http.fetch('api/Game/GetChoicesPlayer/' + this.CurrentGameID);
+
+
+        //bepalen van de hoogste bieding
+        this.ChoicesPlayer = await result.json() as Array<string>;
+
+
+
+    }
+
 
     public async SubmitChoice(choice: string) {
 
@@ -98,7 +113,7 @@ export class Game {
             await this.getBidPlayer(this.turn);
             this.turn = "Player2";
             this.turn = await this.CanPlayerSubmit();
-
+            await this.GetChoicesPlayer();
 
         }
         else if (this.turn == "Player2") {
@@ -107,8 +122,7 @@ export class Game {
             await this.getBidPlayer(this.turn);
             this.turn = "Player3";
             this.turn = await this.CanPlayerSubmit();
-
-
+            await this.GetChoicesPlayer();
 
         }
         else if (this.turn == "Player3") {
@@ -117,7 +131,7 @@ export class Game {
             await this.getBidPlayer(this.turn);
             this.turn = "Player4";
             this.turn = await this.CanPlayerSubmit();
-
+            await this.GetChoicesPlayer();
 
         }
         else if (this.turn == "Player4") {
@@ -126,7 +140,7 @@ export class Game {
             await this.getBidPlayer(this.turn);
             this.turn = "Player1";
             this.turn = await this.CanPlayerSubmit();
-
+            await this.GetChoicesPlayer();
 
         }
 
@@ -325,12 +339,10 @@ export class Game {
         this.GameTypePlayer = this.HighestBid.playerID;
         this.GameTypeGame = this.HighestBid.gameTypeName;
     }
+
     public HighestBid: Bieding;
     public Bids: Bieding[];
-    public testbid: string;
-    public testID: number;
-    public TestBid: string;
-    public TestID: number;
+
 
     //alle biedingen in de game
     public async GetBidsCurrentGame() {
