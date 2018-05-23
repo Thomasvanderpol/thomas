@@ -44,10 +44,9 @@
             <div id="keuzeVoorbereidingsronde" style="display: ${nohide}">
                 <h3> What are you going to do?</h3>
                 <form>
-
-
-                    <input type="radio" name="choice" value="pas" checked.bind="choice"> pas       <br>
-                    <input type="radio" name="choice" value="rik" checked.bind="choice"> rik       <br>
+                    <input type="radio" name="choice" value="pas" checked.bind="choice"> pas <br>
+                    <input type="radio" name="choice" value="rik" checked.bind="choice"> rik <br>
+                    <input type="radio" name="choice" value="beter rik" checked.bind="choice"> beter rik <br>
                     <input type="radio" name="choice" value="8 alleen" checked.bind="choice"> 8 alleen  <br>
                     <input type="radio" name="choice" value="9 alleen" checked.bind="choice"> 9 alleen  <br>
                     <input type="radio" name="choice" value="10 alleen" checked.bind="choice"> 10 alleen <br>
@@ -55,14 +54,9 @@
                     <input type="radio" name="choice" value="12 alleen" checked.bind="choice"> 12 alleen <br>
                     <input type="radio" name="choice" value="13 alleen" checked.bind="choice"> 13 alleen <br>
                     <button click.delegate="SubmitChoice(choice)">OK</button>
-
-                    <button click.delegate="GetHighestBidInGame()">Test</button>
-
-                    
+                    ${GameTypeGame}
+                    ${GameTypePlayer}
                 </form>
-                
-                
-
             </div>
         </div>
 

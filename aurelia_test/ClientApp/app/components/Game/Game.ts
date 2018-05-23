@@ -30,7 +30,7 @@ export class Game {
     public Player4Bid: string[];
 
     public BidsGame: string[];
-    public HighestBidGame: string;
+  
 
 
 
@@ -74,50 +74,60 @@ export class Game {
         this.Player2Bid = [];
         this.Player3Bid = [];
         this.Player4Bid = [];
-        this.BidsGame = [];
-        this.HighestBidGame = "";
+        
+       
 
 
 
-        //bepaal wiens beurt het is, voor nu zet ik hem altijd op player 1
+        //decide who's turn it is, for now it's always player1.
+        //player 1 can always make his choice
         this.turn = "Player1";
 
         //get all data
         await this.GetData();
-
-
-        //can the player who is on turn. can he submit? if not:  player turn is next. if true: give him the choices
-        await this.CanPlayerSubmit();
 
     }
 
 
     public async SubmitChoice(choice: string) {
 
-
+        var bool = true;
         if (this.turn == "Player1") {
+
             await this.http.fetch('api/Game/SubmitChoice/' + this.CurrentGameID + '/' + choice + '/' + this.playerIDs[0]);
-            await this.getBidPlayer();
+            await this.getBidPlayer(this.turn);
             this.turn = "Player2";
-            await this.CanPlayerSubmit();
+            this.turn = await this.CanPlayerSubmit();
+
+
         }
         else if (this.turn == "Player2") {
+
             await this.http.fetch('api/Game/SubmitChoice/' + this.CurrentGameID + '/' + choice + '/' + this.playerIDs[1]);
-            await this.getBidPlayer();
+            await this.getBidPlayer(this.turn);
             this.turn = "Player3";
-            await this.CanPlayerSubmit();
+            this.turn = await this.CanPlayerSubmit();
+
+
+
         }
         else if (this.turn == "Player3") {
+
             await this.http.fetch('api/Game/SubmitChoice/' + this.CurrentGameID + '/' + choice + '/' + this.playerIDs[2]);
-            await this.getBidPlayer();
+            await this.getBidPlayer(this.turn);
             this.turn = "Player4";
-            await this.CanPlayerSubmit();
+            this.turn = await this.CanPlayerSubmit();
+
+
         }
         else if (this.turn == "Player4") {
+
             await this.http.fetch('api/Game/SubmitChoice/' + this.CurrentGameID + '/' + choice + '/' + this.playerIDs[3]);
-            await this.getBidPlayer();
+            await this.getBidPlayer(this.turn);
             this.turn = "Player1";
-            await this.CanPlayerSubmit();
+            this.turn = await this.CanPlayerSubmit();
+
+
         }
 
 
@@ -125,38 +135,149 @@ export class Game {
 
 
 
-    public async getBidPlayer() {
-        let player = 0;
-        if (this.turn == "Player1") {
-            player = this.playerIDs[0];
-            let result = await this.http.fetch('api/Game/GetBidPlayer/' + player + '/' + this.CurrentGameID);
-            this.Player1Bid = await result.json() as Array<string>;
-        }
-        else if (this.turn == "Player2") {
-            player = this.playerIDs[1];
-            let result = await this.http.fetch('api/Game/GetBidPlayer/' + player + '/' + this.CurrentGameID);
-            this.Player2Bid = await result.json() as Array<string>;
-        }
-        else if (this.turn == "Player3") {
-            player = this.playerIDs[2];
-            let result = await this.http.fetch('api/Game/GetBidPlayer/' + player + '/' + this.CurrentGameID);
-            this.Player3Bid = await result.json() as Array<string>;
-        }
-        else if (this.turn == "Player4") {
-            player = this.playerIDs[3];
-            let result = await this.http.fetch('api/Game/GetBidPlayer/' + player + '/' + this.CurrentGameID);
-            this.Player4Bid = await result.json() as Array<string>;
-        }
-    }
 
+    public GameTypeGame: string;
+    public GameTypePlayer: number;
 
+    public CanPlayer1Submit: boolean = true;
+    public CanPlayer2Submit: boolean = true;
+    public CanPlayer3Submit: boolean = true;
+    public CanPlayer4Submit: boolean = true;
 
 
     public async CanPlayerSubmit() {
-       
+
+        //return string wie wel aan de beurt mag komen!!!
+        //haal een lijst met biedingen op van huidige game
+
+        await this.GetBidsCurrentGame();
+        var passes = 0;
+
+
+
+
+
+        for (var i = 0; i < this.Bids.length; i++) {
+
+            if (this.Bids[i].gameTypeName == "pas") {
+                passes = passes + 1;
+            }
+        }
+        if (passes == 3) {
+
+            //methode aanroepen die de hoogste bieding uithaalt, bij pas is volgende speler aan de beurt.
+            this.GetHighestBidInGame();
+
+        }
+        else if (passes == 4) {
+            this.BeginGame(this.players[0], this.players[1], this.players[2], this.players[3]);
+        }
+
+        else {
+            if (this.turn == "Player1") {
+                for (var i = 0; i < this.Bids.length; i++) {
+
+                    if (this.Bids[i].playerID == this.playerIDs[0]) {
+                        if (this.Bids[i].gameTypeName == "pas") {
+                            this.turn = "Player2";
+                            await this.CanPlayerSubmit();
+                            break;
+                        }
+
+                    }
+                }
+                return this.turn;
+
+            }
+
+            else if (this.turn == "Player2") {
+                for (var i = 0; i < this.Bids.length; i++) {
+
+                    if (this.Bids[i].playerID == this.playerIDs[1]) {
+                        if (this.Bids[i].gameTypeName == "pas") {
+                            this.turn = "Player3";
+                            await this.CanPlayerSubmit();
+                            break;
+                        }
+
+                    }
+                }
+                return this.turn;
+
+            }
+
+            else if (this.turn == "Player3") {
+                for (var i = 0; i < this.Bids.length; i++) {
+
+                    if (this.Bids[i].playerID == this.playerIDs[2]) {
+                        if (this.Bids[i].gameTypeName == "pas") {
+                            this.turn = "Player4";
+                            await this.CanPlayerSubmit();
+                            break;
+                        }
+
+                    }
+                }
+                return this.turn;
+
+            }
+
+            else if (this.turn == "Player4") {
+                for (var i = 0; i < this.Bids.length; i++) {
+
+                    if (this.Bids[i].playerID == this.playerIDs[3]) {
+                        if (this.Bids[i].gameTypeName == "pas") {
+                            this.turn = "Player1";
+                            await this.CanPlayerSubmit();
+                            break;
+                        }
+
+                    }
+                }
+                return this.turn;
+
+            }
+
+
+        }
+        return this.turn
     }
 
 
+    public async getBidPlayer(player: string) {
+
+        let Player = 0;
+        if (player == "Player1") {
+            Player = this.playerIDs[0];
+        }
+        else if (player == "Player2") {
+            Player = this.playerIDs[1];
+        }
+        else if (player == "Player3") {
+            Player = this.playerIDs[2];
+        }
+        else if (player == "Player4") {
+            Player = this.playerIDs[3];
+        }
+
+        let result = await this.http.fetch('api/Game/GetBidPlayer/' + Player + '/' + this.CurrentGameID);
+
+        if (player == "Player1") {
+            this.Player1Bid = await result.json() as Array<string>;
+        }
+        else if (player == "Player2") {
+            this.Player2Bid = await result.json() as Array<string>;
+        }
+        else if (player == "Player3") {
+            this.Player3Bid = await result.json() as Array<string>;
+        }
+        else if (player == "Player4") {
+            this.Player4Bid = await result.json() as Array<string>;
+        }
+
+
+
+    }
 
     // alle data voor het starten van een game
     public async GetCards() {
@@ -200,15 +321,29 @@ export class Game {
     //bepalen van de hoogste bieding
     public async GetHighestBidInGame() {
         let result = await this.http.fetch('api/Game/GetHighestBidInGame/' + this.CurrentGameID);
-        this.HighestBidGame = await result.json() as string;
+        this.HighestBid = await result.json() as Bieding;
+        this.GameTypePlayer = this.HighestBid.playerID;
+        this.GameTypeGame = this.HighestBid.gameTypeName;
     }
+    public HighestBid: Bieding;
+    public Bids: Bieding[];
+    public testbid: string;
+    public testID: number;
+    public TestBid: string;
+    public TestID: number;
 
     //alle biedingen in de game
     public async GetBidsCurrentGame() {
         let result = await this.http.fetch('api/Game/GetBidsCurrentGame/' + this.CurrentGameID);
-        this.BidsGame = await result.json() as Array<string>;
+        this.Bids = await result.json() as Bieding[];
+
     }
 
 }
 
+interface Bieding {
+    gameTypeName: string;
+    playerID: number;
+
+}
 

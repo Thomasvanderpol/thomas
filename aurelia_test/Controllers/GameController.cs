@@ -78,13 +78,13 @@ namespace RikApplication.Controllers
         }
 
         [HttpGet("[action]/{CurrentGameID}")]
-        public List<string> GetBidsCurrentGame(int CurrentGameID)
+        public List<BidBO> GetBidsCurrentGame(int CurrentGameID)
         {
             return igameBL.GetBidsCurrentGame(CurrentGameID);
         }
 
         [HttpGet("[action]/{CurrentGameID}")]
-        public string GetHighestBidInGame(int CurrentGameID)
+        public BidBO GetHighestBidInGame(int CurrentGameID)
         {
             return igameBL.GetHighestBidInGame(CurrentGameID);
         }

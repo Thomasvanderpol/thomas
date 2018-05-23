@@ -9,5 +9,7 @@ namespace BusinessObject
         public string GameTypeName { get; set; }
         public int GameID { get; set; }
         public int PlayerID { get; set; }
+
+        public int level { get; set; }
     }
 }

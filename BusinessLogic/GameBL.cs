@@ -17,7 +17,7 @@ namespace BusinessLogic
         }
 
 
-        
+
         public void BeginGame(List<int> PlayersInGame)
         {
             conn.BeginGame(PlayersInGame);
@@ -28,17 +28,9 @@ namespace BusinessLogic
             return conn.GetBidPlayer(player, CurrentGameID);
         }
 
-        public List<string> GetBidsCurrentGame(int currentGameID)
+        public List<BidBO> GetBidsCurrentGame(int currentGameID)
         {
-            List<string> Bids = new List<string>();
-
-            foreach (BidBO bid in conn.getBidsCurrentGame(currentGameID))
-            {
-                Bids.Add(bid.GameTypeName);
-            }
-           
-
-            return Bids;
+            return conn.getBidsCurrentGame(currentGameID);
         }
 
         public int GetCurrentGameID()
@@ -46,15 +38,39 @@ namespace BusinessLogic
             return conn.GetCurrentGameID();
         }
 
-        public string GetHighestBidInGame(int currentGameID)
+        public BidBO GetHighestBidInGame(int currentGameID)
         {
-            string HighestBid = "";
+            int highestBid = 0;
+            BidBO HighestBid = new BidBO();
             List<BidBO> BidsInGame = conn.getBidsCurrentGame(currentGameID);
             List<BidLevelBO> BidsLevels = conn.GetLevelsBids();
             //method to decide which is the highest
+            
+            foreach (BidBO bid in BidsInGame)
+            {
+                foreach (BidLevelBO bidlevel in BidsLevels)
+                {
+                    if (bid.GameTypeName == bidlevel.GameTypeName)
+                    {
+                        bid.level = bidlevel.LevelBidsID;
+                        break;
+                    }
+                }
+                if (bid.level > highestBid)
+                {
+                    highestBid = bid.level;
+                }
+            }
 
-
-
+            foreach (BidBO b in BidsInGame)
+            {
+                if (b.level == highestBid)
+                {
+                    HighestBid = b;
+                    break;
+                }
+            }
+          
             return HighestBid;
         }
 
@@ -66,7 +82,7 @@ namespace BusinessLogic
         public void SubmitChoice(int currentGameID, string bid, int playerID)
         {
             conn.SubmitChoice(currentGameID, bid, playerID);
-           
+
         }
     }
 }

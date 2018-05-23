@@ -59,7 +59,7 @@ namespace DataAccess
         {
             SqlDataReader dr;
 
-            string query = "SELECT GameTypeName FROM Bids WHERE GameID = " + currentGameID;
+            string query = "SELECT GameTypeName, PlayerID FROM Bids WHERE GameID = " + currentGameID + " ORDER BY BidID DESC";
             SqlParameter[] sqlParameters = new SqlParameter[0];
             dr = conn.executeSelectQuery(query, sqlParameters);
             List<BidBO> Bids = new List<BidBO>();
@@ -67,6 +67,7 @@ namespace DataAccess
             {
                 BidBO bid = new BidBO();
                 bid.GameTypeName = dr["GameTypeName"].ToString();
+                bid.PlayerID = Convert.ToInt32(dr["PlayerID"]);
                 Bids.Add(bid);
             }
             
