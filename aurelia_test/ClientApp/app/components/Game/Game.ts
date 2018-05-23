@@ -29,6 +29,8 @@ export class Game {
     public Player3Bid: string[];
     public Player4Bid: string[];
 
+    public ChoicesPlayer: string[];
+
     public BidsGame: string[];
   
 
@@ -74,7 +76,8 @@ export class Game {
         this.Player2Bid = [];
         this.Player3Bid = [];
         this.Player4Bid = [];
-        
+
+        this.ChoicesPlayer = ["pas", "rik", "misère"];
        
 
 
@@ -165,7 +168,8 @@ export class Game {
         }
         if (passes == 3) {
 
-            //methode aanroepen die de hoogste bieding uithaalt, bij pas is volgende speler aan de beurt.
+            //methode aanroepen die de hoogste bieding uithaalt, bij pas is volgende speler aan de beurt. EXEPTION HANDELING AFRONDEN!!!
+            
             this.GetHighestBidInGame();
 
         }
