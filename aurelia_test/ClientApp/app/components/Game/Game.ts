@@ -168,9 +168,34 @@ export class Game {
         }
         if (passes == 3) {
 
-            //methode aanroepen die de hoogste bieding uithaalt, bij pas is volgende speler aan de beurt. EXEPTION HANDELING AFRONDEN!!!
+            //methode aanroepen die de hoogste bieding uithaalt, bij pas is volgende speler aan de beurt.
             
-            this.GetHighestBidInGame();
+            await this.GetHighestBidInGame();
+            if (this.GameTypeGame == "pas") {
+                //kijk welke speler nog niks heeft ingevoerd
+                //die speler moet nog kiezen this.turn
+                for (var i = 0; i < this.Bids.length; i++) {
+                    if (this.playerIDs[i] != this.Bids[0].playerID && this.playerIDs[i] != this.Bids[1].playerID && this.playerIDs[i] != this.Bids[2].playerID) {
+                        if (i == 0) {
+                            this.turn = "Player1";
+                        }
+                        else if (i == 1) {
+                            this.turn = "Player2";
+                        }
+                        else if (i == 2) {
+                            this.turn = "Player3";
+                        }
+                        else if (i == 3) {
+                            this.turn = "Player4";
+                        }
+                    }
+                }
+            }
+            else {
+                this.GameTypePlayer = this.HighestBid.playerID;
+                this.GameTypeGame = this.HighestBid.gameTypeName;
+                //method to start voorbereidingsronde 2!
+            }
 
         }
         else if (passes == 4) {
@@ -326,8 +351,7 @@ export class Game {
     public async GetHighestBidInGame() {
         let result = await this.http.fetch('api/Game/GetHighestBidInGame/' + this.CurrentGameID);
         this.HighestBid = await result.json() as Bieding;
-        this.GameTypePlayer = this.HighestBid.playerID;
-        this.GameTypeGame = this.HighestBid.gameTypeName;
+        
     }
     public HighestBid: Bieding;
     public Bids: Bieding[];

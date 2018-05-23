@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "6a18ae97f197bbd1711c"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "daf24074de5969d1b639"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -21268,7 +21268,7 @@ var Game = (function () {
     };
     Game.prototype.CanPlayerSubmit = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var passes, i, i, i, i, i;
+            var passes, i, i, i, i, i, i;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: 
@@ -21285,83 +21285,110 @@ var Game = (function () {
                                 passes = passes + 1;
                             }
                         }
-                        if (!(passes == 3)) return [3 /*break*/, 2];
+                        if (!(passes == 3)) return [3 /*break*/, 3];
                         //methode aanroepen die de hoogste bieding uithaalt, bij pas is volgende speler aan de beurt. EXEPTION HANDELING AFRONDEN!!!
-                        this.GetHighestBidInGame();
-                        return [3 /*break*/, 23];
+                        return [4 /*yield*/, this.GetHighestBidInGame()];
                     case 2:
-                        if (!(passes == 4)) return [3 /*break*/, 3];
-                        this.BeginGame(this.players[0], this.players[1], this.players[2], this.players[3]);
-                        return [3 /*break*/, 23];
+                        //methode aanroepen die de hoogste bieding uithaalt, bij pas is volgende speler aan de beurt. EXEPTION HANDELING AFRONDEN!!!
+                        _a.sent();
+                        if (this.GameTypeGame == "pas") {
+                            //kijk welke speler nog niks heeft ingevoerd
+                            //die speler moet nog kiezen this.turn
+                            for (i = 0; i < this.Bids.length; i++) {
+                                if (this.playerIDs[i] != this.Bids[0].playerID && this.playerIDs[i] != this.Bids[1].playerID && this.playerIDs[i] != this.Bids[2].playerID) {
+                                    if (i == 0) {
+                                        this.turn = "Player1";
+                                    }
+                                    else if (i == 1) {
+                                        this.turn = "Player2";
+                                    }
+                                    else if (i == 2) {
+                                        this.turn = "Player3";
+                                    }
+                                    else if (i == 3) {
+                                        this.turn = "Player4";
+                                    }
+                                }
+                            }
+                        }
+                        else {
+                            this.GameTypePlayer = this.HighestBid.playerID;
+                            this.GameTypeGame = this.HighestBid.gameTypeName;
+                        }
+                        return [3 /*break*/, 24];
                     case 3:
-                        if (!(this.turn == "Player1")) return [3 /*break*/, 8];
-                        i = 0;
-                        _a.label = 4;
+                        if (!(passes == 4)) return [3 /*break*/, 4];
+                        this.BeginGame(this.players[0], this.players[1], this.players[2], this.players[3]);
+                        return [3 /*break*/, 24];
                     case 4:
-                        if (!(i < this.Bids.length)) return [3 /*break*/, 7];
-                        if (!(this.Bids[i].playerID == this.playerIDs[0])) return [3 /*break*/, 6];
-                        if (!(this.Bids[i].gameTypeName == "pas")) return [3 /*break*/, 6];
+                        if (!(this.turn == "Player1")) return [3 /*break*/, 9];
+                        i = 0;
+                        _a.label = 5;
+                    case 5:
+                        if (!(i < this.Bids.length)) return [3 /*break*/, 8];
+                        if (!(this.Bids[i].playerID == this.playerIDs[0])) return [3 /*break*/, 7];
+                        if (!(this.Bids[i].gameTypeName == "pas")) return [3 /*break*/, 7];
                         this.turn = "Player2";
                         return [4 /*yield*/, this.CanPlayerSubmit()];
-                    case 5:
-                        _a.sent();
-                        return [3 /*break*/, 7];
                     case 6:
+                        _a.sent();
+                        return [3 /*break*/, 8];
+                    case 7:
                         i++;
-                        return [3 /*break*/, 4];
-                    case 7: return [2 /*return*/, this.turn];
-                    case 8:
-                        if (!(this.turn == "Player2")) return [3 /*break*/, 13];
-                        i = 0;
-                        _a.label = 9;
+                        return [3 /*break*/, 5];
+                    case 8: return [2 /*return*/, this.turn];
                     case 9:
-                        if (!(i < this.Bids.length)) return [3 /*break*/, 12];
-                        if (!(this.Bids[i].playerID == this.playerIDs[1])) return [3 /*break*/, 11];
-                        if (!(this.Bids[i].gameTypeName == "pas")) return [3 /*break*/, 11];
+                        if (!(this.turn == "Player2")) return [3 /*break*/, 14];
+                        i = 0;
+                        _a.label = 10;
+                    case 10:
+                        if (!(i < this.Bids.length)) return [3 /*break*/, 13];
+                        if (!(this.Bids[i].playerID == this.playerIDs[1])) return [3 /*break*/, 12];
+                        if (!(this.Bids[i].gameTypeName == "pas")) return [3 /*break*/, 12];
                         this.turn = "Player3";
                         return [4 /*yield*/, this.CanPlayerSubmit()];
-                    case 10:
-                        _a.sent();
-                        return [3 /*break*/, 12];
                     case 11:
+                        _a.sent();
+                        return [3 /*break*/, 13];
+                    case 12:
                         i++;
-                        return [3 /*break*/, 9];
-                    case 12: return [2 /*return*/, this.turn];
-                    case 13:
-                        if (!(this.turn == "Player3")) return [3 /*break*/, 18];
-                        i = 0;
-                        _a.label = 14;
+                        return [3 /*break*/, 10];
+                    case 13: return [2 /*return*/, this.turn];
                     case 14:
-                        if (!(i < this.Bids.length)) return [3 /*break*/, 17];
-                        if (!(this.Bids[i].playerID == this.playerIDs[2])) return [3 /*break*/, 16];
-                        if (!(this.Bids[i].gameTypeName == "pas")) return [3 /*break*/, 16];
+                        if (!(this.turn == "Player3")) return [3 /*break*/, 19];
+                        i = 0;
+                        _a.label = 15;
+                    case 15:
+                        if (!(i < this.Bids.length)) return [3 /*break*/, 18];
+                        if (!(this.Bids[i].playerID == this.playerIDs[2])) return [3 /*break*/, 17];
+                        if (!(this.Bids[i].gameTypeName == "pas")) return [3 /*break*/, 17];
                         this.turn = "Player4";
                         return [4 /*yield*/, this.CanPlayerSubmit()];
-                    case 15:
-                        _a.sent();
-                        return [3 /*break*/, 17];
                     case 16:
+                        _a.sent();
+                        return [3 /*break*/, 18];
+                    case 17:
                         i++;
-                        return [3 /*break*/, 14];
-                    case 17: return [2 /*return*/, this.turn];
-                    case 18:
-                        if (!(this.turn == "Player4")) return [3 /*break*/, 23];
-                        i = 0;
-                        _a.label = 19;
+                        return [3 /*break*/, 15];
+                    case 18: return [2 /*return*/, this.turn];
                     case 19:
-                        if (!(i < this.Bids.length)) return [3 /*break*/, 22];
-                        if (!(this.Bids[i].playerID == this.playerIDs[3])) return [3 /*break*/, 21];
-                        if (!(this.Bids[i].gameTypeName == "pas")) return [3 /*break*/, 21];
+                        if (!(this.turn == "Player4")) return [3 /*break*/, 24];
+                        i = 0;
+                        _a.label = 20;
+                    case 20:
+                        if (!(i < this.Bids.length)) return [3 /*break*/, 23];
+                        if (!(this.Bids[i].playerID == this.playerIDs[3])) return [3 /*break*/, 22];
+                        if (!(this.Bids[i].gameTypeName == "pas")) return [3 /*break*/, 22];
                         this.turn = "Player1";
                         return [4 /*yield*/, this.CanPlayerSubmit()];
-                    case 20:
-                        _a.sent();
-                        return [3 /*break*/, 22];
                     case 21:
+                        _a.sent();
+                        return [3 /*break*/, 23];
+                    case 22:
                         i++;
-                        return [3 /*break*/, 19];
-                    case 22: return [2 /*return*/, this.turn];
+                        return [3 /*break*/, 20];
                     case 23: return [2 /*return*/, this.turn];
+                    case 24: return [2 /*return*/, this.turn];
                 }
             });
         });
@@ -21511,8 +21538,6 @@ var Game = (function () {
                         return [4 /*yield*/, result.json()];
                     case 2:
                         _a.HighestBid = (_b.sent());
-                        this.GameTypePlayer = this.HighestBid.playerID;
-                        this.GameTypeGame = this.HighestBid.gameTypeName;
                         return [2 /*return*/];
                 }
             });
@@ -21565,7 +21590,7 @@ exports.push([module.i, ".Speler3 {\r\n    grid-area: Speler3;\r\n    height: 90
 /***/ "app/components/Game/Game.html":
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = "<template>\r\n    <style>\r\n        #$ {\r\n            turn\r\n        }\r\n\r\n        {\r\n            color: red\r\n        }\r\n    </style>\r\n    <require from=\"./Game.css\"></require>\r\n    <div class=\"grid-container\">\r\n        <div class=\"Speler3\">\r\n            <h2>\r\n                <select id=\"Player3\" ref=\"Player3\">\r\n                    <option value=\"\" disabled selected>player 3</option>\r\n                    <option repeat.for=\"player of players\" value=\"${player}\">${player}</option>\r\n                </select>\r\n                ${Player3Bid}\r\n            </h2>\r\n        </div>\r\n\r\n        <div class=\"Speler3Kaarten\">\r\n            <img repeat.for=\"card of CardsPlayer3\" src=\"${card}.jpg\" style=\"position: absolute; top: 110px; left: ${400+$index*50}px \" />\r\n        </div>\r\n\r\n        <div class=\"Speler2\">\r\n            <h2>\r\n                <select id=\"Player2\" ref=\"Player2\">\r\n                    <option value=\"\" disabled selected>player 2</option>\r\n                    <option repeat.for=\"player of players\" value=\"${player}\">${player}</option>\r\n                </select>\r\n                ${Player2Bid}\r\n            </h2>\r\n        </div>\r\n\r\n        <div class=\"Speler2Kaarten\">\r\n            <img repeat.for=\"card of CardsPlayer2\" src=\"${card}.jpg\" style=\"position: absolute; left: 40px; top: ${10+$index*30}px \" />\r\n\r\n        </div>\r\n\r\n        <div class=\"Speelveld\">\r\n            <div id=\"begintext\" style=\"display: ${none}\">\r\n                <h1>\r\n                    If the 4 players are selected begin your game here:<br /><br />\r\n                    <button click.delegate=\"BeginGame(Player1.value,Player2.value,Player3.value,Player4.value)\">Delen!</button>\r\n\r\n                </h1>\r\n            </div>\r\n            <div id=\"keuzeVoorbereidingsronde\" style=\"display: ${nohide}\">\r\n                <h3> What are you going to do?</h3>\r\n                <form>\r\n                    <div repeat.for=\"ChoicePlayer of ChoicesPlayer\">\r\n                        <input type=\"radio\" name=\"choice\" value=${ChoicePlayer} checked.bind=\"choice\">${ChoicePlayer}<br />\r\n                        <button click.delegate=\"SubmitChoice(choice)\">OK</button>\r\n                    </div>\r\n\r\n\r\n                    ${GameTypeGame}\r\n                    ${GameTypePlayer}\r\n                </form>\r\n            </div>\r\n        </div>\r\n\r\n        <div class=\"Speler4Kaarten\">\r\n            <img repeat.for=\"card of CardsPlayer4\" src=\"${card}.jpg\" style=\"position: absolute; left: 40px; top: ${10+$index*30}px \" />\r\n\r\n        </div>\r\n\r\n        <div class=\"Speler4\">\r\n            <h2>\r\n                <select id=\"Player4\" ref=\"Player4\">\r\n                    <option value=\"\" disabled selected>player 4</option>\r\n                    <option repeat.for=\"player of players\" value=\"${player}\">${player}</option>\r\n                </select>\r\n                ${Player4Bid}\r\n            </h2>\r\n        </div>\r\n\r\n        <div class=\"Speler1Kaarten\">\r\n            <img repeat.for=\"card of CardsPlayer1\" src=\"${card}.jpg\" style=\"position: absolute; bottom: 95px; left: ${400+$index*50}px \" />\r\n\r\n        </div>\r\n        <div class=\"Speler1\">\r\n            <h2>\r\n                <select id=\"Player1\" ref=\"Player1\">\r\n                    <option value=\"\" disabled selected>player 1</option>\r\n                    <option repeat.for=\"player of players\" value=\"${player}\">${player}</option>\r\n                </select>\r\n                ${Player1Bid}\r\n            </h2>\r\n        </div>\r\n\r\n    </div>\r\n\r\n\r\n\r\n</template>";
+module.exports = "<template>\r\n    <style>\r\n        #$ {\r\n            turn\r\n        }\r\n\r\n        {\r\n            color: red\r\n        }\r\n    </style>\r\n    <require from=\"./Game.css\"></require>\r\n    <div class=\"grid-container\">\r\n        <div class=\"Speler3\">\r\n            <h2>\r\n                <select id=\"Player3\" ref=\"Player3\">\r\n                    <option value=\"\" disabled selected>player 3</option>\r\n                    <option repeat.for=\"player of players\" value=\"${player}\">${player}</option>\r\n                </select>\r\n                ${Player3Bid}\r\n            </h2>\r\n        </div>\r\n\r\n        <div class=\"Speler3Kaarten\">\r\n            <img repeat.for=\"card of CardsPlayer3\" src=\"${card}.jpg\" style=\"position: absolute; top: 110px; left: ${400+$index*50}px \" />\r\n        </div>\r\n\r\n        <div class=\"Speler2\">\r\n            <h2>\r\n                <select id=\"Player2\" ref=\"Player2\">\r\n                    <option value=\"\" disabled selected>player 2</option>\r\n                    <option repeat.for=\"player of players\" value=\"${player}\">${player}</option>\r\n                </select>\r\n                ${Player2Bid}\r\n            </h2>\r\n        </div>\r\n\r\n        <div class=\"Speler2Kaarten\">\r\n            <img repeat.for=\"card of CardsPlayer2\" src=\"${card}.jpg\" style=\"position: absolute; left: 40px; top: ${10+$index*30}px \" />\r\n\r\n        </div>\r\n\r\n        <div class=\"Speelveld\">\r\n            <div id=\"begintext\" style=\"display: ${none}\">\r\n                <h1>\r\n                    If the 4 players are selected begin your game here:<br /><br />\r\n                    <button click.delegate=\"BeginGame(Player1.value,Player2.value,Player3.value,Player4.value)\">Delen!</button>\r\n\r\n                </h1>\r\n            </div>\r\n            <div id=\"keuzeVoorbereidingsronde\" style=\"display: ${nohide}\">\r\n                <h3> What are you going to do?</h3>\r\n                <form>\r\n                    <!-- click.delegate op input radio maken-->\r\n                    <div repeat.for=\"ChoicePlayer of ChoicesPlayer\">\r\n                        <input type=\"radio\" name=\"choice\" value=${ChoicePlayer} checked.bind=\"choice\">${ChoicePlayer}<br />\r\n                        <button click.delegate=\"SubmitChoice(choice)\">OK</button>\r\n                    </div>\r\n\r\n\r\n                    ${GameTypeGame}\r\n                    ${GameTypePlayer}\r\n                </form>\r\n            </div>\r\n        </div>\r\n\r\n        <div class=\"Speler4Kaarten\">\r\n            <img repeat.for=\"card of CardsPlayer4\" src=\"${card}.jpg\" style=\"position: absolute; left: 40px; top: ${10+$index*30}px \" />\r\n\r\n        </div>\r\n\r\n        <div class=\"Speler4\">\r\n            <h2>\r\n                <select id=\"Player4\" ref=\"Player4\">\r\n                    <option value=\"\" disabled selected>player 4</option>\r\n                    <option repeat.for=\"player of players\" value=\"${player}\">${player}</option>\r\n                </select>\r\n                ${Player4Bid}\r\n            </h2>\r\n        </div>\r\n\r\n        <div class=\"Speler1Kaarten\">\r\n            <img repeat.for=\"card of CardsPlayer1\" src=\"${card}.jpg\" style=\"position: absolute; bottom: 95px; left: ${400+$index*50}px \" />\r\n\r\n        </div>\r\n        <div class=\"Speler1\">\r\n            <h2>\r\n                <select id=\"Player1\" ref=\"Player1\">\r\n                    <option value=\"\" disabled selected>player 1</option>\r\n                    <option repeat.for=\"player of players\" value=\"${player}\">${player}</option>\r\n                </select>\r\n                ${Player1Bid}\r\n            </h2>\r\n        </div>\r\n\r\n    </div>\r\n\r\n\r\n\r\n</template>";
 
 /***/ }),
 
