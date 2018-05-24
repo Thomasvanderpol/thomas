@@ -17,7 +17,7 @@ export class Game {
     public none: string;
     public nohide: string;
     public turn: string;
-    public amountpasses: number = 0;
+    
 
     public CurrentGameID: number;
     public players: string[];
@@ -33,15 +33,9 @@ export class Game {
 
     public BidsGame: string[];
   
-
-
-
-
     constructor(private http: HttpClient) {
 
     }
-
-
 
     public async activate() {
 
@@ -50,7 +44,6 @@ export class Game {
         this.nohide = "none";
 
     }
-
 
     public async BeginGame(Player1: string, Player2: string, Player3: string, Player4: string) {
 
@@ -91,6 +84,10 @@ export class Game {
 
     }
 
+    public async GetChoicesPlayer() {
+        let result = await this.http.fetch('api/Game/GetChoicesPlayer/' + this.CurrentGameID);
+        //bepalen van de hoogste bieding
+        this.ChoicesPlayer = await result.json() as Array<string>;    }
 
     public async SubmitChoice(choice: string) {
 
@@ -101,7 +98,7 @@ export class Game {
             await this.getBidPlayer(this.turn);
             this.turn = "Player2";
             this.turn = await this.CanPlayerSubmit();
-
+            await this.GetChoicesPlayer();
 
         }
         else if (this.turn == "Player2") {
@@ -110,8 +107,7 @@ export class Game {
             await this.getBidPlayer(this.turn);
             this.turn = "Player3";
             this.turn = await this.CanPlayerSubmit();
-
-
+            await this.GetChoicesPlayer();
 
         }
         else if (this.turn == "Player3") {
@@ -120,8 +116,7 @@ export class Game {
             await this.getBidPlayer(this.turn);
             this.turn = "Player4";
             this.turn = await this.CanPlayerSubmit();
-
-
+            await this.GetChoicesPlayer();
         }
         else if (this.turn == "Player4") {
 
@@ -129,7 +124,7 @@ export class Game {
             await this.getBidPlayer(this.turn);
             this.turn = "Player1";
             this.turn = await this.CanPlayerSubmit();
-
+            await this.GetChoicesPlayer();
 
         }
 
@@ -142,10 +137,6 @@ export class Game {
     public GameTypeGame: string;
     public GameTypePlayer: number;
 
-    public CanPlayer1Submit: boolean = true;
-    public CanPlayer2Submit: boolean = true;
-    public CanPlayer3Submit: boolean = true;
-    public CanPlayer4Submit: boolean = true;
 
 
     public async CanPlayerSubmit() {
@@ -155,10 +146,6 @@ export class Game {
 
         await this.GetBidsCurrentGame();
         var passes = 0;
-
-
-
-
 
         for (var i = 0; i < this.Bids.length; i++) {
 
@@ -269,7 +256,7 @@ export class Game {
 
 
         }
-        return this.turn
+        return this.turn;
     }
 
 
@@ -355,10 +342,7 @@ export class Game {
     }
     public HighestBid: Bieding;
     public Bids: Bieding[];
-    public testbid: string;
-    public testID: number;
-    public TestBid: string;
-    public TestID: number;
+ 
 
     //alle biedingen in de game
     public async GetBidsCurrentGame() {
