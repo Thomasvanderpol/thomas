@@ -46,6 +46,19 @@ namespace BusinessLogic
             }
         }
 
+        public List<string> GetPlayerNames(List<int> playerids)
+        {
+            List<string> PlayerNames = new List<string>();
+            foreach (int id in playerids)
+            {
+                string playername = conn.getPlayerName(id);
+                PlayerNames.Add(playername);
+
+            }
+
+            return PlayerNames;
+        }
+
         public List<string> GetPlayers() 
         {
             try

@@ -31,5 +31,17 @@ namespace RikApplication.Controllers
             return bl.GetPlayers();
 
         }
+        [HttpGet("[action]/{player1ID}/{player2ID}/{player3ID}/{player4ID}")]
+        public List<string> GetPlayerNames(int player1ID, int player2ID, int player3ID, int player4ID)
+        {
+            List<int> playerids = new List<int>();
+            playerids.Add(player1ID);
+            playerids.Add(player2ID);
+            playerids.Add(player3ID);
+            playerids.Add(player4ID);
+
+            return bl.GetPlayerNames(playerids);
+        }
+        
     }
 }

@@ -8,6 +8,8 @@ export class Game {
     CardsPlayer2 = ["R2", "R3", "R4", "R5", "R6", "R7", "R8", "R9", "R99", "RB", "RJ", "RK", "RZ"];
     CardsPlayer3 = ["K2", "K3", "K4", "K5", "K6", "K7", "K8", "K9", "K99", "KB", "KJ", "KK", "KZ"];
     CardsPlayer4 = ["H2", "H3", "H4", "H5", "H6", "H7", "H8", "H9", "H99", "HB", "HJ", "HK", "HZ"];
+    TrumpKinds = ["diamonds", "Hearts", "Spades", "clubs"];
+    AceKinds = ["diamonds", "Hearts", "Spades", "clubs"];
     public cards: string[];
     public Player1Cards: string[];
     public Player2Cards: string[];
@@ -16,6 +18,7 @@ export class Game {
 
     public none: string;
     public nohide: string;
+    public ShowRound2: string;
     public turn: string;
     
 
@@ -42,7 +45,13 @@ export class Game {
         let result = await this.http.fetch('api/Player/allplayers');
         this.players = await result.json() as Array<string>;
         this.nohide = "none";
+        this.ShowRound2 = "none";
 
+    }
+    public async StartGame(Trump: string, Ace: string) {
+
+        let result = await this.http.fetch('api/Game/UpdateGame/' + Trump + '/' + Ace + '/' + this.GameTypeGame + '/' + this.CurrentGameID);
+        alert("the cards can be played now! the player in red is on the move");
     }
 
     public async BeginGame(Player1: string, Player2: string, Player3: string, Player4: string) {
@@ -51,6 +60,7 @@ export class Game {
 
         this.none = "none";
         this.nohide = "";
+        
 
         //reset all data 
         this.cards = [];
@@ -59,9 +69,7 @@ export class Game {
         this.Player3Cards = [];
         this.Player4Cards = [];
 
-        this.nohide = "";
-
-
+        
         this.CurrentGameID = 0;
 
 
@@ -182,11 +190,28 @@ export class Game {
                 this.GameTypePlayer = this.HighestBid.playerID;
                 this.GameTypeGame = this.HighestBid.gameTypeName;
                 //method to start voorbereidingsronde 2!
+                this.nohide = "none";
+                this.ShowRound2 = "";
+
+                var re = /beter/gi;
+                var Re = /alleen/gi;
+                var RE = /misère/gi;
+                if (this.GameTypeGame.search(re) != -1) {
+                    this.TrumpKinds = ["Hearts"];
+                }
+                else if (this.GameTypeGame.search(Re) != -1) {
+                    this.AceKinds = [];
+                }
+                else if (this.GameTypeGame.search(RE) != -1) {
+                    this.AceKinds = [];
+                    this.TrumpKinds = [];
+                }
             }
 
         }
         else if (passes == 4) {
             this.BeginGame(this.players[0], this.players[1], this.players[2], this.players[3]);
+            alert("There is shared again");
         }
 
         else {
@@ -332,13 +357,22 @@ export class Game {
         await this.GetPlayerIDs();
 
         await this.GetCurrentGameID();
+
+        await this.GetPlayerNames();
+    }
+    public PlayerNames: string[];
+
+    public async GetPlayerNames() {
+        let result = await this.http.fetch('api/Player/GetPlayerNames/' + this.playerIDs[0] + '/' + this.playerIDs[1] + '/' + this.playerIDs[2] + '/' + this.playerIDs[3]);
+        this.PlayerNames = await result.json() as Array<string>;
     }
 
     //bepalen van de hoogste bieding
     public async GetHighestBidInGame() {
         let result = await this.http.fetch('api/Game/GetHighestBidInGame/' + this.CurrentGameID);
         this.HighestBid = await result.json() as Bieding;
-        
+        this.GameTypePlayer = this.HighestBid.playerID;
+        this.GameTypeGame = this.HighestBid.gameTypeName;
     }
     public HighestBid: Bieding;
     public Bids: Bieding[];

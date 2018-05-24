@@ -154,6 +154,8 @@ namespace BusinessLogic
             return HighestBid;
         }
 
+    
+
         public List<int> GetPlayersIDs()
         {
             return conn.GetPlayersIDs();
@@ -163,6 +165,11 @@ namespace BusinessLogic
         {
             conn.SubmitChoice(currentGameID, bid, playerID);
 
+        }
+
+        public void UpdateGame(string trump, string ace, string gameTypeGame, int currentGameID)
+        {
+            conn.UpdateGame(trump, ace, gameTypeGame, currentGameID);
         }
     }
 }

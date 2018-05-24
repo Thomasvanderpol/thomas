@@ -15,5 +15,6 @@ namespace Interfaces
         List<BidBO> getBidsCurrentGame(int currentGameID);
         List<int> getPlayersBidsCurrentGame(int currentGameID);
         List<BidLevelBO> GetLevelsBids();
+        void UpdateGame(string trump, string ace, string gameTypeGame, int currentGameID);
     }
 }

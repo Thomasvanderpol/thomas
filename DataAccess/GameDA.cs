@@ -136,7 +136,7 @@ namespace DataAccess
             sqlParameters[1].Value = currentGameID;
             sqlParameters[2] = new SqlParameter("@PlayerID", SqlDbType.Int);
             sqlParameters[2].Value = playerID;
-          
+
 
             conn.executeInsertQuery(query, sqlParameters);
 
@@ -161,6 +161,30 @@ namespace DataAccess
             }
 
             return LevelBids;
+        }
+
+        public void UpdateGame(string trump, string ace, string gameTypeGame, int currentGameID)
+        {
+            try
+            {
+
+                string query = "UPDATE Game SET Trump = @Trump, Ace = @Ace, HighestBid = @HighestBid WHERE GameID = " + currentGameID;
+                SqlParameter[] sqlParameters = new SqlParameter[3];
+                sqlParameters[0] = new SqlParameter("@Trump", SqlDbType.VarChar);
+                sqlParameters[0].Value = trump;
+                sqlParameters[1] = new SqlParameter("@Ace", SqlDbType.VarChar);
+                sqlParameters[1].Value = ace;
+                sqlParameters[2] = new SqlParameter("@HighestBid", SqlDbType.VarChar);
+                sqlParameters[2].Value = gameTypeGame;
+
+                conn.executeUpdateQuery(query, sqlParameters);
+
+            }
+
+            catch
+            {
+                throw;
+            }
         }
     }
 }
