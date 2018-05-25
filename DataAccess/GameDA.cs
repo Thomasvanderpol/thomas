@@ -186,5 +186,28 @@ namespace DataAccess
                 throw;
             }
         }
+
+        public List<string> GetTrumpAce(int currentGameID)
+        {
+            List<string> TrumpAce = new List<string>();
+
+            SqlDataReader dr;
+
+            string query = "SELECT Trump, Ace FROM Game WHERE GameID =" + currentGameID;
+            SqlParameter[] sqlParameters = new SqlParameter[0];
+            dr = conn.executeSelectQuery(query, sqlParameters);
+
+            while (dr.Read())
+            {
+
+                string Trump = dr["Trump"].ToString();
+                string Ace = dr["Ace"].ToString();
+                TrumpAce.Add(Trump);
+                TrumpAce.Add(Ace);
+
+            }
+
+            return TrumpAce;
+        }
     }
 }

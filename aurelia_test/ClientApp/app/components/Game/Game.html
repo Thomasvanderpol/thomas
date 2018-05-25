@@ -10,7 +10,7 @@
                     <option value="" disabled selected>player 3</option>
                     <option repeat.for="player of players" value="${player}">${player}</option>
                 </select>
-                ${Player3Bid} ${PlayerNames}
+                ${Player3Bid}
             </h2>
         </div>
 
@@ -58,19 +58,26 @@
                 <h3>What is your trump and requested ace</h3>
                 <form>
                     T:
-                    <select id="PlayerTrump" ref="Trump">
+                    <select id="PlayerTrump" ref="trump">
                         <option value="" disabled selected>Trump</option>
                         <option repeat.for="Trump of TrumpKinds" value="${Trump}">${Trump}</option>
                     </select>
-                    A:  
-                    <select id="PlayerTrump" ref="Ace">
+                    A:
+                    <select id="PlayerTrump" ref="ace">
                         <option value="" disabled selected>Ace of ... </option>
                         <option repeat.for="Ace of AceKinds" value="${Ace}">${Ace}</option>
                     </select>
-                    <button click.delegate="StartGame(Trump.value, Ace.value)">OK</button>
+                    <button click.delegate="StartGame(trump.value, ace.value)">OK</button>
 
                 </form>
             </div>
+
+            <div id="ShowTrumpAce" style="display: ${TrumpAcehide}">
+                T:  <img src="${Trump}.jpg" />
+                A: <img src="${Ace}.jpg" />
+
+            </div>
+
         </div>
 
         <div class="Speler4Kaarten">

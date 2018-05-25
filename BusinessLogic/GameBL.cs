@@ -161,6 +161,11 @@ namespace BusinessLogic
             return conn.GetPlayersIDs();
         }
 
+        public List<string> GetTrumpAce(int currentGameID)
+        {
+            return conn.GetTrumpAce(currentGameID);
+        }
+
         public void SubmitChoice(int currentGameID, string bid, int playerID)
         {
             conn.SubmitChoice(currentGameID, bid, playerID);

@@ -111,8 +111,12 @@ namespace RikApplication.Controllers
         {
             igameBL.UpdateGame(Trump, Ace, GameTypeGame, CurrentGameID);
         }
-
-      
+        [HttpGet("[action]/{CurrentGameID}")]
+        public List<string> GetTrumpAce(int CurrentGameID)
+        {
+            return igameBL.GetTrumpAce(CurrentGameID);
+        }
         
+
     }
 }

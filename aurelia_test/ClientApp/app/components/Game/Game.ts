@@ -8,8 +8,8 @@ export class Game {
     CardsPlayer2 = ["R2", "R3", "R4", "R5", "R6", "R7", "R8", "R9", "R99", "RB", "RJ", "RK", "RZ"];
     CardsPlayer3 = ["K2", "K3", "K4", "K5", "K6", "K7", "K8", "K9", "K99", "KB", "KJ", "KK", "KZ"];
     CardsPlayer4 = ["H2", "H3", "H4", "H5", "H6", "H7", "H8", "H9", "H99", "HB", "HJ", "HK", "HZ"];
-    TrumpKinds = ["diamonds", "Hearts", "Spades", "clubs"];
-    AceKinds = ["diamonds", "Hearts", "Spades", "clubs"];
+    public TrumpKinds: string[];
+    public AceKinds: string[];
     public cards: string[];
     public Player1Cards: string[];
     public Player2Cards: string[];
@@ -35,10 +35,18 @@ export class Game {
     public ChoicesPlayer: string[];
 
     public BidsGame: string[];
-  
+    public PlayingField: string;
+
+    public TrumpAce: string[];
+    public Trump: string;
+    public Ace: string;
+    public TrumpAcehide: string;
+
     constructor(private http: HttpClient) {
 
     }
+
+
 
     public async activate() {
 
@@ -46,12 +54,29 @@ export class Game {
         this.players = await result.json() as Array<string>;
         this.nohide = "none";
         this.ShowRound2 = "none";
+        this.PlayingField = "none";
+        this.TrumpAcehide = "none";
+    }
 
+    
+
+    public async GetTrumpAndAce() {
+        let result = await this.http.fetch('api/Game/GetTrumpAce/' + this.CurrentGameID);
+        this.TrumpAce = await result.json() as Array<string>;
+        this.Trump = this.TrumpAce[0];
+        this.Ace = this.TrumpAce[1];
+        this.TrumpAcehide = "";
     }
     public async StartGame(Trump: string, Ace: string) {
 
         let result = await this.http.fetch('api/Game/UpdateGame/' + Trump + '/' + Ace + '/' + this.GameTypeGame + '/' + this.CurrentGameID);
         alert("the cards can be played now! the player in red is on the move");
+        //method to decide who's turn it is
+        //for now it is always player1
+        this.turn = "Player1";
+        this.PlayingField = "";
+        this.ShowRound2 = "none";
+        await this.GetTrumpAndAce();
     }
 
     public async BeginGame(Player1: string, Player2: string, Player3: string, Player4: string) {
@@ -69,7 +94,9 @@ export class Game {
         this.Player3Cards = [];
         this.Player4Cards = [];
 
-        
+        this.TrumpAce = [];
+        this.Trump = "";
+        this.Ace = ""; 
         this.CurrentGameID = 0;
 
 
@@ -192,6 +219,24 @@ export class Game {
                 //method to start voorbereidingsronde 2!
                 this.nohide = "none";
                 this.ShowRound2 = "";
+                
+
+                for (var i = 0; i < 4; i++) {
+                    if (this.GameTypePlayer == this.playerIDs[i]) {
+                        if (i == 0) {
+                            this.turn = "Player1";
+                        }
+                        else if (i == 1) {
+                            this.turn = "Player2";
+                        }
+                        else if (i == 2) {
+                            this.turn = "Player3";
+                        }
+                        else {
+                            this.turn = "Player4";
+                        }
+                    }
+                }
 
                 var re = /beter/gi;
                 var Re = /alleen/gi;
@@ -205,6 +250,10 @@ export class Game {
                 else if (this.GameTypeGame.search(RE) != -1) {
                     this.AceKinds = [];
                     this.TrumpKinds = [];
+                }
+                else {
+                    this.AceKinds = ["Diamonds", "Hearts", "Spades", "Clubs"];
+                    this.TrumpKinds = ["Diamonds", "Hearts", "Spades", "Clubs"];
                 }
             }
 
