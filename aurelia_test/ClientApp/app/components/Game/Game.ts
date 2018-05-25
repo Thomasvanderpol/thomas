@@ -48,6 +48,36 @@ export class Game {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*Hieronder zijn alle methodes van het uitdelen van de kaarten en de 2 voorbereidingsrondes*/
+
     public async activate() {
 
         let result = await this.http.fetch('api/Player/allplayers');

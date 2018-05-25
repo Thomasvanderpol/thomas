@@ -1,6 +1,12 @@
 ﻿<template>
     <style>
-        #${turn}{color: red}
+        #$ {
+            turn
+        }
+
+        {
+            color: red
+        }
     </style>
     <require from="./Game.css"></require>
     <div class="grid-container">
@@ -77,14 +83,11 @@
                 A: <img src="${Ace}.jpg" />
 
             </div>
+            <div class="Speler4Kaarten">
+                <img repeat.for="card of CardsPlayer4" src="${card}.jpg" style="position: absolute; left: 40px; top:${10+$index*30}px" />
 
+            </div>
         </div>
-
-        <div class="Speler4Kaarten">
-            <img repeat.for="card of CardsPlayer4" src="${card}.jpg" style="position: absolute; left: 40px; top: ${10+$index*30}px " />
-
-        </div>
-
         <div class="Speler4">
             <h2>
                 <select id="Player4" ref="Player4">
