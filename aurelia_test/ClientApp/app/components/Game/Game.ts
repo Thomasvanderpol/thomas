@@ -42,6 +42,11 @@ export class Game {
     public Ace: string;
     public TrumpAcehide: string;
 
+    public PlayingCard1: string;
+    public PlayingCard2: string;
+    public PlayingCard3: string;
+    public PlayingCard4: string;
+
     constructor(private http: HttpClient) {
 
     }
@@ -58,7 +63,31 @@ export class Game {
         this.TrumpAcehide = "none";
     }
 
-    
+    public async Player1Plays(card: string) {
+        this.PlayingCard1 = card;
+        var index = this.CardsPlayer1.indexOf(card);
+        this.CardsPlayer1.splice(index, 1);
+
+    }
+    public async Player2Plays(card: string) {
+        this.PlayingCard2 = card;
+        var index = this.CardsPlayer2.indexOf(card);
+        this.CardsPlayer2.splice(index, 1);
+
+    }
+    public async Player3Plays(card: string) {
+        this.PlayingCard3 = card;
+        var index = this.CardsPlayer3.indexOf(card);
+        this.CardsPlayer3.splice(index, 1);
+
+    }
+    public async Player4Plays(card: string) {
+        this.PlayingCard4 = card;
+        var index = this.CardsPlayer4.indexOf(card);
+        this.CardsPlayer4.splice(index, 1);
+
+    }
+
 
     public async GetTrumpAndAce() {
         let result = await this.http.fetch('api/Game/GetTrumpAce/' + this.CurrentGameID);

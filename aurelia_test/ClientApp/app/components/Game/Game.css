@@ -108,5 +108,29 @@
     width: 97px;
    
 }
+#PlayingCards img {
+    height: 130px;
+    width: 97px;
+}
+#card1 {
+    position: absolute;
+    bottom: 10%;
+    left: 301.5px;
+}
+#card2 {
+    position: absolute;
+    bottom: 185px;
+    left: 10%;
+}
+#card3 {
+    position: absolute;
+    top: 10%;
+    left: 301.5px;
+}
+#card4 {
+    position: absolute;
+    right: 10%;
+    top: 185px;
+}
 
 

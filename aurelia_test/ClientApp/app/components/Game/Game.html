@@ -15,7 +15,7 @@
         </div>
 
         <div class="Speler3Kaarten">
-            <img repeat.for="card of CardsPlayer3" src="${card}.jpg" style="position: absolute; top: 110px; left: ${400+$index*50}px " />
+            <img click.delegate="Player3Plays(card)" repeat.for="card of CardsPlayer3" src="${card}.jpg" style="position: absolute; top: 110px; left: ${400+$index*50}px " />
         </div>
 
         <div class="Speler2">
@@ -29,7 +29,7 @@
         </div>
 
         <div class="Speler2Kaarten">
-            <img repeat.for="card of CardsPlayer2" src="${card}.jpg" style="position: absolute; left: 40px; top: ${10+$index*30}px " />
+            <img click.delegate="Player2Plays(card)" repeat.for="card of CardsPlayer2" src="${card}.jpg" style="position: absolute; left: 40px; top: ${10+$index*30}px " />
 
         </div>
 
@@ -71,17 +71,24 @@
 
                 </form>
             </div>
+            <div id="PlayingCards" style="display: ${TrumpAcehide}">
+                <img src="${PlayingCard1}.jpg" id="card1"/>
+                <img src="${PlayingCard2}.jpg" id="card2"/>
+                <img src="${PlayingCard3}.jpg" id="card3"/>
+                <img src="${PlayingCard4}.jpg" id="card4"/>
+            </div>
 
             <div id="ShowTrumpAce" style="display: ${TrumpAcehide}">
-                T:  <img src="${Trump}.jpg" />
-                A: <img src="${Ace}.jpg" />
+                T:  <img src="${Trump}.png" />
+                A: <img src="${Ace}.png" />
 
             </div>
+
 
         </div>
 
         <div class="Speler4Kaarten">
-            <img repeat.for="card of CardsPlayer4" src="${card}.jpg" style="position: absolute; left: 40px; top: ${10+$index*30}px " />
+            <img click.delegate="Player4Plays(card)" repeat.for="card of CardsPlayer4" src="${card}.jpg" style="position: absolute; left: 40px; top: ${10+$index*30}px " />
 
         </div>
 
@@ -96,7 +103,7 @@
         </div>
 
         <div class="Speler1Kaarten">
-            <img repeat.for="card of CardsPlayer1" src="${card}.jpg" style="position: absolute; bottom: 95px; left: ${400+$index*50}px " />
+            <img click.delegate="Player1Plays(card)" repeat.for="card of CardsPlayer1" src="${card}.jpg" style="position: absolute; bottom: 95px; left: ${400+$index*50}px " />
 
         </div>
         <div class="Speler1">
