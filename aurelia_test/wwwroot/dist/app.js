@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "a46d23ccc1a41592259e"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "9cf95e37cab2c1eb1723"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -21257,10 +21257,20 @@ var Game = (function () {
     };
     Game.prototype.StartGame = function (Trump, Ace) {
         return __awaiter(this, void 0, void 0, function () {
-            var result;
+            var re, Re, result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.http.fetch('api/Game/UpdateGame/' + Trump + '/' + Ace + '/' + this.GameTypeGame + '/' + this.CurrentGameID)];
+                    case 0:
+                        re = /alleen/gi;
+                        Re = /misère/gi;
+                        if (this.GameTypeGame.search(re) != -1) {
+                            Ace = "No ace";
+                        }
+                        if (this.GameTypeGame.search(Re) != -1) {
+                            Ace = "No ace";
+                            Trump = "No trump";
+                        }
+                        return [4 /*yield*/, this.http.fetch('api/Game/UpdateGame/' + Trump + '/' + Ace + '/' + this.GameTypeGame + '/' + this.CurrentGameID)];
                     case 1:
                         result = _a.sent();
                         alert("the cards can be played now! the player in red is on the move");
@@ -21417,7 +21427,7 @@ var Game = (function () {
     };
     Game.prototype.CanPlayerSubmit = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var passes, i, i, i, re, Re, RE, i, i, i, i;
+            var passes, i, i, i, Re, RE, re, i, i, i, i;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: 
@@ -21482,14 +21492,16 @@ var Game = (function () {
                                     }
                                 }
                             }
-                            re = /beter/gi;
                             Re = /alleen/gi;
                             RE = /misère/gi;
+                            re = /beter/gi;
                             if (this.GameTypeGame.search(re) != -1) {
                                 this.TrumpKinds = ["Hearts"];
+                                this.AceKinds = ["Diamonds", "Hearts", "Spades", "Clubs"];
                             }
                             else if (this.GameTypeGame.search(Re) != -1) {
                                 this.AceKinds = [];
+                                this.TrumpKinds = ["Diamonds", "Hearts", "Spades", "Clubs"];
                             }
                             else if (this.GameTypeGame.search(RE) != -1) {
                                 this.AceKinds = [];

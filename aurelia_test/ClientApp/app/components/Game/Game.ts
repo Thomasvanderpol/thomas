@@ -117,6 +117,15 @@ export class Game {
     }
     public async StartGame(Trump: string, Ace: string) {
 
+        var re = /alleen/gi;
+        var Re = /misère/gi;
+        if (this.GameTypeGame.search(re) != -1) {
+            Ace = "No ace";
+        }
+        if (this.GameTypeGame.search(Re) != -1) {
+            Ace = "No ace";
+            Trump = "No trump";
+        }
         let result = await this.http.fetch('api/Game/UpdateGame/' + Trump + '/' + Ace + '/' + this.GameTypeGame + '/' + this.CurrentGameID);
         alert("the cards can be played now! the player in red is on the move");
         await this.setTeams();
@@ -288,14 +297,17 @@ export class Game {
                     }
                 }
 
-                var re = /beter/gi;
+              
                 var Re = /alleen/gi;
                 var RE = /misère/gi;
+                var re = /beter/gi;
                 if (this.GameTypeGame.search(re) != -1) {
                     this.TrumpKinds = ["Hearts"];
+                    this.AceKinds = ["Diamonds", "Hearts", "Spades", "Clubs"];
                 }
                 else if (this.GameTypeGame.search(Re) != -1) {
                     this.AceKinds = [];
+                    this.TrumpKinds = ["Diamonds", "Hearts", "Spades", "Clubs"];
                 }
                 else if (this.GameTypeGame.search(RE) != -1) {
                     this.AceKinds = [];
