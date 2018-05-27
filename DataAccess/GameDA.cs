@@ -21,7 +21,7 @@ namespace DataAccess
 
         public void BeginGame(List<int> players)
         {
-          
+
             string query = "INSERT INTO Game(Player1ID, Player2ID, Player3ID, Player4ID) VALUES (@Player1ID, @Player2ID, @Player3ID, @Player4ID)";
 
             SqlParameter[] sqlParameters = new SqlParameter[4];
@@ -70,7 +70,7 @@ namespace DataAccess
                 bid.PlayerID = Convert.ToInt32(dr["PlayerID"]);
                 Bids.Add(bid);
             }
-            
+
             return Bids;
         }
 
@@ -151,7 +151,7 @@ namespace DataAccess
             string query = "SELECT LevelBidsID, GameTypeName FROM LevelBids";
             SqlParameter[] sqlParameters = new SqlParameter[0];
             dr = conn.executeSelectQuery(query, sqlParameters);
-            
+
             while (dr.Read())
             {
                 BidLevelBO bidlevel = new BidLevelBO();
@@ -210,23 +210,9 @@ namespace DataAccess
             return TrumpAce;
         }
 
+       
+
         public void SetTeams(int currentGameID, int playerID)
-        {/*
-            string query = "INSERT INTO Team(GameID, GoalBid) VALUES (@GameID, @GoalBid)";
-
-            SqlParameter[] sqlParameters = new SqlParameter[3];
-            sqlParameters[0] = new SqlParameter("@GameTypeName", SqlDbType.VarChar);
-            sqlParameters[0].Value = bid;
-            sqlParameters[1] = new SqlParameter("@GameID", SqlDbType.Int);
-            sqlParameters[1].Value = currentGameID;
-            sqlParameters[2] = new SqlParameter("@PlayerID", SqlDbType.Int);
-            sqlParameters[2].Value = playerID;
-
-
-            conn.executeInsertQuery(query, sqlParameters);*/
-        }
-
-        public void SetTeam(int currentGameID, int playerID)
         {
             //team maken
             string query = "INSERT INTO Team(GameID, GoalBid) VALUES (@GameID, @GoalBid)";
@@ -237,10 +223,10 @@ namespace DataAccess
             sqlParameters[1] = new SqlParameter("@GoalBid", SqlDbType.Int);
             sqlParameters[1].Value = 1;
 
-            
+
             conn.executeInsertQuery(query, sqlParameters);
 
-         
+
 
             //team ophalen
             int TeamID = 0;
@@ -255,6 +241,20 @@ namespace DataAccess
                 TeamID = Convert.ToInt32(dr["TeamID"]);
             }
 
+
+
+            //spelers toevoegen aan dat team
+            string QUERY = "INSERT INTO PlayerInTeam(PlayerID, TeamID) VALUES (@PlayerID, @TeamID)";
+
+            SqlParameter[] SQLParameters = new SqlParameter[2];
+            SQLParameters[0] = new SqlParameter("@PlayerID", SqlDbType.Int);
+            SQLParameters[0].Value = playerID;
+            SQLParameters[1] = new SqlParameter("@TeamID", SqlDbType.Int);
+            SQLParameters[1].Value = TeamID;
+
+
+            conn.executeInsertQuery(QUERY, SQLParameters);
+
             //team maken
             string Qry = "INSERT INTO Team(GameID, GoalBid) VALUES (@GameID, @GoalBid)";
 
@@ -267,20 +267,37 @@ namespace DataAccess
 
             conn.executeInsertQuery(Qry, par);
 
+        }
+
+        public void SetBothTeams(int currentGameID, int playersInGame)
+        {
+
+            //team ophalen
+            int TeamID = 0;
+            SqlDataReader dr;
+            string Query = "SELECT TeamID FROM Team WHERE GoalBid = 0 AND GameID = " + currentGameID;
+
+            SqlParameter[] SqlParameters = new SqlParameter[0];
+            dr = conn.executeSelectQuery(Query, SqlParameters);
+
+            while (dr.Read())
+            {
+                TeamID = Convert.ToInt32(dr["TeamID"]);
+            }
 
             //spelers toevoegen aan dat team
-            //team maken
             string QUERY = "INSERT INTO PlayerInTeam(PlayerID, TeamID) VALUES (@PlayerID, @TeamID)";
 
             SqlParameter[] SQLParameters = new SqlParameter[2];
             SQLParameters[0] = new SqlParameter("@PlayerID", SqlDbType.Int);
-            SQLParameters[0].Value = playerID;
+            SQLParameters[0].Value = playersInGame;
             SQLParameters[1] = new SqlParameter("@TeamID", SqlDbType.Int);
             SQLParameters[1].Value = TeamID;
 
 
             conn.executeInsertQuery(QUERY, SQLParameters);
 
+            //team maken
         }
     }
 }

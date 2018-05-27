@@ -168,19 +168,24 @@ namespace BusinessLogic
 
         public void SetTeam(int currentGameID, int PlayerID, string GameTypeGame)
         {
+            conn.SetTeams(currentGameID, PlayerID);
+            //haal alle spelers op
+            List<int> PlayersInGame = conn.GetPlayersIDs();
+            //check wat voor type het is
 
-            if (GameTypeGame.Contains("alleen"))
+            if (GameTypeGame.Contains("alleen") || GameTypeGame.Contains("misère"))
             {
-                conn.SetTeams(currentGameID, PlayerID);
+                foreach (int player in PlayersInGame)
+                {
+                    if (player != PlayerID)
+                    {
+                        conn.SetBothTeams(currentGameID, player);
+                    }
+                }
+               
             }
-            else if (GameTypeGame.Contains("misère"))
-            {
-                conn.SetTeams(currentGameID, PlayerID);
-            }
-            else
-            {
-                conn.SetTeam(currentGameID, PlayerID);
-            }
+            //bij rik moet er gewacht worden op de updateTeams 
+            
 
         }
 
