@@ -18,5 +18,6 @@ namespace Interfaces
         List<string> GetChoicesPlayer(int currentGameID);
         void UpdateGame(string trump, string ace, string gameTypeGame, int currentGameID);
         List<string> GetTrumpAce(int currentGameID);
+        void SetTeam(int currentGameID, int PlayerID, string GameTypeGame);
     }
 }

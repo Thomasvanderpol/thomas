@@ -116,7 +116,11 @@ namespace RikApplication.Controllers
         {
             return igameBL.GetTrumpAce(CurrentGameID);
         }
+        [HttpGet("[action]/{CurrentGameID}/{PlayerID}/{GameTypeGame}")]
+        public void SetTeam(int CurrentGameID, int PlayerID, string GameTypeGame)
+        {
+            igameBL.SetTeam(CurrentGameID, PlayerID, GameTypeGame);
+        }
         
-
     }
 }

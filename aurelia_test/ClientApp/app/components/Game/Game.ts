@@ -88,6 +88,25 @@ export class Game {
 
     }
 
+    public GetIDPlayer() {
+        if (this.turn == "Player1") {
+            return this.playerIDs[0];
+        }
+        else if (this.turn == "Player2") {
+            return this.playerIDs[1];
+        }
+        else if (this.turn == "Player3") {
+            return this.playerIDs[2];
+        }
+        else if (this.turn == "Player4") {
+            return this.playerIDs[3];
+        }
+    }
+    public async setTeams() {
+        let playerid = this.GetIDPlayer();
+        await this.http.fetch('api/Game/SetTeam/' + this.CurrentGameID + '/' + playerid + '/' + this.GameTypeGame);
+        
+    }
 
     public async GetTrumpAndAce() {
         let result = await this.http.fetch('api/Game/GetTrumpAce/' + this.CurrentGameID);
@@ -100,12 +119,14 @@ export class Game {
 
         let result = await this.http.fetch('api/Game/UpdateGame/' + Trump + '/' + Ace + '/' + this.GameTypeGame + '/' + this.CurrentGameID);
         alert("the cards can be played now! the player in red is on the move");
+        await this.setTeams();
         //method to decide who's turn it is
         //for now it is always player1
         this.turn = "Player1";
         this.PlayingField = "";
         this.ShowRound2 = "none";
         await this.GetTrumpAndAce();
+       
     }
 
     public async BeginGame(Player1: string, Player2: string, Player3: string, Player4: string) {

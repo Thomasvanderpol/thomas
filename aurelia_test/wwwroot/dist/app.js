@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "efe24761821006d2f607"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "a46d23ccc1a41592259e"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -21206,6 +21206,35 @@ var Game = (function () {
             });
         });
     };
+    Game.prototype.GetIDPlayer = function () {
+        if (this.turn == "Player1") {
+            return this.playerIDs[0];
+        }
+        else if (this.turn == "Player2") {
+            return this.playerIDs[1];
+        }
+        else if (this.turn == "Player3") {
+            return this.playerIDs[2];
+        }
+        else if (this.turn == "Player4") {
+            return this.playerIDs[3];
+        }
+    };
+    Game.prototype.setTeams = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var playerid;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        playerid = this.GetIDPlayer();
+                        return [4 /*yield*/, this.http.fetch('api/Game/SetTeam/' + this.CurrentGameID + '/' + playerid + '/' + this.GameTypeGame)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
     Game.prototype.GetTrumpAndAce = function () {
         return __awaiter(this, void 0, void 0, function () {
             var result, _a;
@@ -21235,13 +21264,16 @@ var Game = (function () {
                     case 1:
                         result = _a.sent();
                         alert("the cards can be played now! the player in red is on the move");
+                        return [4 /*yield*/, this.setTeams()];
+                    case 2:
+                        _a.sent();
                         //method to decide who's turn it is
                         //for now it is always player1
                         this.turn = "Player1";
                         this.PlayingField = "";
                         this.ShowRound2 = "none";
                         return [4 /*yield*/, this.GetTrumpAndAce()];
-                    case 2:
+                    case 3:
                         _a.sent();
                         return [2 /*return*/];
                 }

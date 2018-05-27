@@ -39,7 +39,7 @@ namespace BusinessLogic
             ChoicesPlayer.Add("pas");
             BidBO highestBid = this.GetHighestBidInGame(currentGameID);
             List<BidLevelBO> BidsLevels = conn.GetLevelsBids();
-            
+
             if (highestBid.level == 1)
             {
                 ChoicesPlayer.Add("rik");
@@ -95,7 +95,7 @@ namespace BusinessLogic
                 //bepaal de lijst van keuzes van deze speler door hoogste bieding
                 foreach (BidLevelBO bidlevel in BidsLevels)
                 {
-                    
+
                     if (count == 2)
                     {
                         break;
@@ -107,7 +107,7 @@ namespace BusinessLogic
                     }
                 }
             }
-          
+
             return ChoicesPlayer;
         }
 
@@ -154,7 +154,7 @@ namespace BusinessLogic
             return HighestBid;
         }
 
-    
+
 
         public List<int> GetPlayersIDs()
         {
@@ -164,6 +164,24 @@ namespace BusinessLogic
         public List<string> GetTrumpAce(int currentGameID)
         {
             return conn.GetTrumpAce(currentGameID);
+        }
+
+        public void SetTeam(int currentGameID, int PlayerID, string GameTypeGame)
+        {
+
+            if (GameTypeGame.Contains("alleen"))
+            {
+                conn.SetTeams(currentGameID, PlayerID);
+            }
+            else if (GameTypeGame.Contains("misère"))
+            {
+                conn.SetTeams(currentGameID, PlayerID);
+            }
+            else
+            {
+                conn.SetTeam(currentGameID, PlayerID);
+            }
+
         }
 
         public void SubmitChoice(int currentGameID, string bid, int playerID)
