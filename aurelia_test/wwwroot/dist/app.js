@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "9cf95e37cab2c1eb1723"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "cbe98f82f3517bc9eb60"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -21166,10 +21166,18 @@ var Game = (function () {
         return __awaiter(this, void 0, void 0, function () {
             var index;
             return __generator(this, function (_a) {
-                this.PlayingCard1 = card;
-                index = this.CardsPlayer1.indexOf(card);
-                this.CardsPlayer1.splice(index, 1);
-                return [2 /*return*/];
+                switch (_a.label) {
+                    case 0:
+                        this.PlayingCard1 = card;
+                        index = this.CardsPlayer1.indexOf(card);
+                        this.CardsPlayer1.splice(index, 1);
+                        if (!(card == this.askedAce)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.http.fetch('api/Game/UpdateTeams/' + this.playerIDs[0] + '/' + this.CurrentGameID)];
+                    case 1:
+                        _a.sent();
+                        _a.label = 2;
+                    case 2: return [2 /*return*/];
+                }
             });
         });
     };
@@ -21177,10 +21185,18 @@ var Game = (function () {
         return __awaiter(this, void 0, void 0, function () {
             var index;
             return __generator(this, function (_a) {
-                this.PlayingCard2 = card;
-                index = this.CardsPlayer2.indexOf(card);
-                this.CardsPlayer2.splice(index, 1);
-                return [2 /*return*/];
+                switch (_a.label) {
+                    case 0:
+                        this.PlayingCard2 = card;
+                        index = this.CardsPlayer2.indexOf(card);
+                        this.CardsPlayer2.splice(index, 1);
+                        if (!(card == this.askedAce)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.http.fetch('api/Game/UpdateTeams/' + this.playerIDs[1] + '/' + this.CurrentGameID)];
+                    case 1:
+                        _a.sent();
+                        _a.label = 2;
+                    case 2: return [2 /*return*/];
+                }
             });
         });
     };
@@ -21188,10 +21204,18 @@ var Game = (function () {
         return __awaiter(this, void 0, void 0, function () {
             var index;
             return __generator(this, function (_a) {
-                this.PlayingCard3 = card;
-                index = this.CardsPlayer3.indexOf(card);
-                this.CardsPlayer3.splice(index, 1);
-                return [2 /*return*/];
+                switch (_a.label) {
+                    case 0:
+                        this.PlayingCard3 = card;
+                        index = this.CardsPlayer3.indexOf(card);
+                        this.CardsPlayer3.splice(index, 1);
+                        if (!(card == this.askedAce)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.http.fetch('api/Game/UpdateTeams/' + this.playerIDs[2] + '/' + this.CurrentGameID)];
+                    case 1:
+                        _a.sent();
+                        _a.label = 2;
+                    case 2: return [2 /*return*/];
+                }
             });
         });
     };
@@ -21199,10 +21223,18 @@ var Game = (function () {
         return __awaiter(this, void 0, void 0, function () {
             var index;
             return __generator(this, function (_a) {
-                this.PlayingCard4 = card;
-                index = this.CardsPlayer4.indexOf(card);
-                this.CardsPlayer4.splice(index, 1);
-                return [2 /*return*/];
+                switch (_a.label) {
+                    case 0:
+                        this.PlayingCard4 = card;
+                        index = this.CardsPlayer4.indexOf(card);
+                        this.CardsPlayer4.splice(index, 1);
+                        if (!(card == this.askedAce)) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.http.fetch('api/Game/UpdateTeams/' + this.playerIDs[3] + '/' + this.CurrentGameID)];
+                    case 1:
+                        _a.sent();
+                        _a.label = 2;
+                    case 2: return [2 /*return*/];
+                }
             });
         });
     };
@@ -21250,6 +21282,18 @@ var Game = (function () {
                         this.Trump = this.TrumpAce[0];
                         this.Ace = this.TrumpAce[1];
                         this.TrumpAcehide = "";
+                        if (this.Ace == "Clubs") {
+                            this.askedAce = "KZ";
+                        }
+                        else if (this.Ace == "Hearts") {
+                            this.askedAce = "HZ";
+                        }
+                        else if (this.Ace == "Diamonds") {
+                            this.askedAce = "RZ";
+                        }
+                        else if (this.Ace == "Spades") {
+                            this.askedAce = "SZ";
+                        }
                         return [2 /*return*/];
                 }
             });
@@ -21314,6 +21358,7 @@ var Game = (function () {
                         this.Player3Bid = [];
                         this.Player4Bid = [];
                         this.ChoicesPlayer = ["pas", "rik", "misère"];
+                        this.askedAce = "";
                         //decide who's turn it is, for now it's always player1.
                         //player 1 can always make his choice
                         this.turn = "Player1";

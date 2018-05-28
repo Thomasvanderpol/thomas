@@ -21,5 +21,9 @@ namespace Interfaces
 
         void SetTeams(int currentGameID, int playerID);
         void SetBothTeams(int currentGameID, int playersInGame);
+        void UpdateTeams(int playerID, int CurrentGameID);
+
+        void SetSecondTeam(int playerID, int CurrentGameID);
+        List<int> GetTeam(int currentGameID);
     }
 }

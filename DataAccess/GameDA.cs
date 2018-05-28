@@ -299,5 +299,95 @@ namespace DataAccess
 
             //team maken
         }
+
+        public void UpdateTeams(int playerID, int CurrentGameID)
+        {
+            //team ophalen
+            int TeamID = 0;
+            SqlDataReader dr;
+            string Query = "SELECT TeamID FROM Team WHERE GoalBid = 1 AND GameID = " + CurrentGameID;
+
+            SqlParameter[] SqlParameters = new SqlParameter[0];
+            dr = conn.executeSelectQuery(Query, SqlParameters);
+
+            while (dr.Read())
+            {
+                TeamID = Convert.ToInt32(dr["TeamID"]);
+            }
+
+            //spelers toevoegen aan dat team
+            string QUERY = "INSERT INTO PlayerInTeam(PlayerID, TeamID) VALUES (@PlayerID, @TeamID)";
+
+            SqlParameter[] SQLParameters = new SqlParameter[2];
+            SQLParameters[0] = new SqlParameter("@PlayerID", SqlDbType.Int);
+            SQLParameters[0].Value = playerID;
+            SQLParameters[1] = new SqlParameter("@TeamID", SqlDbType.Int);
+            SQLParameters[1].Value = TeamID;
+
+
+            conn.executeInsertQuery(QUERY, SQLParameters);
+
+           
+
+        }
+        public void SetSecondTeam(int playerID, int CurrentGameID)
+        {
+            //team ophalen
+            int TeamID = 0;
+            SqlDataReader dr;
+            string Query = "SELECT TeamID FROM Team WHERE GoalBid = 0 AND GameID = " + CurrentGameID;
+
+            SqlParameter[] SqlParameters = new SqlParameter[0];
+            dr = conn.executeSelectQuery(Query, SqlParameters);
+
+            while (dr.Read())
+            {
+                TeamID = Convert.ToInt32(dr["TeamID"]);
+            }
+
+            //spelers toevoegen aan dat team
+            string QUERY = "INSERT INTO PlayerInTeam(PlayerID, TeamID) VALUES (@PlayerID, @TeamID)";
+
+            SqlParameter[] SQLParameters = new SqlParameter[2];
+            SQLParameters[0] = new SqlParameter("@PlayerID", SqlDbType.Int);
+            SQLParameters[0].Value = playerID;
+            SQLParameters[1] = new SqlParameter("@TeamID", SqlDbType.Int);
+            SQLParameters[1].Value = TeamID;
+
+
+            conn.executeInsertQuery(QUERY, SQLParameters);
+
+        }
+
+        public List<int> GetTeam(int currentGameID)
+        {
+            //team ophalen
+            int TeamID = 0;
+            SqlDataReader dr;
+            string Query = "SELECT TeamID FROM Team WHERE GoalBid = 1 AND GameID = " + currentGameID;
+
+            SqlParameter[] SqlParameters = new SqlParameter[0];
+            dr = conn.executeSelectQuery(Query, SqlParameters);
+
+            while (dr.Read())
+            {
+                TeamID = Convert.ToInt32(dr["TeamID"]);
+            }
+            //teamspelers ophalen
+
+            SqlDataReader Dr;
+            string qry = "SELECT PlayerID FROM Team INNER JOIN PlayerInTeam ON Team.TeamID = PlayerInTeam.TeamID where Team.TeamID = " + TeamID;
+            List<int> spelersIDs = new List<int>();
+            SqlParameter[] Sqlparas = new SqlParameter[0];
+            Dr = conn.executeSelectQuery(qry, Sqlparas);
+
+            while (Dr.Read())
+            {
+                int SpelerID = Convert.ToInt32(Dr["PlayerID"]);
+                spelersIDs.Add(SpelerID);
+            }
+            return spelersIDs;
+
+        }
     }
 }

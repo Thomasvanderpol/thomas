@@ -121,6 +121,12 @@ namespace RikApplication.Controllers
         {
             igameBL.SetTeam(CurrentGameID, PlayerID, GameTypeGame);
         }
+
+        [HttpGet("[action]/{PlayerID}/{CurrentGameID}")]
+        public void UpdateTeams(int PlayerID, int CurrentGameID)
+        {
+            igameBL.UpdateTeams(PlayerID, CurrentGameID);
+        }
         
     }
 }

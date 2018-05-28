@@ -199,5 +199,22 @@ namespace BusinessLogic
         {
             conn.UpdateGame(trump, ace, gameTypeGame, currentGameID);
         }
+        public void UpdateTeams(int PlayerID, int CurrentGameID)
+        {
+            conn.UpdateTeams(PlayerID, CurrentGameID);
+            List<int> PlayersInGame = conn.GetPlayersIDs();
+            List<int> FirstTeam = conn.GetTeam(CurrentGameID);
+
+            foreach (int player in PlayersInGame)
+            {
+                
+                    if (player != FirstTeam[0] && player != FirstTeam[1])
+                    {
+                        conn.SetSecondTeam(player, CurrentGameID);
+                       
+                    }
+                
+            }
+        }
     }
 }

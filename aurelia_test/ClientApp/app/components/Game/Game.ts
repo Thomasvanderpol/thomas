@@ -63,28 +63,55 @@ export class Game {
         this.TrumpAcehide = "none";
     }
 
+   
     public async Player1Plays(card: string) {
         this.PlayingCard1 = card;
         var index = this.CardsPlayer1.indexOf(card);
         this.CardsPlayer1.splice(index, 1);
+
+        if (card == this.askedAce) {
+            await this.http.fetch('api/Game/UpdateTeams/' + this.playerIDs[0] + '/' + this.CurrentGameID);
+        }
+        /*
+        if (this.PlayingCard1 != null && this.PlayingCard2 != null && this.PlayingCard3 != null && this.PlayingCard4 != null) {
+            await this.http.fetch('api/Game/WhoWonBid/' + this.PlayingCard1 + '/' + this.PlayingCard2 + '/' + this.PlayingCard3 + '/' + this.PlayingCard4);
+        }*/
 
     }
     public async Player2Plays(card: string) {
         this.PlayingCard2 = card;
         var index = this.CardsPlayer2.indexOf(card);
         this.CardsPlayer2.splice(index, 1);
+        if (card == this.askedAce) {
+            await this.http.fetch('api/Game/UpdateTeams/' + this.playerIDs[1] + '/' + this.CurrentGameID);
+        }
+        /*if (this.PlayingCard1 != null && this.PlayingCard2 != null && this.PlayingCard3 != null && this.PlayingCard4 != null) {
+            await this.http.fetch('api/Game/WhoWonBid/' + this.PlayingCard1 + '/' + this.PlayingCard2 + '/' + this.PlayingCard3 + '/' + this.PlayingCard4);
+        }*/
 
     }
     public async Player3Plays(card: string) {
         this.PlayingCard3 = card;
         var index = this.CardsPlayer3.indexOf(card);
         this.CardsPlayer3.splice(index, 1);
+        if (card == this.askedAce) {
+            await this.http.fetch('api/Game/UpdateTeams/' + this.playerIDs[2] + '/' + this.CurrentGameID);
+        }
+        /*if (this.PlayingCard1 != null && this.PlayingCard2 != null && this.PlayingCard3 != null && this.PlayingCard4 != null) {
+            await this.http.fetch('api/Game/WhoWonBid/' + this.PlayingCard1 + '/' + this.PlayingCard2 + '/' + this.PlayingCard3 + '/' + this.PlayingCard4);
+        }*/
 
     }
     public async Player4Plays(card: string) {
         this.PlayingCard4 = card;
         var index = this.CardsPlayer4.indexOf(card);
         this.CardsPlayer4.splice(index, 1);
+        if (card == this.askedAce) {
+            await this.http.fetch('api/Game/UpdateTeams/' + this.playerIDs[3] + '/' + this.CurrentGameID);
+        }
+        /*if (this.PlayingCard1 != null && this.PlayingCard2 != null && this.PlayingCard3 != null && this.PlayingCard4 != null) {
+            await this.http.fetch('api/Game/WhoWonBid/' + this.PlayingCard1 + '/' + this.PlayingCard2 + '/' + this.PlayingCard3 + '/' + this.PlayingCard4);
+        }*/
 
     }
 
@@ -108,12 +135,27 @@ export class Game {
         
     }
 
+    public askedAce: string;
     public async GetTrumpAndAce() {
         let result = await this.http.fetch('api/Game/GetTrumpAce/' + this.CurrentGameID);
         this.TrumpAce = await result.json() as Array<string>;
         this.Trump = this.TrumpAce[0];
         this.Ace = this.TrumpAce[1];
         this.TrumpAcehide = "";
+
+        if (this.Ace == "Clubs") {
+            this.askedAce = "KZ";
+        }
+        else if (this.Ace == "Hearts") {
+            this.askedAce = "HZ";
+        }
+        else if (this.Ace == "Diamonds") {
+            this.askedAce = "RZ";
+        }
+        else if (this.Ace == "Spades") {
+            this.askedAce = "SZ";
+        }
+
     }
     public async StartGame(Trump: string, Ace: string) {
 
@@ -165,7 +207,7 @@ export class Game {
         this.Player4Bid = [];
 
         this.ChoicesPlayer = ["pas", "rik", "misère"];
-       
+        this.askedAce = "";
 
 
 
