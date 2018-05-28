@@ -359,12 +359,12 @@ namespace DataAccess
 
         }
 
-        public List<int> GetTeam(int currentGameID)
+        public List<int> GetTeam(int currentGameID, int bid)
         {
             //team ophalen
             int TeamID = 0;
             SqlDataReader dr;
-            string Query = "SELECT TeamID FROM Team WHERE GoalBid = 1 AND GameID = " + currentGameID;
+            string Query = "SELECT TeamID FROM Team WHERE GoalBid = " + bid + " AND GameID = " + currentGameID;
 
             SqlParameter[] SqlParameters = new SqlParameter[0];
             dr = conn.executeSelectQuery(Query, SqlParameters);
@@ -389,5 +389,6 @@ namespace DataAccess
             return spelersIDs;
 
         }
+
     }
 }

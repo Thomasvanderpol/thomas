@@ -20,5 +20,7 @@ namespace Interfaces
         List<string> GetTrumpAce(int currentGameID);
         void SetTeam(int currentGameID, int PlayerID, string GameTypeGame);
         void UpdateTeams(int playerID, int CurrentGameID);
+        List<int> GetTeam1(int currentGameID);
+        List<int> GetTeam2(int currentGameID);
     }
 }
