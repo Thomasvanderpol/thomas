@@ -71,6 +71,8 @@ export class Game {
 
         if (card == this.askedAce) {
             await this.http.fetch('api/Game/UpdateTeams/' + this.playerIDs[0] + '/' + this.CurrentGameID);
+            await this.GetTeam1();
+            await this.GetTeam2();
         }
         /*
         if (this.PlayingCard1 != null && this.PlayingCard2 != null && this.PlayingCard3 != null && this.PlayingCard4 != null) {
@@ -84,6 +86,8 @@ export class Game {
         this.CardsPlayer2.splice(index, 1);
         if (card == this.askedAce) {
             await this.http.fetch('api/Game/UpdateTeams/' + this.playerIDs[1] + '/' + this.CurrentGameID);
+            await this.GetTeam1();
+            await this.GetTeam2();
         }
         /*if (this.PlayingCard1 != null && this.PlayingCard2 != null && this.PlayingCard3 != null && this.PlayingCard4 != null) {
             await this.http.fetch('api/Game/WhoWonBid/' + this.PlayingCard1 + '/' + this.PlayingCard2 + '/' + this.PlayingCard3 + '/' + this.PlayingCard4);
@@ -96,6 +100,8 @@ export class Game {
         this.CardsPlayer3.splice(index, 1);
         if (card == this.askedAce) {
             await this.http.fetch('api/Game/UpdateTeams/' + this.playerIDs[2] + '/' + this.CurrentGameID);
+            await this.GetTeam1();
+            await this.GetTeam2();
         }
         /*if (this.PlayingCard1 != null && this.PlayingCard2 != null && this.PlayingCard3 != null && this.PlayingCard4 != null) {
             await this.http.fetch('api/Game/WhoWonBid/' + this.PlayingCard1 + '/' + this.PlayingCard2 + '/' + this.PlayingCard3 + '/' + this.PlayingCard4);
@@ -108,6 +114,8 @@ export class Game {
         this.CardsPlayer4.splice(index, 1);
         if (card == this.askedAce) {
             await this.http.fetch('api/Game/UpdateTeams/' + this.playerIDs[3] + '/' + this.CurrentGameID);
+            await this.GetTeam1();
+            await this.GetTeam2();
         }
         /*if (this.PlayingCard1 != null && this.PlayingCard2 != null && this.PlayingCard3 != null && this.PlayingCard4 != null) {
             await this.http.fetch('api/Game/WhoWonBid/' + this.PlayingCard1 + '/' + this.PlayingCard2 + '/' + this.PlayingCard3 + '/' + this.PlayingCard4);
@@ -177,7 +185,20 @@ export class Game {
         this.PlayingField = "";
         this.ShowRound2 = "none";
         await this.GetTrumpAndAce();
+        await this.GetTeam1();
+        await this.GetTeam2();
        
+    }
+    public Team1: string[];
+    public Team2: string[];
+
+    public async GetTeam1() {
+        let result = await this.http.fetch('api/Game/GetTeam1/' + this.CurrentGameID);
+        this.Team1 = await result.json() as Array<string>;
+    }
+    public async GetTeam2() {
+        let result = await this.http.fetch('api/Game/GetTeam2/' + this.CurrentGameID);
+        this.Team2 = await result.json() as Array<string>;
     }
 
     public async BeginGame(Player1: string, Player2: string, Player3: string, Player4: string) {

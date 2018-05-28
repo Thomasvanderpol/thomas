@@ -1,6 +1,6 @@
 ﻿<template>
     <style>
-        #${turn}{color: red}
+        #$ {turn}{color: red}
     </style>
     <require from="./Game.css"></require>
     <div class="grid-container">
@@ -72,10 +72,10 @@
                 </form>
             </div>
             <div id="PlayingCards" style="display: ${TrumpAcehide}">
-                <img src="${PlayingCard1}.jpg" id="card1"/>
-                <img src="${PlayingCard2}.jpg" id="card2"/>
-                <img src="${PlayingCard3}.jpg" id="card3"/>
-                <img src="${PlayingCard4}.jpg" id="card4"/>
+                <img src="${PlayingCard1}.jpg" id="card1" />
+                <img src="${PlayingCard2}.jpg" id="card2" />
+                <img src="${PlayingCard3}.jpg" id="card3" />
+                <img src="${PlayingCard4}.jpg" id="card4" />
             </div>
 
             <div id="ShowTrumpAce" style="display: ${TrumpAcehide}">
@@ -83,7 +83,10 @@
                 A: <img src="${Ace}.png" />
 
             </div>
-
+            <div id="ShowTeams" style="display: ${Teamshide}">
+                Team 1: ${Team1}<br />
+                Team 2: ${Team2}
+            </div>
 
         </div>
 

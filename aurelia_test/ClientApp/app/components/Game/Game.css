@@ -42,6 +42,12 @@
     height: auto;
 }
 
+#ShowTeams {
+    position: absolute;
+    bottom: 0;
+    right: 5px;
+}
+
 .Speler4 {
     grid-area: Speler4;
     position: relative;
@@ -114,7 +120,7 @@
 }
 #card1 {
     position: absolute;
-    bottom: 10%;
+    bottom: 17%;
     left: 301.5px;
 }
 #card2 {
@@ -124,7 +130,7 @@
 }
 #card3 {
     position: absolute;
-    top: 10%;
+    top: 3%;
     left: 301.5px;
 }
 #card4 {

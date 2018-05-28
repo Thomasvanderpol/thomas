@@ -128,5 +128,30 @@ namespace RikApplication.Controllers
             igameBL.UpdateTeams(PlayerID, CurrentGameID);
         }
         
+        [HttpGet("[action]/{CurrentGameID}")]
+        public List<string> GetTeam1(int CurrentGameID)
+        {
+            List<string> Team1PlayerNames = new List<string>();
+            List<int> Team1PlayerIDs = igameBL.GetTeam1(CurrentGameID);
+            if (Team1PlayerIDs.Count != 0)
+            {
+                Team1PlayerNames = iplayerBL.GetPlayerNames(Team1PlayerIDs);
+            }
+
+            return Team1PlayerNames;
+        }
+
+        [HttpGet("[action]/{CurrentGameID}")]
+        public List<string> GetTeam2(int CurrentGameID)
+        {
+            List<string> Team2PlayerNames = new List<string>();
+            List<int> Team2PlayerIDs = igameBL.GetTeam2(CurrentGameID);
+            if (Team2PlayerIDs.Count != 0)
+            {
+                Team2PlayerNames = iplayerBL.GetPlayerNames(Team2PlayerIDs);
+            }
+            
+            return Team2PlayerNames;
+        }
     }
 }

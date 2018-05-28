@@ -161,6 +161,8 @@ namespace BusinessLogic
             return conn.GetPlayersIDs();
         }
 
+      
+
         public List<string> GetTrumpAce(int currentGameID)
         {
             return conn.GetTrumpAce(currentGameID);
@@ -203,7 +205,7 @@ namespace BusinessLogic
         {
             conn.UpdateTeams(PlayerID, CurrentGameID);
             List<int> PlayersInGame = conn.GetPlayersIDs();
-            List<int> FirstTeam = conn.GetTeam(CurrentGameID);
+            List<int> FirstTeam = conn.GetTeam(CurrentGameID, 1);
 
             foreach (int player in PlayersInGame)
             {
@@ -215,6 +217,15 @@ namespace BusinessLogic
                     }
                 
             }
+        }
+
+        public List<int> GetTeam1(int currentGameID)
+        {
+            return conn.GetTeam(currentGameID, 1);
+        }
+        public List<int> GetTeam2(int currentGameID)
+        {
+            return conn.GetTeam(currentGameID, 0);
         }
     }
 }
