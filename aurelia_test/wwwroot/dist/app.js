@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "97cff1d3f686dfc604a4"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "7d477bfefb3e5760d728"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -21182,7 +21182,17 @@ var Game = (function () {
                     case 3:
                         _a.sent();
                         _a.label = 4;
-                    case 4: return [2 /*return*/];
+                    case 4:
+                        if (!(this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "")) return [3 /*break*/, 6];
+                        return [4 /*yield*/, this.http.fetch('api/Hit/Delay')];
+                    case 5:
+                        _a.sent();
+                        this.PlayingCard1 = "";
+                        this.PlayingCard2 = "";
+                        this.PlayingCard3 = "";
+                        this.PlayingCard4 = "";
+                        _a.label = 6;
+                    case 6: return [2 /*return*/];
                 }
             });
         });
@@ -21207,7 +21217,17 @@ var Game = (function () {
                     case 3:
                         _a.sent();
                         _a.label = 4;
-                    case 4: return [2 /*return*/];
+                    case 4:
+                        if (!(this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "")) return [3 /*break*/, 6];
+                        return [4 /*yield*/, this.http.fetch('api/Hit/Delay')];
+                    case 5:
+                        _a.sent();
+                        this.PlayingCard1 = "";
+                        this.PlayingCard2 = "";
+                        this.PlayingCard3 = "";
+                        this.PlayingCard4 = "";
+                        _a.label = 6;
+                    case 6: return [2 /*return*/];
                 }
             });
         });
@@ -21232,7 +21252,17 @@ var Game = (function () {
                     case 3:
                         _a.sent();
                         _a.label = 4;
-                    case 4: return [2 /*return*/];
+                    case 4:
+                        if (!(this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "")) return [3 /*break*/, 6];
+                        return [4 /*yield*/, this.http.fetch('api/Hit/Delay')];
+                    case 5:
+                        _a.sent();
+                        this.PlayingCard1 = "";
+                        this.PlayingCard2 = "";
+                        this.PlayingCard3 = "";
+                        this.PlayingCard4 = "";
+                        _a.label = 6;
+                    case 6: return [2 /*return*/];
                 }
             });
         });
@@ -21257,7 +21287,17 @@ var Game = (function () {
                     case 3:
                         _a.sent();
                         _a.label = 4;
-                    case 4: return [2 /*return*/];
+                    case 4:
+                        if (!(this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "")) return [3 /*break*/, 6];
+                        return [4 /*yield*/, this.http.fetch('api/Hit/Delay')];
+                    case 5:
+                        _a.sent();
+                        this.PlayingCard1 = "";
+                        this.PlayingCard2 = "";
+                        this.PlayingCard3 = "";
+                        this.PlayingCard4 = "";
+                        _a.label = 6;
+                    case 6: return [2 /*return*/];
                 }
             });
         });
@@ -21407,6 +21447,10 @@ var Game = (function () {
                         _a.sent();
                         this.none = "none";
                         this.nohide = "";
+                        this.PlayingCard1 = "";
+                        this.PlayingCard2 = "";
+                        this.PlayingCard3 = "";
+                        this.PlayingCard4 = "";
                         //reset all data 
                         this.cards = [];
                         this.Player1Cards = [];
@@ -21919,7 +21963,7 @@ exports.push([module.i, ".Speler3 {\r\n    grid-area: Speler3;\r\n    height: 90
 /***/ "app/components/Game/Game.html":
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = "<template>\r\n    <style>\r\n        #$ {turn}{color: red}\r\n    </style>\r\n    <require from=\"./Game.css\"></require>\r\n    <div class=\"grid-container\">\r\n        <div class=\"Speler3\">\r\n            <h2>\r\n                <select id=\"Player3\" ref=\"Player3\">\r\n                    <option value=\"\" disabled selected>player 3</option>\r\n                    <option repeat.for=\"player of players\" value=\"${player}\">${player}</option>\r\n                </select>\r\n                ${Player3Bid}\r\n            </h2>\r\n        </div>\r\n\r\n        <div class=\"Speler3Kaarten\">\r\n            <img click.delegate=\"Player3Plays(card)\" repeat.for=\"card of CardsPlayer3\" src=\"${card}.jpg\" style=\"position: absolute; top: 110px; left: ${400+$index*50}px \" />\r\n        </div>\r\n\r\n        <div class=\"Speler2\">\r\n            <h2>\r\n                <select id=\"Player2\" ref=\"Player2\">\r\n                    <option value=\"\" disabled selected>player 2</option>\r\n                    <option repeat.for=\"player of players\" value=\"${player}\">${player}</option>\r\n                </select>\r\n                ${Player2Bid}\r\n            </h2>\r\n        </div>\r\n\r\n        <div class=\"Speler2Kaarten\">\r\n            <img click.delegate=\"Player2Plays(card)\" repeat.for=\"card of CardsPlayer2\" src=\"${card}.jpg\" style=\"position: absolute; left: 40px; top: ${10+$index*30}px \" />\r\n\r\n        </div>\r\n\r\n        <div class=\"Speelveld\">\r\n            <div id=\"begintext\" style=\"display: ${none}\">\r\n                <h1>\r\n                    If the 4 players are selected begin your game here:<br /><br />\r\n                    <button click.delegate=\"BeginGame(Player1.value,Player2.value,Player3.value,Player4.value)\">Delen!</button>\r\n\r\n                </h1>\r\n            </div>\r\n            <div id=\"keuzeVoorbereidingsronde\" style=\"display: ${nohide}\">\r\n                <h3> What are you going to do?</h3>\r\n                <form>\r\n\r\n                    <select id=\"PlayerPreparation\" ref=\"choice\">\r\n                        <option value=\"\" disabled selected>Make your choice</option>\r\n                        <option repeat.for=\"ChoicePlayer of ChoicesPlayer\" value=\"${ChoicePlayer}\">${ChoicePlayer}</option>\r\n                    </select><br />\r\n\r\n                    <button click.delegate=\"SubmitChoice(choice.value)\">OK</button>\r\n\r\n                </form>\r\n            </div>\r\n            <div id=\"VoorbereidingsRonde2\" style=\"display: ${ShowRound2}\">\r\n                <h3>What is your trump and requested ace</h3>\r\n                <form>\r\n                    T:\r\n                    <select id=\"PlayerTrump\" ref=\"trump\">\r\n                        <option value=\"\" disabled selected>Trump</option>\r\n                        <option repeat.for=\"Trump of TrumpKinds\" value=\"${Trump}\">${Trump}</option>\r\n                    </select>\r\n                    A:\r\n                    <select id=\"PlayerTrump\" ref=\"ace\">\r\n                        <option value=\"\" disabled selected>Ace of ... </option>\r\n                        <option repeat.for=\"Ace of AceKinds\" value=\"${Ace}\">${Ace}</option>\r\n                    </select>\r\n                    <button click.delegate=\"StartGame(trump.value, ace.value)\">OK</button>\r\n\r\n                </form>\r\n            </div>\r\n            <div id=\"PlayingCards\" style=\"display: ${TrumpAcehide}\">\r\n                <img src=\"${PlayingCard1}.jpg\" id=\"card1\" />\r\n                <img src=\"${PlayingCard2}.jpg\" id=\"card2\" />\r\n                <img src=\"${PlayingCard3}.jpg\" id=\"card3\" />\r\n                <img src=\"${PlayingCard4}.jpg\" id=\"card4\" />\r\n            </div>\r\n\r\n            <div id=\"ShowTrumpAce\" style=\"display: ${TrumpAcehide}\">\r\n                T:  <img src=\"${Trump}.png\" />\r\n                A: <img src=\"${Ace}.png\" />\r\n\r\n            </div>\r\n            <div id=\"ShowTeams\" style=\"display: ${Teamshide}\">\r\n                Team 1: ${Team1}<br />\r\n                Team 2: ${Team2}\r\n            </div>\r\n\r\n        </div>\r\n\r\n        <div class=\"Speler4Kaarten\">\r\n            <img click.delegate=\"Player4Plays(card)\" repeat.for=\"card of CardsPlayer4\" src=\"${card}.jpg\" style=\"position: absolute; left: 40px; top: ${10+$index*30}px \" />\r\n\r\n        </div>\r\n\r\n        <div class=\"Speler4\">\r\n            <h2>\r\n                <select id=\"Player4\" ref=\"Player4\">\r\n                    <option value=\"\" disabled selected>player 4</option>\r\n                    <option repeat.for=\"player of players\" value=\"${player}\">${player}</option>\r\n                </select>\r\n                ${Player4Bid}\r\n            </h2>\r\n        </div>\r\n\r\n        <div class=\"Speler1Kaarten\">\r\n            <img click.delegate=\"Player1Plays(card)\" repeat.for=\"card of CardsPlayer1\" src=\"${card}.jpg\" style=\"position: absolute; bottom: 95px; left: ${400+$index*50}px \" />\r\n\r\n        </div>\r\n        <div class=\"Speler1\">\r\n            <h2>\r\n                <select id=\"Player1\" ref=\"Player1\">\r\n                    <option value=\"\" disabled selected>player 1</option>\r\n                    <option repeat.for=\"player of players\" value=\"${player}\">${player}</option>\r\n                </select>\r\n                ${Player1Bid}\r\n            </h2>\r\n        </div>\r\n\r\n    </div>\r\n\r\n\r\n\r\n</template>";
+module.exports = "<template>\r\n    <style>\r\n        #${turn}{color: red}\r\n    </style>\r\n    <require from=\"./Game.css\"></require>\r\n    <div class=\"grid-container\">\r\n        <div class=\"Speler3\">\r\n            <h2>\r\n                <select id=\"Player3\" ref=\"Player3\">\r\n                    <option value=\"\" disabled selected>player 3</option>\r\n                    <option repeat.for=\"player of players\" value=\"${player}\">${player}</option>\r\n                </select>\r\n                ${Player3Bid}\r\n            </h2>\r\n        </div>\r\n\r\n        <div class=\"Speler3Kaarten\">\r\n            <img click.delegate=\"Player3Plays(card)\" repeat.for=\"card of CardsPlayer3\" src=\"${card}.jpg\" style=\"position: absolute; top: 110px; left: ${400+$index*50}px \" />\r\n        </div>\r\n\r\n        <div class=\"Speler2\">\r\n            <h2>\r\n                <select id=\"Player2\" ref=\"Player2\">\r\n                    <option value=\"\" disabled selected>player 2</option>\r\n                    <option repeat.for=\"player of players\" value=\"${player}\">${player}</option>\r\n                </select>\r\n                ${Player2Bid}\r\n            </h2>\r\n        </div>\r\n\r\n        <div class=\"Speler2Kaarten\">\r\n            <img click.delegate=\"Player2Plays(card)\" repeat.for=\"card of CardsPlayer2\" src=\"${card}.jpg\" style=\"position: absolute; left: 40px; top: ${10+$index*30}px \" />\r\n\r\n        </div>\r\n\r\n        <div class=\"Speelveld\">\r\n            <div id=\"begintext\" style=\"display: ${none}\">\r\n                <h1>\r\n                    If the 4 players are selected begin your game here:<br /><br />\r\n                    <button click.delegate=\"BeginGame(Player1.value,Player2.value,Player3.value,Player4.value)\">Delen!</button>\r\n\r\n                </h1>\r\n            </div>\r\n            <div id=\"keuzeVoorbereidingsronde\" style=\"display: ${nohide}\">\r\n                <h3> What are you going to do?</h3>\r\n                <form>\r\n\r\n                    <select id=\"PlayerPreparation\" ref=\"choice\">\r\n                        <option value=\"\" disabled selected>Make your choice</option>\r\n                        <option repeat.for=\"ChoicePlayer of ChoicesPlayer\" value=\"${ChoicePlayer}\">${ChoicePlayer}</option>\r\n                    </select><br />\r\n\r\n                    <button click.delegate=\"SubmitChoice(choice.value)\">OK</button>\r\n\r\n                </form>\r\n            </div>\r\n            <div id=\"VoorbereidingsRonde2\" style=\"display: ${ShowRound2}\">\r\n                <h3>What is your trump and requested ace</h3>\r\n                <form>\r\n                    T:\r\n                    <select id=\"PlayerTrump\" ref=\"trump\">\r\n                        <option value=\"\" disabled selected>Trump</option>\r\n                        <option repeat.for=\"Trump of TrumpKinds\" value=\"${Trump}\">${Trump}</option>\r\n                    </select>\r\n                    A:\r\n                    <select id=\"PlayerTrump\" ref=\"ace\">\r\n                        <option value=\"\" disabled selected>Ace of ... </option>\r\n                        <option repeat.for=\"Ace of AceKinds\" value=\"${Ace}\">${Ace}</option>\r\n                    </select>\r\n                    <button click.delegate=\"StartGame(trump.value, ace.value)\">OK</button>\r\n\r\n                </form>\r\n            </div>\r\n            <div id=\"PlayingCards\" style=\"display: ${TrumpAcehide}\">\r\n                <img src=\"${PlayingCard1}.jpg\" id=\"card1\" />\r\n                <img src=\"${PlayingCard2}.jpg\" id=\"card2\" />\r\n                <img src=\"${PlayingCard3}.jpg\" id=\"card3\" />\r\n                <img src=\"${PlayingCard4}.jpg\" id=\"card4\" />\r\n            </div>\r\n\r\n            <div id=\"ShowTrumpAce\" style=\"display: ${TrumpAcehide}\">\r\n                T:  <img src=\"${Trump}.png\" />\r\n                A: <img src=\"${Ace}.png\" />\r\n\r\n            </div>\r\n            <div id=\"ShowTeams\" style=\"display: ${Teamshide}\">\r\n                Team 1: ${Team1}<br />\r\n                Team 2: ${Team2}\r\n            </div>\r\n\r\n        </div>\r\n\r\n        <div class=\"Speler4Kaarten\">\r\n            <img click.delegate=\"Player4Plays(card)\" repeat.for=\"card of CardsPlayer4\" src=\"${card}.jpg\" style=\"position: absolute; left: 40px; top: ${10+$index*30}px \" />\r\n\r\n        </div>\r\n\r\n        <div class=\"Speler4\">\r\n            <h2>\r\n                <select id=\"Player4\" ref=\"Player4\">\r\n                    <option value=\"\" disabled selected>player 4</option>\r\n                    <option repeat.for=\"player of players\" value=\"${player}\">${player}</option>\r\n                </select>\r\n                ${Player4Bid}\r\n            </h2>\r\n        </div>\r\n\r\n        <div class=\"Speler1Kaarten\">\r\n            <img click.delegate=\"Player1Plays(card)\" repeat.for=\"card of CardsPlayer1\" src=\"${card}.jpg\" style=\"position: absolute; bottom: 95px; left: ${400+$index*50}px \" />\r\n\r\n        </div>\r\n        <div class=\"Speler1\">\r\n            <h2>\r\n                <select id=\"Player1\" ref=\"Player1\">\r\n                    <option value=\"\" disabled selected>player 1</option>\r\n                    <option repeat.for=\"player of players\" value=\"${player}\">${player}</option>\r\n                </select>\r\n                ${Player1Bid}\r\n            </h2>\r\n        </div>\r\n\r\n    </div>\r\n\r\n\r\n\r\n</template>";
 
 /***/ }),
 

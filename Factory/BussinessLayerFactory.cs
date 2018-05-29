@@ -8,6 +8,12 @@ namespace Factory
 {
     public class BussinessLayerFactory
     {
+        static public HitBL CreateHitBL()
+        {
+            IDb db = new DbConnection();
+            IHitDA da = new HitDA(db);
+            return new HitBL(da);
+        }
         static public PlayerBL CreatePlayerBL()
         {
             IDb db = new DbConnection();
