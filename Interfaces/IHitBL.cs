@@ -6,5 +6,6 @@ namespace Interfaces
 {
     public interface IHitBL
     {
+        void AddCard(int currentGameID, int playerID, string cardPlayer);
     }
 }

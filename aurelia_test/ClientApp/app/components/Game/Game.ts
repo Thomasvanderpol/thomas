@@ -65,6 +65,7 @@ export class Game {
 
    
     public async Player1Plays(card: string) {
+        await this.http.fetch('api/Hit/PlayedCard/' + this.CurrentGameID + '/' + this.playerIDs[0] + '/' + card);
         this.PlayingCard1 = card;
         var index = this.CardsPlayer1.indexOf(card);
         this.CardsPlayer1.splice(index, 1);
@@ -81,11 +82,12 @@ export class Game {
             this.PlayingCard2 = "";
             this.PlayingCard3 = "";
             this.PlayingCard4 = "";
-            // await this.http.fetch('api/Game/WhoWonBid/' + this.PlayingCard1 + '/' + this.PlayingCard2 + '/' + this.PlayingCard3 + '/' + this.PlayingCard4);
+            // await this.http.fetch('api/Hit/WhoWonBid/' + this.PlayingCard1 + '/' + this.PlayingCard2 + '/' + this.PlayingCard3 + '/' + this.PlayingCard4);
         }
 
     }
     public async Player2Plays(card: string) {
+        await this.http.fetch('api/Hit/PlayedCard/' + this.CurrentGameID + '/' + this.playerIDs[1] + '/' + card);
         this.PlayingCard2 = card;
         var index = this.CardsPlayer2.indexOf(card);
         this.CardsPlayer2.splice(index, 1);
@@ -100,11 +102,12 @@ export class Game {
             this.PlayingCard2 = "";
             this.PlayingCard3 = "";
             this.PlayingCard4 = "";
-            // await this.http.fetch('api/Game/WhoWonBid/' + this.PlayingCard1 + '/' + this.PlayingCard2 + '/' + this.PlayingCard3 + '/' + this.PlayingCard4);
+            // await this.http.fetch('api/Hit/WhoWonBid/' + this.PlayingCard1 + '/' + this.PlayingCard2 + '/' + this.PlayingCard3 + '/' + this.PlayingCard4);
         }
 
     }
     public async Player3Plays(card: string) {
+        await this.http.fetch('api/Hit/PlayedCard/' + this.CurrentGameID + '/' + this.playerIDs[2] + '/' + card);
         this.PlayingCard3 = card;
         var index = this.CardsPlayer3.indexOf(card);
         this.CardsPlayer3.splice(index, 1);
@@ -119,11 +122,12 @@ export class Game {
             this.PlayingCard2 = "";
             this.PlayingCard3 = "";
             this.PlayingCard4 = "";
-            // await this.http.fetch('api/Game/WhoWonBid/' + this.PlayingCard1 + '/' + this.PlayingCard2 + '/' + this.PlayingCard3 + '/' + this.PlayingCard4);
+            //await this.http.fetch('api/Hit/WhoWonBid/' + this.PlayingCard1 + '/' + this.PlayingCard2 + '/' + this.PlayingCard3 + '/' + this.PlayingCard4);
         }
 
     }
     public async Player4Plays(card: string) {
+        await this.http.fetch('api/Hit/PlayedCard/' + this.CurrentGameID + '/' + this.playerIDs[3] + '/' + card);
         this.PlayingCard4 = card;
         var index = this.CardsPlayer4.indexOf(card);
         this.CardsPlayer4.splice(index, 1);
@@ -138,7 +142,7 @@ export class Game {
             this.PlayingCard2 = "";
             this.PlayingCard3 = "";
             this.PlayingCard4 = "";
-            // await this.http.fetch('api/Game/WhoWonBid/' + this.PlayingCard1 + '/' + this.PlayingCard2 + '/' + this.PlayingCard3 + '/' + this.PlayingCard4);
+            // await this.http.fetch('api/Hit/WhoWonBid/' + this.PlayingCard1 + '/' + this.PlayingCard2 + '/' + this.PlayingCard3 + '/' + this.PlayingCard4);
         }
 
     }

@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "7d477bfefb3e5760d728"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "ad723c1da1241068e336"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -21167,32 +21167,34 @@ var Game = (function () {
             var index;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
+                    case 0: return [4 /*yield*/, this.http.fetch('api/Hit/PlayedCard/' + this.CurrentGameID + '/' + this.playerIDs[0] + '/' + card)];
+                    case 1:
+                        _a.sent();
                         this.PlayingCard1 = card;
                         index = this.CardsPlayer1.indexOf(card);
                         this.CardsPlayer1.splice(index, 1);
-                        if (!(card == this.askedAce)) return [3 /*break*/, 4];
+                        if (!(card == this.askedAce)) return [3 /*break*/, 5];
                         return [4 /*yield*/, this.http.fetch('api/Game/UpdateTeams/' + this.playerIDs[0] + '/' + this.CurrentGameID)];
-                    case 1:
-                        _a.sent();
-                        return [4 /*yield*/, this.GetTeam1()];
                     case 2:
                         _a.sent();
-                        return [4 /*yield*/, this.GetTeam2()];
+                        return [4 /*yield*/, this.GetTeam1()];
                     case 3:
                         _a.sent();
-                        _a.label = 4;
+                        return [4 /*yield*/, this.GetTeam2()];
                     case 4:
-                        if (!(this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "")) return [3 /*break*/, 6];
-                        return [4 /*yield*/, this.http.fetch('api/Hit/Delay')];
+                        _a.sent();
+                        _a.label = 5;
                     case 5:
+                        if (!(this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "")) return [3 /*break*/, 7];
+                        return [4 /*yield*/, this.http.fetch('api/Hit/Delay')];
+                    case 6:
                         _a.sent();
                         this.PlayingCard1 = "";
                         this.PlayingCard2 = "";
                         this.PlayingCard3 = "";
                         this.PlayingCard4 = "";
-                        _a.label = 6;
-                    case 6: return [2 /*return*/];
+                        _a.label = 7;
+                    case 7: return [2 /*return*/];
                 }
             });
         });
@@ -21202,32 +21204,34 @@ var Game = (function () {
             var index;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
+                    case 0: return [4 /*yield*/, this.http.fetch('api/Hit/PlayedCard/' + this.CurrentGameID + '/' + this.playerIDs[1] + '/' + card)];
+                    case 1:
+                        _a.sent();
                         this.PlayingCard2 = card;
                         index = this.CardsPlayer2.indexOf(card);
                         this.CardsPlayer2.splice(index, 1);
-                        if (!(card == this.askedAce)) return [3 /*break*/, 4];
+                        if (!(card == this.askedAce)) return [3 /*break*/, 5];
                         return [4 /*yield*/, this.http.fetch('api/Game/UpdateTeams/' + this.playerIDs[1] + '/' + this.CurrentGameID)];
-                    case 1:
-                        _a.sent();
-                        return [4 /*yield*/, this.GetTeam1()];
                     case 2:
                         _a.sent();
-                        return [4 /*yield*/, this.GetTeam2()];
+                        return [4 /*yield*/, this.GetTeam1()];
                     case 3:
                         _a.sent();
-                        _a.label = 4;
+                        return [4 /*yield*/, this.GetTeam2()];
                     case 4:
-                        if (!(this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "")) return [3 /*break*/, 6];
-                        return [4 /*yield*/, this.http.fetch('api/Hit/Delay')];
+                        _a.sent();
+                        _a.label = 5;
                     case 5:
+                        if (!(this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "")) return [3 /*break*/, 7];
+                        return [4 /*yield*/, this.http.fetch('api/Hit/Delay')];
+                    case 6:
                         _a.sent();
                         this.PlayingCard1 = "";
                         this.PlayingCard2 = "";
                         this.PlayingCard3 = "";
                         this.PlayingCard4 = "";
-                        _a.label = 6;
-                    case 6: return [2 /*return*/];
+                        _a.label = 7;
+                    case 7: return [2 /*return*/];
                 }
             });
         });
@@ -21237,32 +21241,34 @@ var Game = (function () {
             var index;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
+                    case 0: return [4 /*yield*/, this.http.fetch('api/Hit/PlayedCard/' + this.CurrentGameID + '/' + this.playerIDs[2] + '/' + card)];
+                    case 1:
+                        _a.sent();
                         this.PlayingCard3 = card;
                         index = this.CardsPlayer3.indexOf(card);
                         this.CardsPlayer3.splice(index, 1);
-                        if (!(card == this.askedAce)) return [3 /*break*/, 4];
+                        if (!(card == this.askedAce)) return [3 /*break*/, 5];
                         return [4 /*yield*/, this.http.fetch('api/Game/UpdateTeams/' + this.playerIDs[2] + '/' + this.CurrentGameID)];
-                    case 1:
-                        _a.sent();
-                        return [4 /*yield*/, this.GetTeam1()];
                     case 2:
                         _a.sent();
-                        return [4 /*yield*/, this.GetTeam2()];
+                        return [4 /*yield*/, this.GetTeam1()];
                     case 3:
                         _a.sent();
-                        _a.label = 4;
+                        return [4 /*yield*/, this.GetTeam2()];
                     case 4:
-                        if (!(this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "")) return [3 /*break*/, 6];
-                        return [4 /*yield*/, this.http.fetch('api/Hit/Delay')];
+                        _a.sent();
+                        _a.label = 5;
                     case 5:
+                        if (!(this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "")) return [3 /*break*/, 7];
+                        return [4 /*yield*/, this.http.fetch('api/Hit/Delay')];
+                    case 6:
                         _a.sent();
                         this.PlayingCard1 = "";
                         this.PlayingCard2 = "";
                         this.PlayingCard3 = "";
                         this.PlayingCard4 = "";
-                        _a.label = 6;
-                    case 6: return [2 /*return*/];
+                        _a.label = 7;
+                    case 7: return [2 /*return*/];
                 }
             });
         });
@@ -21272,32 +21278,34 @@ var Game = (function () {
             var index;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
+                    case 0: return [4 /*yield*/, this.http.fetch('api/Hit/PlayedCard/' + this.CurrentGameID + '/' + this.playerIDs[3] + '/' + card)];
+                    case 1:
+                        _a.sent();
                         this.PlayingCard4 = card;
                         index = this.CardsPlayer4.indexOf(card);
                         this.CardsPlayer4.splice(index, 1);
-                        if (!(card == this.askedAce)) return [3 /*break*/, 4];
+                        if (!(card == this.askedAce)) return [3 /*break*/, 5];
                         return [4 /*yield*/, this.http.fetch('api/Game/UpdateTeams/' + this.playerIDs[3] + '/' + this.CurrentGameID)];
-                    case 1:
-                        _a.sent();
-                        return [4 /*yield*/, this.GetTeam1()];
                     case 2:
                         _a.sent();
-                        return [4 /*yield*/, this.GetTeam2()];
+                        return [4 /*yield*/, this.GetTeam1()];
                     case 3:
                         _a.sent();
-                        _a.label = 4;
+                        return [4 /*yield*/, this.GetTeam2()];
                     case 4:
-                        if (!(this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "")) return [3 /*break*/, 6];
-                        return [4 /*yield*/, this.http.fetch('api/Hit/Delay')];
+                        _a.sent();
+                        _a.label = 5;
                     case 5:
+                        if (!(this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "")) return [3 /*break*/, 7];
+                        return [4 /*yield*/, this.http.fetch('api/Hit/Delay')];
+                    case 6:
                         _a.sent();
                         this.PlayingCard1 = "";
                         this.PlayingCard2 = "";
                         this.PlayingCard3 = "";
                         this.PlayingCard4 = "";
-                        _a.label = 6;
-                    case 6: return [2 /*return*/];
+                        _a.label = 7;
+                    case 7: return [2 /*return*/];
                 }
             });
         });
