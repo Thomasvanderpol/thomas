@@ -130,5 +130,26 @@ namespace DataAccess
 
             return hitInGame;
         }
+
+        public void SetWinPlayerID(int wonPlayerID, int currentGameID, int HitID)
+        {
+            try
+            {
+
+                string query = "UPDATE Hit SET WinPlayerID = @wonPlayerID WHERE GameID = " + currentGameID + " AND HitID = " + HitID;
+                SqlParameter[] sqlParameters = new SqlParameter[1];
+                sqlParameters[0] = new SqlParameter("@wonPlayerID", SqlDbType.Int);
+                sqlParameters[0].Value = wonPlayerID;
+
+
+                conn.executeUpdateQuery(query, sqlParameters);
+
+            }
+
+            catch
+            {
+                throw;
+            }
+        }
     }
 }
