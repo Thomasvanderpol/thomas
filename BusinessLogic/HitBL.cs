@@ -110,7 +110,7 @@ namespace BusinessLogic
 
 
             //method to set wonplayerid in Hit table
-            conn.SetWinPlayerID(wonPlayerID);
+            conn.SetWinPlayerID(wonPlayerID, currentGameID, hitID);
 
         }
 
