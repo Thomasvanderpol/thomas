@@ -77,12 +77,13 @@ export class Game {
         }
         
         if (this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "") {
+            await this.http.fetch('api/Hit/WhoWonBid/' + this.CurrentGameID);
             await this.http.fetch('api/Hit/Delay');
             this.PlayingCard1 = "";
             this.PlayingCard2 = "";
             this.PlayingCard3 = "";
             this.PlayingCard4 = "";
-            // await this.http.fetch('api/Hit/WhoWonBid/' + this.PlayingCard1 + '/' + this.PlayingCard2 + '/' + this.PlayingCard3 + '/' + this.PlayingCard4);
+            
         }
 
     }
@@ -97,6 +98,7 @@ export class Game {
             await this.GetTeam2();
         }
         if (this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "") {
+            await this.http.fetch('api/Hit/WhoWonBid/' + this.CurrentGameID);
             await this.http.fetch('api/Hit/Delay');
             this.PlayingCard1 = "";
             this.PlayingCard2 = "";
@@ -117,6 +119,7 @@ export class Game {
             await this.GetTeam2();
         }
         if (this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "") {
+            await this.http.fetch('api/Hit/WhoWonBid/' + this.CurrentGameID);
             await this.http.fetch('api/Hit/Delay');
             this.PlayingCard1 = "";
             this.PlayingCard2 = "";
@@ -137,6 +140,7 @@ export class Game {
             await this.GetTeam2();
         }
         if (this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "") {
+            await this.http.fetch('api/Hit/WhoWonBid/' + this.CurrentGameID);
             await this.http.fetch('api/Hit/Delay');
             this.PlayingCard1 = "";
             this.PlayingCard2 = "";

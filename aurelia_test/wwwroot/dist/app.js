@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "ad723c1da1241068e336"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "625c8b51d73a04bf9125"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -21185,16 +21185,19 @@ var Game = (function () {
                         _a.sent();
                         _a.label = 5;
                     case 5:
-                        if (!(this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "")) return [3 /*break*/, 7];
-                        return [4 /*yield*/, this.http.fetch('api/Hit/Delay')];
+                        if (!(this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "")) return [3 /*break*/, 8];
+                        return [4 /*yield*/, this.http.fetch('api/Hit/WhoWonBid/' + this.CurrentGameID)];
                     case 6:
+                        _a.sent();
+                        return [4 /*yield*/, this.http.fetch('api/Hit/Delay')];
+                    case 7:
                         _a.sent();
                         this.PlayingCard1 = "";
                         this.PlayingCard2 = "";
                         this.PlayingCard3 = "";
                         this.PlayingCard4 = "";
-                        _a.label = 7;
-                    case 7: return [2 /*return*/];
+                        _a.label = 8;
+                    case 8: return [2 /*return*/];
                 }
             });
         });
@@ -21222,16 +21225,19 @@ var Game = (function () {
                         _a.sent();
                         _a.label = 5;
                     case 5:
-                        if (!(this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "")) return [3 /*break*/, 7];
-                        return [4 /*yield*/, this.http.fetch('api/Hit/Delay')];
+                        if (!(this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "")) return [3 /*break*/, 8];
+                        return [4 /*yield*/, this.http.fetch('api/Hit/WhoWonBid/' + this.CurrentGameID)];
                     case 6:
+                        _a.sent();
+                        return [4 /*yield*/, this.http.fetch('api/Hit/Delay')];
+                    case 7:
                         _a.sent();
                         this.PlayingCard1 = "";
                         this.PlayingCard2 = "";
                         this.PlayingCard3 = "";
                         this.PlayingCard4 = "";
-                        _a.label = 7;
-                    case 7: return [2 /*return*/];
+                        _a.label = 8;
+                    case 8: return [2 /*return*/];
                 }
             });
         });
@@ -21259,16 +21265,19 @@ var Game = (function () {
                         _a.sent();
                         _a.label = 5;
                     case 5:
-                        if (!(this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "")) return [3 /*break*/, 7];
-                        return [4 /*yield*/, this.http.fetch('api/Hit/Delay')];
+                        if (!(this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "")) return [3 /*break*/, 8];
+                        return [4 /*yield*/, this.http.fetch('api/Hit/WhoWonBid/' + this.CurrentGameID)];
                     case 6:
+                        _a.sent();
+                        return [4 /*yield*/, this.http.fetch('api/Hit/Delay')];
+                    case 7:
                         _a.sent();
                         this.PlayingCard1 = "";
                         this.PlayingCard2 = "";
                         this.PlayingCard3 = "";
                         this.PlayingCard4 = "";
-                        _a.label = 7;
-                    case 7: return [2 /*return*/];
+                        _a.label = 8;
+                    case 8: return [2 /*return*/];
                 }
             });
         });
@@ -21296,16 +21305,19 @@ var Game = (function () {
                         _a.sent();
                         _a.label = 5;
                     case 5:
-                        if (!(this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "")) return [3 /*break*/, 7];
-                        return [4 /*yield*/, this.http.fetch('api/Hit/Delay')];
+                        if (!(this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "")) return [3 /*break*/, 8];
+                        return [4 /*yield*/, this.http.fetch('api/Hit/WhoWonBid/' + this.CurrentGameID)];
                     case 6:
+                        _a.sent();
+                        return [4 /*yield*/, this.http.fetch('api/Hit/Delay')];
+                    case 7:
                         _a.sent();
                         this.PlayingCard1 = "";
                         this.PlayingCard2 = "";
                         this.PlayingCard3 = "";
                         this.PlayingCard4 = "";
-                        _a.label = 7;
-                    case 7: return [2 /*return*/];
+                        _a.label = 8;
+                    case 8: return [2 /*return*/];
                 }
             });
         });

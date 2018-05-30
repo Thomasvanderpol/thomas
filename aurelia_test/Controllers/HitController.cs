@@ -12,6 +12,7 @@ namespace RikApplication.Controllers
     public class HitController : Controller
     {
         IHitBL hitbl = BussinessLayerFactory.CreateHitBL();
+        IGameBL gamebl = BussinessLayerFactory.CreateGameBL();
         public IActionResult Index()
         {
             return View();
@@ -23,10 +24,13 @@ namespace RikApplication.Controllers
             System.Threading.Thread.Sleep(1500);
         }
         
-        [HttpGet("[action]/{CardPlayer1}/{CardPlayer2}/{CardPlayer3}/{CardPlayer4}")]
-        public void WhoWonBid(string CardPlayer1, string CardPlayer2, string CardPlayer3, string CardPlayer4)
+        [HttpGet("[action]/{CurrentGameID}")]
+        public void WhoWonBid(int CurrentGameID )
         {
+            //method to get Trump in current game
+            List<string> TrumpAndAce = gamebl.GetTrumpAce(CurrentGameID);
             //methode in busines logic aanroepen met lijst van de kaarten erin.
+            hitbl.WhoWonBid(CurrentGameID, TrumpAndAce[0]);
         }
         [HttpGet("[action]/{CurrentGameID}/{PlayerID}/{Card}")]
         public void PlayedCard(int CurrentGameID, int PlayerID, string Card)

@@ -20,6 +20,12 @@ namespace Factory
             IPlayerDA da = new PlayerDA(db);
             return new PlayerBL(da);
         }
+        //static public PlayerBL CreateTestPlayerBL()
+        //{
+        //    //IDb db = new DbConnection();
+        //    IPlayerDA da = new fakePlayerDB();
+        //    return new PlayerBL(da);
+        //}
 
         static public GameBL CreateGameBL()
         {

@@ -1,4 +1,5 @@
-﻿using Interfaces;
+﻿using BusinessObject;
+using Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,7 +27,7 @@ namespace BusinessLogic
             //method to get HitID
             int hitID = conn.GetLastHitInGame(currentGameID);
 
-            List<int> cardsInHit = conn.getCardsByHit(currentGameID, hitID);
+            List<CardPlayerBO> cardsInHit = conn.getCardsByHit(currentGameID, hitID);
 
             if (cardsInHit.Count != 4)
             {
@@ -38,11 +39,103 @@ namespace BusinessLogic
                 conn.addHitInGame(currentGameID);
                 int HitID = conn.GetLastHitInGame(currentGameID);
                 conn.AddCard(currentGameID, playerID, cardID, HitID);
-            }
-            
-           
+            }   
+        }
 
+        public void WhoWonBid(int currentGameID, string trump)
+        {
+            //method to get HitID
+            int hitID = conn.GetLastHitInGame(currentGameID);
+
+            //method to get PlayedCards by players in hit
+            List<CardPlayerBO> cardsInHit = conn.getCardsByHit(currentGameID, hitID);
+            string TrumpChar = GetTrumpChar(trump);
             
+          
+            string samecolorChar = "";
+            
+            List<string> allcards = new List<string>();
+            List<string> trumpcards = new List<string>();
+            List<string> samecolorcards = new List<string>();
+            List<string> remainingcards = new List<string>();
+
+            //get all card strings from id's
+            foreach (CardPlayerBO card in cardsInHit)
+            {
+                string cardstring = conn.GetCardString(card.CardID);
+                allcards.Add(cardstring);
+            }
+
+            samecolorChar = allcards[0].Substring(0,1);
+          
+            //sort cards in trumpcards cards with samecolor as the first and remaing cards
+            foreach (string card in allcards)
+            {
+                if (card.Contains(TrumpChar))
+                {
+                    trumpcards.Add(card);
+                }
+                else if (card.Contains(samecolorChar))
+                {
+                    samecolorcards.Add(card);
+                }
+                else
+                {
+                    remainingcards.Add(card);
+                }
+            }
+
+            string WonCard = "";
+            if (trumpcards.Count != 0)
+            {
+                trumpcards.Sort();
+                WonCard = trumpcards[trumpcards.Count - 1];
+            }
+            else 
+            {
+                samecolorcards.Sort();
+                WonCard = samecolorcards[samecolorcards.Count - 1];
+            }
+            //method to get id from woncard
+            int cardid = conn.GetCard(WonCard);
+            int wonPlayerID = 0;
+            //method to get playerid who's got woncard
+            foreach (CardPlayerBO cardplayer in cardsInHit)
+            {
+                if (cardplayer.CardID == cardid )
+                {
+                    wonPlayerID = cardplayer.PlayerID;
+                }
+            }
+
+
+            //method to set wonplayerid in Hit table
+            conn.SetWinPlayerID(wonPlayerID);
+
+        }
+
+        private string GetTrumpChar(string trump)
+        {
+            if (trump == "Clubs")
+            {
+                return "K";
+            }
+            else if (trump == "Hearts")
+            {
+                return "H";
+            }
+            else if (trump == "Diamonds")
+            {
+                return "R";
+            }
+            else if (trump == "Spades")
+            {
+                return "S";
+            }
+            else
+            {
+                return "NoTrump";
+            }
         }
     }
 }

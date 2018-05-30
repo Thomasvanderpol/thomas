@@ -1,4 +1,5 @@
-﻿using Interfaces;
+﻿using BusinessObject;
+using Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -60,21 +61,42 @@ namespace DataAccess
             return Card;
         }
 
-        public List<int> getCardsByHit(int currentGameID, int hitID)
+        public List<CardPlayerBO> getCardsByHit(int currentGameID, int hitID)
         {
             SqlDataReader dr;
 
-            string query = "SELECT CardID FROM CardPlayer WHERE GameID = " + currentGameID + "AND HitID = " + hitID;
+            string query = "SELECT * FROM CardPlayer WHERE GameID = " + currentGameID + "AND HitID = " + hitID;
             SqlParameter[] sqlParameters = new SqlParameter[0];
             dr = conn.executeSelectQuery(query, sqlParameters);
-            List<int> CardsinHit = new List<int>();
+            List<CardPlayerBO> CardsinHit = new List<CardPlayerBO>();
             while (dr.Read())
             {
-                int CardID = Convert.ToInt32(dr["CardID"]);
-                CardsinHit.Add(CardID);
+                CardPlayerBO card = new CardPlayerBO();
+                card.CardPlayerID = Convert.ToInt32(dr["CardPlayerID"]);
+                card.HitID = Convert.ToInt32(dr["HitID"]);
+                card.PlayerID = Convert.ToInt32(dr["PlayerID"]);
+                card.GameID = Convert.ToInt32(dr["GameID"]);
+                card.CardID = Convert.ToInt32(dr["CardID"]);
+                CardsinHit.Add(card);
             }
 
             return CardsinHit;
+        }
+
+        public string GetCardString(int cardID)
+        {
+            SqlDataReader dr;
+
+            string query = "SELECT CardName FROM Cards WHERE CardID =" + cardID;
+            SqlParameter[] sqlParameters = new SqlParameter[0];
+            dr = conn.executeSelectQuery(query, sqlParameters);
+            string Card = "";
+            while (dr.Read())
+            {
+                Card = dr["CardName"].ToString();
+            }
+
+            return Card;
         }
 
         public int GetLastHitInGame(int currentGameID)

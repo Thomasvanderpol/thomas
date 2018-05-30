@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BusinessObject;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -12,6 +13,8 @@ namespace Interfaces
         bool HitInGame(int currentGameID);
         void addHitInGame(int currentGameID);
         int GetLastHitInGame(int currentGameID);
-        List<int> getCardsByHit(int currentGameID, int hitID);
+        List<CardPlayerBO> getCardsByHit(int currentGameID, int hitID);
+        string GetCardString(int cardID);
+        void SetWinPlayerID(int wonPlayerID);
     }
 }
