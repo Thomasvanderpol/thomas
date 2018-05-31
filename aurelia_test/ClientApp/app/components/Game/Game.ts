@@ -83,7 +83,7 @@ export class Game {
             this.PlayingCard2 = "";
             this.PlayingCard3 = "";
             this.PlayingCard4 = "";
-            
+            this.GetAllHits();
         }
 
     }
@@ -104,6 +104,7 @@ export class Game {
             this.PlayingCard2 = "";
             this.PlayingCard3 = "";
             this.PlayingCard4 = "";
+            this.GetAllHits();
             // await this.http.fetch('api/Hit/WhoWonBid/' + this.PlayingCard1 + '/' + this.PlayingCard2 + '/' + this.PlayingCard3 + '/' + this.PlayingCard4);
         }
 
@@ -117,6 +118,7 @@ export class Game {
             await this.http.fetch('api/Game/UpdateTeams/' + this.playerIDs[2] + '/' + this.CurrentGameID);
             await this.GetTeam1();
             await this.GetTeam2();
+            this.GetAllHits();
         }
         if (this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "") {
             await this.http.fetch('api/Hit/WhoWonBid/' + this.CurrentGameID);
@@ -125,6 +127,7 @@ export class Game {
             this.PlayingCard2 = "";
             this.PlayingCard3 = "";
             this.PlayingCard4 = "";
+            this.GetAllHits();
             //await this.http.fetch('api/Hit/WhoWonBid/' + this.PlayingCard1 + '/' + this.PlayingCard2 + '/' + this.PlayingCard3 + '/' + this.PlayingCard4);
         }
 
@@ -146,9 +149,24 @@ export class Game {
             this.PlayingCard2 = "";
             this.PlayingCard3 = "";
             this.PlayingCard4 = "";
+            this.GetAllHits();
             // await this.http.fetch('api/Hit/WhoWonBid/' + this.PlayingCard1 + '/' + this.PlayingCard2 + '/' + this.PlayingCard3 + '/' + this.PlayingCard4);
         }
 
+    }
+    public slagenSpelers: number[];
+    public slagenSpeler1: number;
+    public slagenSpeler2: number;
+    public slagenSpeler3: number;
+    public slagenSpeler4: number;
+
+    public async GetAllHits() {
+        let result = await this.http.fetch('api/Hit/GetAllHits/' + this.CurrentGameID);
+        this.slagenSpelers = await result.json() as Array<number>;
+        this.slagenSpeler1 = this.slagenSpelers[0];
+        this.slagenSpeler2 = this.slagenSpelers[1];
+        this.slagenSpeler3 = this.slagenSpelers[2];
+        this.slagenSpeler4 = this.slagenSpelers[3];
     }
 
     public GetIDPlayer() {

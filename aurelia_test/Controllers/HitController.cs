@@ -17,15 +17,15 @@ namespace RikApplication.Controllers
         {
             return View();
         }
-        
+
         [HttpGet("[action]")]
         public void Delay()
         {
             System.Threading.Thread.Sleep(1500);
         }
-        
+
         [HttpGet("[action]/{CurrentGameID}")]
-        public void WhoWonBid(int CurrentGameID )
+        public void WhoWonBid(int CurrentGameID)
         {
             //method to get Trump in current game
             List<string> TrumpAndAce = gamebl.GetTrumpAce(CurrentGameID);
@@ -36,6 +36,14 @@ namespace RikApplication.Controllers
         public void PlayedCard(int CurrentGameID, int PlayerID, string Card)
         {
             hitbl.AddCard(CurrentGameID, PlayerID, Card);
+        }
+
+        [HttpGet("[action]/{CurrentGameID}")]
+        public List<int> GetAllHits(int CurrentGameID)
+        {
+            List<int> PlayersInGame = gamebl.GetPlayersIDs();
+            List<int> AllHitsPlayers = hitbl.GetAllHits(CurrentGameID, PlayersInGame);
+            return AllHitsPlayers;
         }
     }
 }

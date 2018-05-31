@@ -19,7 +19,7 @@ namespace DataAccess
             conn = new SqlConnection(connectionString: @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename= C:\Users\thoma\AppData\Local\Microsoft\Microsoft SQL Server Local DB\Instances\MSSQLLocalDB\KillerAppDB.mdf ;Integrated Security=True");
         }
 
-       
+
 
         private SqlConnection openConnection()
         {
@@ -27,6 +27,14 @@ namespace DataAccess
                         ConnectionState.Broken)
             {
                 conn.Open();
+            }
+            return conn;
+        }
+        public SqlConnection CloseConnection()
+        {
+            if (conn.State == ConnectionState.Open)
+            {
+                conn.Close();
             }
             return conn;
         }
@@ -53,7 +61,7 @@ namespace DataAccess
             }
             finally
             {
-              
+
             }
             return dr;
         }

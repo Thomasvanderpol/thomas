@@ -18,117 +18,222 @@ namespace DataAccess
 
         public void AddCard(int currentGameID, int playerID, int cardID, int hitID)
         {
-            string query = "INSERT INTO CardPlayer(HitID, PlayerID, GameID, CardID) VALUES (@HitID, @PlayerID, @GameID, @CardID)";
+            try
+            {
+                string query = "INSERT INTO CardPlayer(HitID, PlayerID, GameID, CardID) VALUES (@HitID, @PlayerID, @GameID, @CardID)";
 
-            SqlParameter[] sqlParameters = new SqlParameter[4];
-            sqlParameters[0] = new SqlParameter("@HitID", SqlDbType.Int);
-            sqlParameters[0].Value = hitID;
-            sqlParameters[1] = new SqlParameter("@PlayerID", SqlDbType.Int);
-            sqlParameters[1].Value = playerID;
-            sqlParameters[2] = new SqlParameter("@GameID", SqlDbType.Int);
-            sqlParameters[2].Value = currentGameID;
-            sqlParameters[3] = new SqlParameter("@CardID", SqlDbType.Int);
-            sqlParameters[3].Value = cardID;
+                SqlParameter[] sqlParameters = new SqlParameter[4];
+                sqlParameters[0] = new SqlParameter("@HitID", SqlDbType.Int);
+                sqlParameters[0].Value = hitID;
+                sqlParameters[1] = new SqlParameter("@PlayerID", SqlDbType.Int);
+                sqlParameters[1].Value = playerID;
+                sqlParameters[2] = new SqlParameter("@GameID", SqlDbType.Int);
+                sqlParameters[2].Value = currentGameID;
+                sqlParameters[3] = new SqlParameter("@CardID", SqlDbType.Int);
+                sqlParameters[3].Value = cardID;
 
 
-            conn.executeInsertQuery(query, sqlParameters);
+                conn.executeInsertQuery(query, sqlParameters);
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                conn.CloseConnection();
+            }
+
         }
 
         public void addHitInGame(int currentGameID)
         {
-            string query = "INSERT INTO Hit(GameID) VALUES (@GameID)";
+            try
+            {
+                string query = "INSERT INTO Hit(GameID) VALUES (@GameID)";
 
-            SqlParameter[] sqlParameters = new SqlParameter[1];
-            sqlParameters[0] = new SqlParameter("@GameID", SqlDbType.Int);
-            sqlParameters[0].Value = currentGameID;
-          
-            conn.executeInsertQuery(query, sqlParameters);
+                SqlParameter[] sqlParameters = new SqlParameter[1];
+                sqlParameters[0] = new SqlParameter("@GameID", SqlDbType.Int);
+                sqlParameters[0].Value = currentGameID;
+
+                conn.executeInsertQuery(query, sqlParameters);
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                conn.CloseConnection();
+            }
+        }
+
+        public int GetAllHits(int currentGameID, int PlayerID)
+        {
+            try
+            {
+                SqlDataReader dr;
+
+                string query = "SELECT COUNT(HitID) AS aantalslagen FROM Hit WHERE GameID = " + currentGameID + " AND WinPlayerID IS NOT NULL AND WinPlayerID = " + PlayerID;
+                SqlParameter[] sqlParameters = new SqlParameter[0];
+                dr = conn.executeSelectQuery(query, sqlParameters);
+                int PlayerHits = 0;
+                while (dr.Read())
+                {
+                    PlayerHits = Convert.ToInt32(dr["aantalslagen"]);
+                }
+
+                return PlayerHits;
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                conn.CloseConnection();
+            }
         }
 
         public int GetCard(string cardPlayer)
         {
-            SqlDataReader dr;
-
-            string query = "SELECT CardID FROM Cards WHERE CardName = '" + cardPlayer + "'";
-            SqlParameter[] sqlParameters = new SqlParameter[0];
-            dr = conn.executeSelectQuery(query, sqlParameters);
-            int Card = 0;
-            while (dr.Read())
+            try
             {
-                Card = Convert.ToInt32(dr["CardID"]);
-            }
+                SqlDataReader dr;
 
-            return Card;
+                string query = "SELECT CardID FROM Cards WHERE CardName = '" + cardPlayer + "'";
+                SqlParameter[] sqlParameters = new SqlParameter[0];
+                dr = conn.executeSelectQuery(query, sqlParameters);
+                int Card = 0;
+                while (dr.Read())
+                {
+                    Card = Convert.ToInt32(dr["CardID"]);
+                }
+
+                return Card;
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                conn.CloseConnection();
+            }
         }
 
         public List<CardPlayerBO> getCardsByHit(int currentGameID, int hitID)
         {
-            SqlDataReader dr;
-
-            string query = "SELECT * FROM CardPlayer WHERE GameID = " + currentGameID + "AND HitID = " + hitID;
-            SqlParameter[] sqlParameters = new SqlParameter[0];
-            dr = conn.executeSelectQuery(query, sqlParameters);
-            List<CardPlayerBO> CardsinHit = new List<CardPlayerBO>();
-            while (dr.Read())
+            try
             {
-                CardPlayerBO card = new CardPlayerBO();
-                card.CardPlayerID = Convert.ToInt32(dr["CardPlayerID"]);
-                card.HitID = Convert.ToInt32(dr["HitID"]);
-                card.PlayerID = Convert.ToInt32(dr["PlayerID"]);
-                card.GameID = Convert.ToInt32(dr["GameID"]);
-                card.CardID = Convert.ToInt32(dr["CardID"]);
-                CardsinHit.Add(card);
-            }
+                SqlDataReader dr;
 
-            return CardsinHit;
+                string query = "SELECT * FROM CardPlayer WHERE GameID = " + currentGameID + "AND HitID = " + hitID;
+                SqlParameter[] sqlParameters = new SqlParameter[0];
+                dr = conn.executeSelectQuery(query, sqlParameters);
+                List<CardPlayerBO> CardsinHit = new List<CardPlayerBO>();
+                while (dr.Read())
+                {
+                    CardPlayerBO card = new CardPlayerBO();
+                    card.CardPlayerID = Convert.ToInt32(dr["CardPlayerID"]);
+                    card.HitID = Convert.ToInt32(dr["HitID"]);
+                    card.PlayerID = Convert.ToInt32(dr["PlayerID"]);
+                    card.GameID = Convert.ToInt32(dr["GameID"]);
+                    card.CardID = Convert.ToInt32(dr["CardID"]);
+                    CardsinHit.Add(card);
+                }
+
+                return CardsinHit;
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                conn.CloseConnection();
+            }
         }
 
         public string GetCardString(int cardID)
         {
-            SqlDataReader dr;
-
-            string query = "SELECT CardName FROM Cards WHERE CardID =" + cardID;
-            SqlParameter[] sqlParameters = new SqlParameter[0];
-            dr = conn.executeSelectQuery(query, sqlParameters);
-            string Card = "";
-            while (dr.Read())
+            try
             {
-                Card = dr["CardName"].ToString();
-            }
+                SqlDataReader dr;
 
-            return Card;
+                string query = "SELECT CardName FROM Cards WHERE CardID =" + cardID;
+                SqlParameter[] sqlParameters = new SqlParameter[0];
+                dr = conn.executeSelectQuery(query, sqlParameters);
+                string Card = "";
+                while (dr.Read())
+                {
+                    Card = dr["CardName"].ToString();
+                }
+
+                return Card;
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                conn.CloseConnection();
+            }
         }
 
         public int GetLastHitInGame(int currentGameID)
         {
-            SqlDataReader dr;
-
-            string query = "SELECT top 1 HitID FROM Hit WHERE GameID = " + currentGameID + "Order by HitID desc";
-            SqlParameter[] sqlParameters = new SqlParameter[0];
-            dr = conn.executeSelectQuery(query, sqlParameters);
-            int hitID = 0;
-            while (dr.Read())
+            try
             {
-                hitID = Convert.ToInt32(dr["HitID"]);
-            }
+                SqlDataReader dr;
 
-            return hitID;
+                string query = "SELECT top 1 HitID FROM Hit WHERE GameID = " + currentGameID + "Order by HitID desc";
+                SqlParameter[] sqlParameters = new SqlParameter[0];
+                dr = conn.executeSelectQuery(query, sqlParameters);
+                int hitID = 0;
+                while (dr.Read())
+                {
+                    hitID = Convert.ToInt32(dr["HitID"]);
+                }
+
+                return hitID;
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                conn.CloseConnection();
+            }
         }
 
         public bool HitInGame(int currentGameID)
         {
-            SqlDataReader dr;
-
-            string query = "SELECT * FROM Hit WHERE GameID = " + currentGameID;
-            SqlParameter[] sqlParameters = new SqlParameter[0];
-            dr = conn.executeSelectQuery(query, sqlParameters);
-            bool hitInGame = false;
-            while (dr.Read())
+            try
             {
-                hitInGame = true;
-            }
+                SqlDataReader dr;
 
-            return hitInGame;
+                string query = "SELECT * FROM Hit WHERE GameID = " + currentGameID;
+                SqlParameter[] sqlParameters = new SqlParameter[0];
+                dr = conn.executeSelectQuery(query, sqlParameters);
+                bool hitInGame = false;
+                while (dr.Read())
+                {
+                    hitInGame = true;
+                }
+
+                return hitInGame;
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                conn.CloseConnection();
+            }
         }
 
         public void SetWinPlayerID(int wonPlayerID, int currentGameID, int HitID)
@@ -149,6 +254,10 @@ namespace DataAccess
             catch
             {
                 throw;
+            }
+            finally
+            {
+                conn.CloseConnection();
             }
         }
     }

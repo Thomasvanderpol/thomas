@@ -16,5 +16,6 @@ namespace Interfaces
         List<CardPlayerBO> getCardsByHit(int currentGameID, int hitID);
         string GetCardString(int cardID);
         void SetWinPlayerID(int wonPlayerID, int currentGameID, int HitID);
+        int GetAllHits(int currentGameID, int PlayerID);
     }
 }

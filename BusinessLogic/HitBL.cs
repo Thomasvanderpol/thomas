@@ -42,6 +42,18 @@ namespace BusinessLogic
             }   
         }
 
+        public List<int> GetAllHits(int currentGameID, List<int> PlayersInGame)
+        {
+            List<int> AllHits = new List<int>();
+            foreach (int PlayerID in PlayersInGame)
+            {
+                int PlayerHits = conn.GetAllHits(currentGameID, PlayerID);
+                AllHits.Add(PlayerHits);
+            }
+           
+            return AllHits;
+        }
+
         public void WhoWonBid(int currentGameID, string trump)
         {
             //method to get HitID

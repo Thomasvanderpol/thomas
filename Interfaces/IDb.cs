@@ -7,6 +7,7 @@ namespace Interfaces
 {
     public interface IDb
     {
+        SqlConnection CloseConnection();
         SqlDataReader executeSelectQuery(string query, SqlParameter[] sqlParameter);
         bool executeInsertQuery(string query, SqlParameter[] sqlParameter);
         bool executeUpdateQuery(string query, SqlParameter[] sqlParameter);
