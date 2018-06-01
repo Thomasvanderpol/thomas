@@ -20,6 +20,13 @@ export class App {
             moduleId: PLATFORM.moduleName('../Game/Game'),
             nav: true,
             title: 'Game'
+        }, {
+            route: ['Slagen'],
+            name: 'Slagen',
+            settings: { icon: 'Slagen' },
+            moduleId: PLATFORM.moduleName('../Slagen/Slagen'),
+            nav: true,
+            title: 'Slagen per speler'
         }
         ]);
 

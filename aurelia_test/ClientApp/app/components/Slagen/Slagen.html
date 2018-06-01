@@ -1,0 +1,23 @@
+﻿<template>
+    <require from="./Slagen.css"></require>
+
+
+        <h1>Rik Application</h1>
+        <p>Please select the player where you want to see all the hits of all games</p>
+        <br />
+        <br />
+        <form>
+
+            <select id="AllPlayers" ref="Player">
+                <option value="" disabled selected>Choose Player</option>
+                <option repeat.for="player of Players" value="${player}">${player}</option>
+            </select>
+
+            <button click.delegate="GetAllHits(Player.value)">OK</button>
+
+
+
+        </form>
+   
+
+</template>

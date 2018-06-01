@@ -97,5 +97,21 @@ namespace DataAccess
 
             return PlayerName;
         }
+
+        public int GetPlayerID(string player)
+        {
+            int PlayerID = 0;
+            SqlDataReader dr;
+            string query = "SELECT PlayerID FROM Player WHERE PlayerName = '" + player + "'";
+            SqlParameter[] sqlParameters = new SqlParameter[0];
+            dr = conn.executeSelectQuery(query, sqlParameters);
+
+            while (dr.Read())
+            {
+                PlayerID = Convert.ToInt32(dr["PlayerID"]);
+
+            }
+            return PlayerID;
+        }
     }
 }

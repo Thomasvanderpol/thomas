@@ -14,6 +14,7 @@ namespace RikApplication.Controllers
     {
         IHitBL hitbl = BussinessLayerFactory.CreateHitBL();
         IGameBL gamebl = BussinessLayerFactory.CreateGameBL();
+        IPlayerBL playerbl = BussinessLayerFactory.CreatePlayerBL();
         public IActionResult Index()
         {
             return View();
@@ -53,5 +54,13 @@ namespace RikApplication.Controllers
             List<CardPlayerBO> LastHit = hitbl.ShowLastHit(CurrentGameID);
             return LastHit;
         }
+        [HttpGet("[action]/{Player}")]
+        public List<AllHitsBO> GetAllHitsByPlayer(string player)
+        {
+            int PlayerID = playerbl.GetPlayerID(player);
+            List<AllHitsBO> LastHit = hitbl.GetAllHitsByPlayer(PlayerID);
+            return LastHit;
+        }
+        
     }
 }

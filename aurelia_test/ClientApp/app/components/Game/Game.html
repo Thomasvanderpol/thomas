@@ -6,7 +6,9 @@
     <div class="grid-container">
         <div class="Speler3">
             <h2>
-                slagen:  ${slagenSpeler3}
+                <i style="display: ${TrumpAcehide}">
+                    slagen:  ${slagenSpeler3}
+                </i>
                 <select id="Player3" ref="Player3">
                     <option value="" disabled selected>player 3</option>
                     <option repeat.for="player of players" value="${player}">${player}</option>
@@ -21,7 +23,9 @@
 
         <div class="Speler2">
             <h2>
-                slagen:  ${slagenSpeler2}
+                <i style="display: ${TrumpAcehide}">
+                    slagen:  ${slagenSpeler2}
+                </i>
                 <select id="Player2" ref="Player2">
                     <option value="" disabled selected>player 2</option>
                     <option repeat.for="player of players" value="${player}">${player}</option>
@@ -85,7 +89,7 @@
                 A: <img src="${Ace}.png" />
                 <button click.delegate="ShowLastHit()">Vorige slag</button>
             </div>
-            <div id="ShowTeams" style="display: ${ShowTeams}">
+            <div id="ShowTeams" style="display: ${TrumpAcehide}">
                 Team 1: ${Team1}<br />
                 Team 2: ${Team2}
             </div>
@@ -99,7 +103,9 @@
 
         <div class="Speler4">
             <h2>
-                slagen:  ${slagenSpeler4}
+                <i style="display: ${TrumpAcehide}">
+                    slagen:  ${slagenSpeler4}
+                </i>
                 <select id="Player4" ref="Player4">
                     <option value="" disabled selected>player 4</option>
                     <option repeat.for="player of players" value="${player}">${player}</option>
@@ -114,7 +120,9 @@
         </div>
         <div class="Speler1">
             <h2>
-                slagen:  ${slagenSpeler1}
+                <i style="display: ${TrumpAcehide}">
+                    slagen:  ${slagenSpeler1}
+                </i>
                 <select id="Player1" ref="Player1">
                     <option value="" disabled selected>player 1</option>
                     <option repeat.for="player of players" value="${player}">${player}</option>

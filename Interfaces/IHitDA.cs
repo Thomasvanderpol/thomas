@@ -18,5 +18,6 @@ namespace Interfaces
         void SetWinPlayerID(int wonPlayerID, int currentGameID, int HitID);
         int GetAllHits(int currentGameID, int PlayerID);
         List<CardPlayerBO> ShowLastHit(int currentGameID, int LastHitID);
+        List<AllHitsBO> GetAllHitsByPlayer(int playerID);
     }
 }

@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "178d548eeb1423e9ce36"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "84c6261ddc529a85b562"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -5711,6 +5711,260 @@ var TemplatingEngine = (_dec11 = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* unused harmony export json */
+/* unused harmony export HttpClientConfiguration */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HttpClient; });
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+
+
+function json(body) {
+  return new Blob([JSON.stringify(body !== undefined ? body : {})], { type: 'application/json' });
+}
+
+var HttpClientConfiguration = function () {
+  function HttpClientConfiguration() {
+    
+
+    this.baseUrl = '';
+    this.defaults = {};
+    this.interceptors = [];
+  }
+
+  HttpClientConfiguration.prototype.withBaseUrl = function withBaseUrl(baseUrl) {
+    this.baseUrl = baseUrl;
+    return this;
+  };
+
+  HttpClientConfiguration.prototype.withDefaults = function withDefaults(defaults) {
+    this.defaults = defaults;
+    return this;
+  };
+
+  HttpClientConfiguration.prototype.withInterceptor = function withInterceptor(interceptor) {
+    this.interceptors.push(interceptor);
+    return this;
+  };
+
+  HttpClientConfiguration.prototype.useStandardConfiguration = function useStandardConfiguration() {
+    var standardConfig = { credentials: 'same-origin' };
+    Object.assign(this.defaults, standardConfig, this.defaults);
+    return this.rejectErrorResponses();
+  };
+
+  HttpClientConfiguration.prototype.rejectErrorResponses = function rejectErrorResponses() {
+    return this.withInterceptor({ response: rejectOnError });
+  };
+
+  return HttpClientConfiguration;
+}();
+
+function rejectOnError(response) {
+  if (!response.ok) {
+    throw response;
+  }
+
+  return response;
+}
+
+var HttpClient = function () {
+  function HttpClient() {
+    
+
+    this.activeRequestCount = 0;
+    this.isRequesting = false;
+    this.isConfigured = false;
+    this.baseUrl = '';
+    this.defaults = null;
+    this.interceptors = [];
+
+    if (typeof fetch === 'undefined') {
+      throw new Error('HttpClient requires a Fetch API implementation, but the current environment doesn\'t support it. You may need to load a polyfill such as https://github.com/github/fetch.');
+    }
+  }
+
+  HttpClient.prototype.configure = function configure(config) {
+    var normalizedConfig = void 0;
+
+    if ((typeof config === 'undefined' ? 'undefined' : _typeof(config)) === 'object') {
+      normalizedConfig = { defaults: config };
+    } else if (typeof config === 'function') {
+      normalizedConfig = new HttpClientConfiguration();
+      normalizedConfig.baseUrl = this.baseUrl;
+      normalizedConfig.defaults = Object.assign({}, this.defaults);
+      normalizedConfig.interceptors = this.interceptors;
+
+      var c = config(normalizedConfig);
+      if (HttpClientConfiguration.prototype.isPrototypeOf(c)) {
+        normalizedConfig = c;
+      }
+    } else {
+      throw new Error('invalid config');
+    }
+
+    var defaults = normalizedConfig.defaults;
+    if (defaults && Headers.prototype.isPrototypeOf(defaults.headers)) {
+      throw new Error('Default headers must be a plain object.');
+    }
+
+    this.baseUrl = normalizedConfig.baseUrl;
+    this.defaults = defaults;
+    this.interceptors = normalizedConfig.interceptors || [];
+    this.isConfigured = true;
+
+    return this;
+  };
+
+  HttpClient.prototype.fetch = function (_fetch) {
+    function fetch(_x, _x2) {
+      return _fetch.apply(this, arguments);
+    }
+
+    fetch.toString = function () {
+      return _fetch.toString();
+    };
+
+    return fetch;
+  }(function (input, init) {
+    var _this = this;
+
+    trackRequestStart.call(this);
+
+    var request = Promise.resolve().then(function () {
+      return buildRequest.call(_this, input, init, _this.defaults);
+    });
+    var promise = processRequest(request, this.interceptors).then(function (result) {
+      var response = null;
+
+      if (Response.prototype.isPrototypeOf(result)) {
+        response = result;
+      } else if (Request.prototype.isPrototypeOf(result)) {
+        request = Promise.resolve(result);
+        response = fetch(result);
+      } else {
+        throw new Error('An invalid result was returned by the interceptor chain. Expected a Request or Response instance, but got [' + result + ']');
+      }
+
+      return request.then(function (_request) {
+        return processResponse(response, _this.interceptors, _request);
+      });
+    });
+
+    return trackRequestEndWith.call(this, promise);
+  });
+
+  return HttpClient;
+}();
+
+var absoluteUrlRegexp = /^([a-z][a-z0-9+\-.]*:)?\/\//i;
+
+function trackRequestStart() {
+  this.isRequesting = !! ++this.activeRequestCount;
+}
+
+function trackRequestEnd() {
+  this.isRequesting = !! --this.activeRequestCount;
+}
+
+function trackRequestEndWith(promise) {
+  var handle = trackRequestEnd.bind(this);
+  promise.then(handle, handle);
+  return promise;
+}
+
+function parseHeaderValues(headers) {
+  var parsedHeaders = {};
+  for (var name in headers || {}) {
+    if (headers.hasOwnProperty(name)) {
+      parsedHeaders[name] = typeof headers[name] === 'function' ? headers[name]() : headers[name];
+    }
+  }
+  return parsedHeaders;
+}
+
+function buildRequest(input, init) {
+  var defaults = this.defaults || {};
+  var request = void 0;
+  var body = void 0;
+  var requestContentType = void 0;
+
+  var parsedDefaultHeaders = parseHeaderValues(defaults.headers);
+  if (Request.prototype.isPrototypeOf(input)) {
+    request = input;
+    requestContentType = new Headers(request.headers).get('Content-Type');
+  } else {
+    init || (init = {});
+    body = init.body;
+    var bodyObj = body ? { body: body } : null;
+    var requestInit = Object.assign({}, defaults, { headers: {} }, init, bodyObj);
+    requestContentType = new Headers(requestInit.headers).get('Content-Type');
+    request = new Request(getRequestUrl(this.baseUrl, input), requestInit);
+  }
+  if (!requestContentType && new Headers(parsedDefaultHeaders).has('content-type')) {
+    request.headers.set('Content-Type', new Headers(parsedDefaultHeaders).get('content-type'));
+  }
+  setDefaultHeaders(request.headers, parsedDefaultHeaders);
+  if (body && Blob.prototype.isPrototypeOf(body) && body.type) {
+    request.headers.set('Content-Type', body.type);
+  }
+  return request;
+}
+
+function getRequestUrl(baseUrl, url) {
+  if (absoluteUrlRegexp.test(url)) {
+    return url;
+  }
+
+  return (baseUrl || '') + url;
+}
+
+function setDefaultHeaders(headers, defaultHeaders) {
+  for (var name in defaultHeaders || {}) {
+    if (defaultHeaders.hasOwnProperty(name) && !headers.has(name)) {
+      headers.set(name, defaultHeaders[name]);
+    }
+  }
+}
+
+function processRequest(request, interceptors) {
+  return applyInterceptors(request, interceptors, 'request', 'requestError');
+}
+
+function processResponse(response, interceptors, request) {
+  return applyInterceptors(response, interceptors, 'response', 'responseError', request);
+}
+
+function applyInterceptors(input, interceptors, successName, errorName) {
+  for (var _len = arguments.length, interceptorArgs = Array(_len > 4 ? _len - 4 : 0), _key = 4; _key < _len; _key++) {
+    interceptorArgs[_key - 4] = arguments[_key];
+  }
+
+  return (interceptors || []).reduce(function (chain, interceptor) {
+    var successHandler = interceptor[successName];
+    var errorHandler = interceptor[errorName];
+
+    return chain.then(successHandler && function (value) {
+      return successHandler.call.apply(successHandler, [interceptor, value].concat(interceptorArgs));
+    } || identity, errorHandler && function (reason) {
+      return errorHandler.call.apply(errorHandler, [interceptor, reason].concat(interceptorArgs));
+    } || thrower);
+  }, Promise.resolve(input));
+}
+
+function identity(x) {
+  return x;
+}
+
+function thrower(x) {
+  throw x;
+}
+
+/***/ }),
+
+/***/ 11:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* unused harmony export _normalizeAbsolutePath */
 /* unused harmony export _createRootedPath */
 /* unused harmony export _resolveUrl */
@@ -7558,288 +7812,7 @@ function restorePreviousLocation(router) {
 
 /***/ }),
 
-/***/ 11:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* unused harmony export json */
-/* unused harmony export HttpClientConfiguration */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HttpClient; });
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-
-
-
-function json(body) {
-  return new Blob([JSON.stringify(body !== undefined ? body : {})], { type: 'application/json' });
-}
-
-var HttpClientConfiguration = function () {
-  function HttpClientConfiguration() {
-    
-
-    this.baseUrl = '';
-    this.defaults = {};
-    this.interceptors = [];
-  }
-
-  HttpClientConfiguration.prototype.withBaseUrl = function withBaseUrl(baseUrl) {
-    this.baseUrl = baseUrl;
-    return this;
-  };
-
-  HttpClientConfiguration.prototype.withDefaults = function withDefaults(defaults) {
-    this.defaults = defaults;
-    return this;
-  };
-
-  HttpClientConfiguration.prototype.withInterceptor = function withInterceptor(interceptor) {
-    this.interceptors.push(interceptor);
-    return this;
-  };
-
-  HttpClientConfiguration.prototype.useStandardConfiguration = function useStandardConfiguration() {
-    var standardConfig = { credentials: 'same-origin' };
-    Object.assign(this.defaults, standardConfig, this.defaults);
-    return this.rejectErrorResponses();
-  };
-
-  HttpClientConfiguration.prototype.rejectErrorResponses = function rejectErrorResponses() {
-    return this.withInterceptor({ response: rejectOnError });
-  };
-
-  return HttpClientConfiguration;
-}();
-
-function rejectOnError(response) {
-  if (!response.ok) {
-    throw response;
-  }
-
-  return response;
-}
-
-var HttpClient = function () {
-  function HttpClient() {
-    
-
-    this.activeRequestCount = 0;
-    this.isRequesting = false;
-    this.isConfigured = false;
-    this.baseUrl = '';
-    this.defaults = null;
-    this.interceptors = [];
-
-    if (typeof fetch === 'undefined') {
-      throw new Error('HttpClient requires a Fetch API implementation, but the current environment doesn\'t support it. You may need to load a polyfill such as https://github.com/github/fetch.');
-    }
-  }
-
-  HttpClient.prototype.configure = function configure(config) {
-    var normalizedConfig = void 0;
-
-    if ((typeof config === 'undefined' ? 'undefined' : _typeof(config)) === 'object') {
-      normalizedConfig = { defaults: config };
-    } else if (typeof config === 'function') {
-      normalizedConfig = new HttpClientConfiguration();
-      normalizedConfig.baseUrl = this.baseUrl;
-      normalizedConfig.defaults = Object.assign({}, this.defaults);
-      normalizedConfig.interceptors = this.interceptors;
-
-      var c = config(normalizedConfig);
-      if (HttpClientConfiguration.prototype.isPrototypeOf(c)) {
-        normalizedConfig = c;
-      }
-    } else {
-      throw new Error('invalid config');
-    }
-
-    var defaults = normalizedConfig.defaults;
-    if (defaults && Headers.prototype.isPrototypeOf(defaults.headers)) {
-      throw new Error('Default headers must be a plain object.');
-    }
-
-    this.baseUrl = normalizedConfig.baseUrl;
-    this.defaults = defaults;
-    this.interceptors = normalizedConfig.interceptors || [];
-    this.isConfigured = true;
-
-    return this;
-  };
-
-  HttpClient.prototype.fetch = function (_fetch) {
-    function fetch(_x, _x2) {
-      return _fetch.apply(this, arguments);
-    }
-
-    fetch.toString = function () {
-      return _fetch.toString();
-    };
-
-    return fetch;
-  }(function (input, init) {
-    var _this = this;
-
-    trackRequestStart.call(this);
-
-    var request = Promise.resolve().then(function () {
-      return buildRequest.call(_this, input, init, _this.defaults);
-    });
-    var promise = processRequest(request, this.interceptors).then(function (result) {
-      var response = null;
-
-      if (Response.prototype.isPrototypeOf(result)) {
-        response = result;
-      } else if (Request.prototype.isPrototypeOf(result)) {
-        request = Promise.resolve(result);
-        response = fetch(result);
-      } else {
-        throw new Error('An invalid result was returned by the interceptor chain. Expected a Request or Response instance, but got [' + result + ']');
-      }
-
-      return request.then(function (_request) {
-        return processResponse(response, _this.interceptors, _request);
-      });
-    });
-
-    return trackRequestEndWith.call(this, promise);
-  });
-
-  return HttpClient;
-}();
-
-var absoluteUrlRegexp = /^([a-z][a-z0-9+\-.]*:)?\/\//i;
-
-function trackRequestStart() {
-  this.isRequesting = !! ++this.activeRequestCount;
-}
-
-function trackRequestEnd() {
-  this.isRequesting = !! --this.activeRequestCount;
-}
-
-function trackRequestEndWith(promise) {
-  var handle = trackRequestEnd.bind(this);
-  promise.then(handle, handle);
-  return promise;
-}
-
-function parseHeaderValues(headers) {
-  var parsedHeaders = {};
-  for (var name in headers || {}) {
-    if (headers.hasOwnProperty(name)) {
-      parsedHeaders[name] = typeof headers[name] === 'function' ? headers[name]() : headers[name];
-    }
-  }
-  return parsedHeaders;
-}
-
-function buildRequest(input, init) {
-  var defaults = this.defaults || {};
-  var request = void 0;
-  var body = void 0;
-  var requestContentType = void 0;
-
-  var parsedDefaultHeaders = parseHeaderValues(defaults.headers);
-  if (Request.prototype.isPrototypeOf(input)) {
-    request = input;
-    requestContentType = new Headers(request.headers).get('Content-Type');
-  } else {
-    init || (init = {});
-    body = init.body;
-    var bodyObj = body ? { body: body } : null;
-    var requestInit = Object.assign({}, defaults, { headers: {} }, init, bodyObj);
-    requestContentType = new Headers(requestInit.headers).get('Content-Type');
-    request = new Request(getRequestUrl(this.baseUrl, input), requestInit);
-  }
-  if (!requestContentType && new Headers(parsedDefaultHeaders).has('content-type')) {
-    request.headers.set('Content-Type', new Headers(parsedDefaultHeaders).get('content-type'));
-  }
-  setDefaultHeaders(request.headers, parsedDefaultHeaders);
-  if (body && Blob.prototype.isPrototypeOf(body) && body.type) {
-    request.headers.set('Content-Type', body.type);
-  }
-  return request;
-}
-
-function getRequestUrl(baseUrl, url) {
-  if (absoluteUrlRegexp.test(url)) {
-    return url;
-  }
-
-  return (baseUrl || '') + url;
-}
-
-function setDefaultHeaders(headers, defaultHeaders) {
-  for (var name in defaultHeaders || {}) {
-    if (defaultHeaders.hasOwnProperty(name) && !headers.has(name)) {
-      headers.set(name, defaultHeaders[name]);
-    }
-  }
-}
-
-function processRequest(request, interceptors) {
-  return applyInterceptors(request, interceptors, 'request', 'requestError');
-}
-
-function processResponse(response, interceptors, request) {
-  return applyInterceptors(response, interceptors, 'response', 'responseError', request);
-}
-
-function applyInterceptors(input, interceptors, successName, errorName) {
-  for (var _len = arguments.length, interceptorArgs = Array(_len > 4 ? _len - 4 : 0), _key = 4; _key < _len; _key++) {
-    interceptorArgs[_key - 4] = arguments[_key];
-  }
-
-  return (interceptors || []).reduce(function (chain, interceptor) {
-    var successHandler = interceptor[successName];
-    var errorHandler = interceptor[errorName];
-
-    return chain.then(successHandler && function (value) {
-      return successHandler.call.apply(successHandler, [interceptor, value].concat(interceptorArgs));
-    } || identity, errorHandler && function (reason) {
-      return errorHandler.call.apply(errorHandler, [interceptor, reason].concat(interceptorArgs));
-    } || thrower);
-  }, Promise.resolve(input));
-}
-
-function identity(x) {
-  return x;
-}
-
-function thrower(x) {
-  throw x;
-}
-
-/***/ }),
-
 /***/ 12:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return aureliaHideClassName; });
-/* harmony export (immutable) */ __webpack_exports__["a"] = injectAureliaHideStyleAtHead;
-/* harmony export (immutable) */ __webpack_exports__["b"] = injectAureliaHideStyleAtBoundary;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_aurelia_pal__ = __webpack_require__(0);
-
-
-var aureliaHideClassName = 'aurelia-hide';
-
-var aureliaHideClass = '.' + aureliaHideClassName + ' { display:none !important; }';
-
-function injectAureliaHideStyleAtHead() {
-  __WEBPACK_IMPORTED_MODULE_0_aurelia_pal__["c" /* DOM */].injectStyles(aureliaHideClass);
-}
-
-function injectAureliaHideStyleAtBoundary(domBoundary) {
-  if (__WEBPACK_IMPORTED_MODULE_0_aurelia_pal__["d" /* FEATURE */].shadowDOM && domBoundary && !domBoundary.hasAureliaHideStyle) {
-    domBoundary.hasAureliaHideStyle = true;
-    __WEBPACK_IMPORTED_MODULE_0_aurelia_pal__["c" /* DOM */].injectStyles(aureliaHideClass, domBoundary);
-  }
-}
-
-/***/ }),
-
-/***/ 13:
 /***/ (function(module, exports) {
 
 /*
@@ -7919,6 +7892,33 @@ function toComment(sourceMap) {
 	return '/*# ' + data + ' */';
 }
 
+
+/***/ }),
+
+/***/ 13:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return aureliaHideClassName; });
+/* harmony export (immutable) */ __webpack_exports__["a"] = injectAureliaHideStyleAtHead;
+/* harmony export (immutable) */ __webpack_exports__["b"] = injectAureliaHideStyleAtBoundary;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_aurelia_pal__ = __webpack_require__(0);
+
+
+var aureliaHideClassName = 'aurelia-hide';
+
+var aureliaHideClass = '.' + aureliaHideClassName + ' { display:none !important; }';
+
+function injectAureliaHideStyleAtHead() {
+  __WEBPACK_IMPORTED_MODULE_0_aurelia_pal__["c" /* DOM */].injectStyles(aureliaHideClass);
+}
+
+function injectAureliaHideStyleAtBoundary(domBoundary) {
+  if (__WEBPACK_IMPORTED_MODULE_0_aurelia_pal__["d" /* FEATURE */].shadowDOM && domBoundary && !domBoundary.hasAureliaHideStyle) {
+    domBoundary.hasAureliaHideStyle = true;
+    __WEBPACK_IMPORTED_MODULE_0_aurelia_pal__["c" /* DOM */].injectStyles(aureliaHideClass, domBoundary);
+  }
+}
 
 /***/ }),
 
@@ -18904,7 +18904,7 @@ function configure(config) {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TemplatingRouteLoader; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_aurelia_dependency_injection__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_aurelia_templating__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_aurelia_router__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_aurelia_router__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_aurelia_path__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_aurelia_metadata__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__router_view__ = __webpack_require__("aurelia-templating-router/router-view");
@@ -21085,7 +21085,7 @@ function filterFlushStack(stack) {
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Game", function() { return Game; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_aurelia_fetch_client__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_aurelia_fetch_client__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_aurelia_framework__ = __webpack_require__("aurelia-framework");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -22028,7 +22028,7 @@ Game = __decorate([
 /***/ "app/components/Game/Game.css":
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(13)(undefined);
+exports = module.exports = __webpack_require__(12)(undefined);
 // imports
 
 
@@ -22043,7 +22043,133 @@ exports.push([module.i, ".Speler3 {\r\n    grid-area: Speler3;\r\n    height: 90
 /***/ "app/components/Game/Game.html":
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = "<template>\r\n    <style>\r\n        #${turn}{color: red}\r\n    </style>\r\n    <require from=\"./Game.css\"></require>\r\n    <div class=\"grid-container\">\r\n        <div class=\"Speler3\">\r\n            <h2>\r\n                slagen:  ${slagenSpeler3}\r\n                <select id=\"Player3\" ref=\"Player3\">\r\n                    <option value=\"\" disabled selected>player 3</option>\r\n                    <option repeat.for=\"player of players\" value=\"${player}\">${player}</option>\r\n                </select>\r\n                ${Player3Bid}\r\n            </h2>\r\n        </div>\r\n\r\n        <div class=\"Speler3Kaarten\">\r\n            <img click.delegate=\"Player3Plays(card)\" repeat.for=\"card of CardsPlayer3\" src=\"${card}.jpg\" style=\"position: absolute; top: 110px; left: ${400+$index*50}px \" />\r\n        </div>\r\n\r\n        <div class=\"Speler2\">\r\n            <h2>\r\n                slagen:  ${slagenSpeler2}\r\n                <select id=\"Player2\" ref=\"Player2\">\r\n                    <option value=\"\" disabled selected>player 2</option>\r\n                    <option repeat.for=\"player of players\" value=\"${player}\">${player}</option>\r\n                </select>\r\n                ${Player2Bid}\r\n            </h2>\r\n        </div>\r\n\r\n        <div class=\"Speler2Kaarten\">\r\n            <img click.delegate=\"Player2Plays(card)\" repeat.for=\"card of CardsPlayer2\" src=\"${card}.jpg\" style=\"position: absolute; left: 40px; top: ${10+$index*30}px \" />\r\n\r\n        </div>\r\n\r\n        <div class=\"Speelveld\">\r\n            <div id=\"begintext\" style=\"display: ${none}\">\r\n                <h1>\r\n                    If the 4 players are selected begin your game here:<br /><br />\r\n                    <button click.delegate=\"BeginGame(Player1.value,Player2.value,Player3.value,Player4.value)\">Delen!</button>\r\n\r\n                </h1>\r\n            </div>\r\n            <div id=\"keuzeVoorbereidingsronde\" style=\"display: ${nohide}\">\r\n                <h3> What are you going to do?</h3>\r\n                <form>\r\n\r\n                    <select id=\"PlayerPreparation\" ref=\"choice\">\r\n                        <option value=\"\" disabled selected>Make your choice</option>\r\n                        <option repeat.for=\"ChoicePlayer of ChoicesPlayer\" value=\"${ChoicePlayer}\">${ChoicePlayer}</option>\r\n                    </select><br />\r\n\r\n                    <button click.delegate=\"SubmitChoice(choice.value)\">OK</button>\r\n\r\n                </form>\r\n            </div>\r\n            <div id=\"VoorbereidingsRonde2\" style=\"display: ${ShowRound2}\">\r\n                <h3>What is your trump and requested ace</h3>\r\n                <form>\r\n                    T:\r\n                    <select id=\"PlayerTrump\" ref=\"trump\">\r\n                        <option value=\"\" disabled selected>Trump</option>\r\n                        <option repeat.for=\"Trump of TrumpKinds\" value=\"${Trump}\">${Trump}</option>\r\n                    </select>\r\n                    A:\r\n                    <select id=\"PlayerTrump\" ref=\"ace\">\r\n                        <option value=\"\" disabled selected>Ace of ... </option>\r\n                        <option repeat.for=\"Ace of AceKinds\" value=\"${Ace}\">${Ace}</option>\r\n                    </select>\r\n                    <button click.delegate=\"StartGame(trump.value, ace.value)\">OK</button>\r\n\r\n                </form>\r\n            </div>\r\n            <div id=\"PlayingCards\" style=\"display: ${TrumpAcehide}\">\r\n                <img src=\"${PlayingCard1}.jpg\" id=\"card1\" />\r\n                <img src=\"${PlayingCard2}.jpg\" id=\"card2\" />\r\n                <img src=\"${PlayingCard3}.jpg\" id=\"card3\" />\r\n                <img src=\"${PlayingCard4}.jpg\" id=\"card4\" />\r\n            </div>\r\n\r\n            <div id=\"ShowTrumpAce\" style=\"display: ${TrumpAcehide}\">\r\n                T:  <img src=\"${Trump}.png\" />\r\n                A: <img src=\"${Ace}.png\" />\r\n                <button click.delegate=\"ShowLastHit()\">Vorige slag</button>\r\n            </div>\r\n            <div id=\"ShowTeams\" style=\"display: ${ShowTeams}\">\r\n                Team 1: ${Team1}<br />\r\n                Team 2: ${Team2}\r\n            </div>\r\n\r\n        </div>\r\n\r\n        <div class=\"Speler4Kaarten\">\r\n            <img click.delegate=\"Player4Plays(card)\" repeat.for=\"card of CardsPlayer4\" src=\"${card}.jpg\" style=\"position: absolute; left: 40px; top: ${10+$index*30}px \" />\r\n\r\n        </div>\r\n\r\n        <div class=\"Speler4\">\r\n            <h2>\r\n                slagen:  ${slagenSpeler4}\r\n                <select id=\"Player4\" ref=\"Player4\">\r\n                    <option value=\"\" disabled selected>player 4</option>\r\n                    <option repeat.for=\"player of players\" value=\"${player}\">${player}</option>\r\n                </select>\r\n                ${Player4Bid}\r\n            </h2>\r\n        </div>\r\n\r\n        <div class=\"Speler1Kaarten\">\r\n            <img click.delegate=\"Player1Plays(card)\" repeat.for=\"card of CardsPlayer1\" src=\"${card}.jpg\" style=\"position: absolute; bottom: 95px; left: ${400+$index*50}px \" />\r\n\r\n        </div>\r\n        <div class=\"Speler1\">\r\n            <h2>\r\n                slagen:  ${slagenSpeler1}\r\n                <select id=\"Player1\" ref=\"Player1\">\r\n                    <option value=\"\" disabled selected>player 1</option>\r\n                    <option repeat.for=\"player of players\" value=\"${player}\">${player}</option>\r\n                </select>\r\n                ${Player1Bid}\r\n            </h2>\r\n        </div>\r\n\r\n    </div>\r\n\r\n\r\n\r\n</template>";
+module.exports = "<template>\r\n    <style>\r\n        #${turn}{color: red}\r\n    </style>\r\n    <require from=\"./Game.css\"></require>\r\n    <div class=\"grid-container\">\r\n        <div class=\"Speler3\">\r\n            <h2>\r\n                <i style=\"display: ${TrumpAcehide}\">\r\n                    slagen:  ${slagenSpeler3}\r\n                </i>\r\n                <select id=\"Player3\" ref=\"Player3\">\r\n                    <option value=\"\" disabled selected>player 3</option>\r\n                    <option repeat.for=\"player of players\" value=\"${player}\">${player}</option>\r\n                </select>\r\n                ${Player3Bid}\r\n            </h2>\r\n        </div>\r\n\r\n        <div class=\"Speler3Kaarten\">\r\n            <img click.delegate=\"Player3Plays(card)\" repeat.for=\"card of CardsPlayer3\" src=\"${card}.jpg\" style=\"position: absolute; top: 110px; left: ${400+$index*50}px \" />\r\n        </div>\r\n\r\n        <div class=\"Speler2\">\r\n            <h2>\r\n                <i style=\"display: ${TrumpAcehide}\">\r\n                    slagen:  ${slagenSpeler2}\r\n                </i>\r\n                <select id=\"Player2\" ref=\"Player2\">\r\n                    <option value=\"\" disabled selected>player 2</option>\r\n                    <option repeat.for=\"player of players\" value=\"${player}\">${player}</option>\r\n                </select>\r\n                ${Player2Bid}\r\n            </h2>\r\n        </div>\r\n\r\n        <div class=\"Speler2Kaarten\">\r\n            <img click.delegate=\"Player2Plays(card)\" repeat.for=\"card of CardsPlayer2\" src=\"${card}.jpg\" style=\"position: absolute; left: 40px; top: ${10+$index*30}px \" />\r\n\r\n        </div>\r\n\r\n        <div class=\"Speelveld\">\r\n            <div id=\"begintext\" style=\"display: ${none}\">\r\n                <h1>\r\n                    If the 4 players are selected begin your game here:<br /><br />\r\n                    <button click.delegate=\"BeginGame(Player1.value,Player2.value,Player3.value,Player4.value)\">Delen!</button>\r\n\r\n                </h1>\r\n            </div>\r\n            <div id=\"keuzeVoorbereidingsronde\" style=\"display: ${nohide}\">\r\n                <h3> What are you going to do?</h3>\r\n                <form>\r\n\r\n                    <select id=\"PlayerPreparation\" ref=\"choice\">\r\n                        <option value=\"\" disabled selected>Make your choice</option>\r\n                        <option repeat.for=\"ChoicePlayer of ChoicesPlayer\" value=\"${ChoicePlayer}\">${ChoicePlayer}</option>\r\n                    </select><br />\r\n\r\n                    <button click.delegate=\"SubmitChoice(choice.value)\">OK</button>\r\n\r\n                </form>\r\n            </div>\r\n            <div id=\"VoorbereidingsRonde2\" style=\"display: ${ShowRound2}\">\r\n                <h3>What is your trump and requested ace</h3>\r\n                <form>\r\n                    T:\r\n                    <select id=\"PlayerTrump\" ref=\"trump\">\r\n                        <option value=\"\" disabled selected>Trump</option>\r\n                        <option repeat.for=\"Trump of TrumpKinds\" value=\"${Trump}\">${Trump}</option>\r\n                    </select>\r\n                    A:\r\n                    <select id=\"PlayerTrump\" ref=\"ace\">\r\n                        <option value=\"\" disabled selected>Ace of ... </option>\r\n                        <option repeat.for=\"Ace of AceKinds\" value=\"${Ace}\">${Ace}</option>\r\n                    </select>\r\n                    <button click.delegate=\"StartGame(trump.value, ace.value)\">OK</button>\r\n\r\n                </form>\r\n            </div>\r\n            <div id=\"PlayingCards\" style=\"display: ${TrumpAcehide}\">\r\n                <img src=\"${PlayingCard1}.jpg\" id=\"card1\" />\r\n                <img src=\"${PlayingCard2}.jpg\" id=\"card2\" />\r\n                <img src=\"${PlayingCard3}.jpg\" id=\"card3\" />\r\n                <img src=\"${PlayingCard4}.jpg\" id=\"card4\" />\r\n            </div>\r\n\r\n            <div id=\"ShowTrumpAce\" style=\"display: ${TrumpAcehide}\">\r\n                T:  <img src=\"${Trump}.png\" />\r\n                A: <img src=\"${Ace}.png\" />\r\n                <button click.delegate=\"ShowLastHit()\">Vorige slag</button>\r\n            </div>\r\n            <div id=\"ShowTeams\" style=\"display: ${TrumpAcehide}\">\r\n                Team 1: ${Team1}<br />\r\n                Team 2: ${Team2}\r\n            </div>\r\n\r\n        </div>\r\n\r\n        <div class=\"Speler4Kaarten\">\r\n            <img click.delegate=\"Player4Plays(card)\" repeat.for=\"card of CardsPlayer4\" src=\"${card}.jpg\" style=\"position: absolute; left: 40px; top: ${10+$index*30}px \" />\r\n\r\n        </div>\r\n\r\n        <div class=\"Speler4\">\r\n            <h2>\r\n                <i style=\"display: ${TrumpAcehide}\">\r\n                    slagen:  ${slagenSpeler4}\r\n                </i>\r\n                <select id=\"Player4\" ref=\"Player4\">\r\n                    <option value=\"\" disabled selected>player 4</option>\r\n                    <option repeat.for=\"player of players\" value=\"${player}\">${player}</option>\r\n                </select>\r\n                ${Player4Bid}\r\n            </h2>\r\n        </div>\r\n\r\n        <div class=\"Speler1Kaarten\">\r\n            <img click.delegate=\"Player1Plays(card)\" repeat.for=\"card of CardsPlayer1\" src=\"${card}.jpg\" style=\"position: absolute; bottom: 95px; left: ${400+$index*50}px \" />\r\n\r\n        </div>\r\n        <div class=\"Speler1\">\r\n            <h2>\r\n                <i style=\"display: ${TrumpAcehide}\">\r\n                    slagen:  ${slagenSpeler1}\r\n                </i>\r\n                <select id=\"Player1\" ref=\"Player1\">\r\n                    <option value=\"\" disabled selected>player 1</option>\r\n                    <option repeat.for=\"player of players\" value=\"${player}\">${player}</option>\r\n                </select>\r\n                ${Player1Bid}\r\n            </h2>\r\n        </div>\r\n\r\n    </div>\r\n\r\n\r\n\r\n</template>";
+
+/***/ }),
+
+/***/ "app/components/Slagen/Slagen":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Slagen", function() { return Slagen; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_aurelia_fetch_client__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_aurelia_framework__ = __webpack_require__("aurelia-framework");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+
+
+var Slagen = (function () {
+    function Slagen(http) {
+        this.http = http;
+    }
+    Slagen.prototype.activate = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var result, _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, this.http.fetch('api/Player/allplayers')];
+                    case 1:
+                        result = _b.sent();
+                        _a = this;
+                        return [4 /*yield*/, result.json()];
+                    case 2:
+                        _a.Players = (_b.sent());
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    Slagen.prototype.GetAllHits = function (player) {
+        return __awaiter(this, void 0, void 0, function () {
+            var result, _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, this.http.fetch('api/Hit/GetAllHitsByPlayer/' + player)];
+                    case 1:
+                        result = _b.sent();
+                        _a = this;
+                        return [4 /*yield*/, result.json()];
+                    case 2:
+                        _a.HitsByPlayer = (_b.sent());
+                        this.tmp = "gelukt";
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    return Slagen;
+}());
+Slagen = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_aurelia_framework__["b" /* autoinject */])(),
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0_aurelia_fetch_client__["a" /* HttpClient */]])
+], Slagen);
+
+
+
+/***/ }),
+
+/***/ "app/components/Slagen/Slagen.css":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(12)(undefined);
+// imports
+
+
+// module
+exports.push([module.i, "body {\r\n}\r\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "app/components/Slagen/Slagen.html":
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = "<template>\r\n    <require from=\"./Slagen.css\"></require>\r\n\r\n\r\n        <h1>Rik Application</h1>\r\n        <p>Please select the player where you want to see all the hits of all games</p>\r\n        <br />\r\n        <br />\r\n        <form>\r\n\r\n            <select id=\"AllPlayers\" ref=\"Player\">\r\n                <option value=\"\" disabled selected>Choose Player</option>\r\n                <option repeat.for=\"player of Players\" value=\"${player}\">${player}</option>\r\n            </select>\r\n\r\n            <button click.delegate=\"GetAllHits(Player.value)\">OK</button>\r\n\r\n\r\n\r\n        </form>\r\n   \r\n\r\n</template>";
 
 /***/ }),
 
@@ -22074,6 +22200,13 @@ var App = (function () {
                 moduleId: '../Game/Game',
                 nav: true,
                 title: 'Game'
+            }, {
+                route: ['Slagen'],
+                name: 'Slagen',
+                settings: { icon: 'Slagen' },
+                moduleId: '../Slagen/Slagen',
+                nav: true,
+                title: 'Slagen per speler'
             }
         ]);
         this.router = router;
@@ -22088,7 +22221,7 @@ var App = (function () {
 /***/ "app/components/app/app.css":
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(13)(undefined);
+exports = module.exports = __webpack_require__(12)(undefined);
 // imports
 
 
@@ -22113,7 +22246,7 @@ module.exports = "<template>\r\n    <require from=\"../navmenu/navmenu.html\"></
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Home", function() { return Home; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_aurelia_fetch_client__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_aurelia_fetch_client__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_aurelia_framework__ = __webpack_require__("aurelia-framework");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -22198,7 +22331,7 @@ module.exports = "\r\n<template>\r\n\r\n    <h1>Rik Application</h1>\r\n    <p>W
 /***/ "app/components/navmenu/navmenu.css":
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(13)(undefined);
+exports = module.exports = __webpack_require__(12)(undefined);
 // imports
 
 
@@ -24411,7 +24544,7 @@ function configure(config) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__number_repeat_strategy__ = __webpack_require__(25);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__repeat_utilities__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__analyze_view_factory__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__aurelia_hide_style__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__aurelia_hide_style__ = __webpack_require__(13);
 /* unused harmony reexport Compose */
 /* unused harmony reexport If */
 /* unused harmony reexport With */
@@ -24944,7 +25077,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_aurelia_dependency_injection__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_aurelia_templating__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_aurelia_pal__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__aurelia_hide_style__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__aurelia_hide_style__ = __webpack_require__(13);
 var _dec, _dec2, _class;
 
 
@@ -25542,7 +25675,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_aurelia_dependency_injection__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_aurelia_templating__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_aurelia_pal__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__aurelia_hide_style__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__aurelia_hide_style__ = __webpack_require__(13);
 var _dec, _dec2, _class;
 
 
@@ -25841,7 +25974,7 @@ var With = (_dec = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_aurelia_tem
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "configure", function() { return configure; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_aurelia_pal__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_aurelia_router__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_aurelia_router__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__route_loader__ = __webpack_require__(43);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__router_view__ = __webpack_require__("aurelia-templating-router/router-view");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__route_href__ = __webpack_require__("aurelia-templating-router/route-href");
@@ -25872,7 +26005,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RouteHref", function() { return RouteHref; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_aurelia_templating__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_aurelia_dependency_injection__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_aurelia_router__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_aurelia_router__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_aurelia_pal__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_aurelia_logging__ = __webpack_require__(5);
 var _dec, _dec2, _dec3, _dec4, _dec5, _class;
@@ -25949,7 +26082,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_aurelia_dependency_injection__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_aurelia_binding__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_aurelia_templating__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_aurelia_router__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_aurelia_router__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_aurelia_metadata__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_aurelia_pal__ = __webpack_require__(0);
 var _dec, _dec2, _class, _desc, _value, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4;
@@ -26192,7 +26325,7 @@ var RouterViewLocator = function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_isomorphic_fetch__ = __webpack_require__(47);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_isomorphic_fetch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_isomorphic_fetch__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_aurelia_framework__ = __webpack_require__("aurelia-framework");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_aurelia_fetch_client__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_aurelia_fetch_client__ = __webpack_require__(10);
 
 
 

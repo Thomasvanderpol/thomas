@@ -11,5 +11,6 @@ namespace Interfaces
         List<string> GetPlayers();
         List<int> GetFourPlayers(List<string> playersInGame);
         List<string> GetPlayerNames(List<int> playerids);
+        int GetPlayerID(string player);
     }
 }

@@ -95,6 +95,36 @@ namespace DataAccess
             }
         }
 
+        public List<AllHitsBO> GetAllHitsByPlayer(int playerID)
+        {
+            try
+            {
+                SqlDataReader dr;
+
+                string query = "SELECT COUNT(HitID)AS AantalSlagen , GameID FROM dbo.Hit WHERE WinPlayerID = 7 GROUP BY GameID";
+                SqlParameter[] sqlParameters = new SqlParameter[0];
+                dr = conn.executeSelectQuery(query, sqlParameters);
+                List<AllHitsBO> AllHits = new List<AllHitsBO>();
+                while (dr.Read())
+                {
+                    AllHitsBO hits = new AllHitsBO();
+                    hits.AllHits = Convert.ToInt32(dr["AantalSlagen"]);
+                    hits.GameID = Convert.ToInt32(dr["GameID"]);
+                    AllHits.Add(hits);
+                }
+
+                return AllHits;
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                conn.CloseConnection();
+            }
+        }
+
         public int GetCard(string cardPlayer)
         {
             try

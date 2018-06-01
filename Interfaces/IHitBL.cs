@@ -11,5 +11,6 @@ namespace Interfaces
         void WhoWonBid(int currentGameID, string trump);
         List<int> GetAllHits(int currentGameID, List<int> PlayersInGame);
         List<CardPlayerBO> ShowLastHit(int currentGameID);
+        List<AllHitsBO> GetAllHitsByPlayer(int playerID);
     }
 }
