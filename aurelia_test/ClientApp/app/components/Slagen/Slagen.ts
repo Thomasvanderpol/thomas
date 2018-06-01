@@ -6,7 +6,7 @@ export class Slagen {
 
     public Players: string[];
     public HitsByPlayer: allhits[];
-    public tmp: string;
+    public player: string;
   
     constructor(private http: HttpClient) {
 
@@ -22,9 +22,10 @@ export class Slagen {
      
     }
     public async GetAllHits(player: string) {
+        this.player = player;
         let result = await this.http.fetch('api/Hit/GetAllHitsByPlayer/' + player);
         this.HitsByPlayer = await result.json() as allhits[];
-        this.tmp = "gelukt";
+        let tmp = "hallo";
     }
 
 }

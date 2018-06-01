@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "84c6261ddc529a85b562"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "61c8a98a55323540b767"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -22124,17 +22124,19 @@ var Slagen = (function () {
     };
     Slagen.prototype.GetAllHits = function (player) {
         return __awaiter(this, void 0, void 0, function () {
-            var result, _a;
+            var result, _a, tmp;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0: return [4 /*yield*/, this.http.fetch('api/Hit/GetAllHitsByPlayer/' + player)];
+                    case 0:
+                        this.player = player;
+                        return [4 /*yield*/, this.http.fetch('api/Hit/GetAllHitsByPlayer/' + player)];
                     case 1:
                         result = _b.sent();
                         _a = this;
                         return [4 /*yield*/, result.json()];
                     case 2:
                         _a.HitsByPlayer = (_b.sent());
-                        this.tmp = "gelukt";
+                        tmp = "hallo";
                         return [2 /*return*/];
                 }
             });
@@ -22159,7 +22161,7 @@ exports = module.exports = __webpack_require__(12)(undefined);
 
 
 // module
-exports.push([module.i, "body {\r\n}\r\n", ""]);
+exports.push([module.i, "#HitsByPlayer td, #HitsByPlayer th {\r\n    border: 1px solid #ddd;\r\n    padding: 8px;\r\n}\r\n", ""]);
 
 // exports
 
@@ -22169,7 +22171,7 @@ exports.push([module.i, "body {\r\n}\r\n", ""]);
 /***/ "app/components/Slagen/Slagen.html":
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = "<template>\r\n    <require from=\"./Slagen.css\"></require>\r\n\r\n\r\n        <h1>Rik Application</h1>\r\n        <p>Please select the player where you want to see all the hits of all games</p>\r\n        <br />\r\n        <br />\r\n        <form>\r\n\r\n            <select id=\"AllPlayers\" ref=\"Player\">\r\n                <option value=\"\" disabled selected>Choose Player</option>\r\n                <option repeat.for=\"player of Players\" value=\"${player}\">${player}</option>\r\n            </select>\r\n\r\n            <button click.delegate=\"GetAllHits(Player.value)\">OK</button>\r\n\r\n\r\n\r\n        </form>\r\n   \r\n\r\n</template>";
+module.exports = "<template>\r\n    <require from=\"./Slagen.css\"></require>\r\n\r\n\r\n        <h1>Rik Application</h1>\r\n        <p><h2>Please select the player where you want to see all the hits of all games</h2></p>\r\n        <br />\r\n        <br />\r\n        <form>\r\n            <h2>\r\n            <select id=\"AllPlayers\" ref=\"Player\">\r\n                <option value=\"\" disabled selected>Choose Player</option>\r\n                <option repeat.for=\"player of Players\" value=\"${player}\">${player}</option>\r\n            </select>\r\n                </h2>\r\n            <button click.delegate=\"GetAllHits(Player.value)\">OK</button><br /><br />\r\n            <h2>${player}</h2><br />\r\n            <table id=\"HitsByPlayer\">\r\n\r\n                <tr>\r\n                    <th><b>Aantal slagen</b></th>\r\n                    <th><b>Per game</b></th>\r\n                </tr>\r\n                <tr repeat.for=\"Hits of HitsByPlayer\">\r\n                    <th>${Hits.allHits}</th>\r\n                    <th>${Hits.gameID}</th>\r\n                </tr>\r\n            </table>\r\n\r\n        </form>\r\n   \r\n\r\n</template>";
 
 /***/ }),
 

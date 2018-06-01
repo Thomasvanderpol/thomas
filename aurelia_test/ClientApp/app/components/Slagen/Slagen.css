@@ -1,2 +1,4 @@
-﻿body {
+﻿#HitsByPlayer td, #HitsByPlayer th {
+    border: 1px solid #ddd;
+    padding: 8px;
 }

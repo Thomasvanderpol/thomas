@@ -3,19 +3,29 @@
 
 
         <h1>Rik Application</h1>
-        <p>Please select the player where you want to see all the hits of all games</p>
+        <p><h2>Please select the player where you want to see all the hits of all games</h2></p>
         <br />
         <br />
         <form>
-
+            <h2>
             <select id="AllPlayers" ref="Player">
                 <option value="" disabled selected>Choose Player</option>
                 <option repeat.for="player of Players" value="${player}">${player}</option>
             </select>
+                </h2>
+            <button click.delegate="GetAllHits(Player.value)">OK</button><br /><br />
+            <h2>${player}</h2><br />
+            <table id="HitsByPlayer">
 
-            <button click.delegate="GetAllHits(Player.value)">OK</button>
-
-
+                <tr>
+                    <th><b>Aantal slagen</b></th>
+                    <th><b>Per game</b></th>
+                </tr>
+                <tr repeat.for="Hits of HitsByPlayer">
+                    <th>${Hits.allHits}</th>
+                    <th>${Hits.gameID}</th>
+                </tr>
+            </table>
 
         </form>
    
