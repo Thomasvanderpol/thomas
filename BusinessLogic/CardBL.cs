@@ -15,6 +15,18 @@ namespace BusinessLogic
             this.conn = conn;
         }
 
+        public List<string> GetCardNames(List<int> cardIDs)
+        {
+            List<string> cardNames = new List<string>();
+            foreach (int card in cardIDs)
+            {
+                string cardName = conn.getCardNameByID(card);
+                cardNames.Add(cardName);
+            }
+            return cardNames;
+
+        }
+
         public List<string> GetCards()
         {
 

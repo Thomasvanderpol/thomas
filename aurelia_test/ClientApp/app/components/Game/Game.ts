@@ -20,6 +20,7 @@ export class Game {
     public nohide: string;
     public ShowRound2: string;
     public turn: string;
+    public ShowTeams: string;
     
 
     public CurrentGameID: number;
@@ -61,9 +62,25 @@ export class Game {
         this.ShowRound2 = "none";
         this.PlayingField = "none";
         this.TrumpAcehide = "none";
+        this.ShowTeams = "none";
     }
+    public LastHit: cardplayer[];
+    public PlayersLastHit: string[];
+    public CardsLastHit: string[];
+    public async ShowLastHit() {
+        let result = await this.http.fetch('api/Hit/ShowLastHit/' + this.CurrentGameID);
+        this.LastHit = await result.json() as cardplayer[];
 
-   
+        let Result = await this.http.fetch('api/Player/GetPlayerNames/' + this.LastHit[0].playerID + '/' + this.LastHit[1].playerID + '/' + this.LastHit[2].playerID + '/' + this.LastHit[3].playerID);
+        this.PlayersLastHit = await Result.json() as Array<string>;
+
+        let REsult = await this.http.fetch('api/Game/GetCardNames/' + this.LastHit[0].cardID + '/' + this.LastHit[1].cardID + '/' + this.LastHit[2].cardID + '/' + this.LastHit[3].cardID);
+        this.CardsLastHit = await REsult.json() as Array<string>;
+
+  
+        alert(this.PlayersLastHit[0] + " had " + this.CardsLastHit[0] + "\n" + this.PlayersLastHit[1] + " had " + this.CardsLastHit[1] + "\n" + this.PlayersLastHit[2] + " had " + this.CardsLastHit[2] + "\n" + this.PlayersLastHit[3] + " had " + this.CardsLastHit[3]);
+
+ }
     public async Player1Plays(card: string) {
         await this.http.fetch('api/Hit/PlayedCard/' + this.CurrentGameID + '/' + this.playerIDs[0] + '/' + card);
         this.PlayingCard1 = card;
@@ -230,6 +247,7 @@ export class Game {
         this.turn = "Player1";
         this.PlayingField = "";
         this.ShowRound2 = "none";
+        this.ShowTeams = "";
         await this.GetTrumpAndAce();
         await this.GetTeam1();
         await this.GetTeam2();
@@ -618,5 +636,13 @@ interface Bieding {
     gameTypeName: string;
     playerID: number;
 
+}
+
+interface cardplayer {
+    cardPlayerID: number;
+    hitID: number;
+    playerID: number;
+    gameID: number;
+    cardID: number;
 }
 

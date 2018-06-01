@@ -16,6 +16,32 @@ namespace DataAccess
             this.conn = conn;
         }
 
+        public string getCardNameByID(int card)
+        {
+            try
+            {
+                string CardName = "";
+                string query = "SELECT CardName FROM Cards where CardID = " + card;
+                SqlParameter[] sqlParameters = new SqlParameter[0];
+                SqlDataReader dr = conn.executeSelectQuery(query, sqlParameters);
+
+                while (dr.Read())
+                {
+                    CardName = dr["CardName"].ToString();
+                }
+
+                return CardName;
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                conn.CloseConnection();
+            }
+        }
+
         public List<CardBO> GetCards()
         {
             try

@@ -8,5 +8,6 @@ namespace Interfaces
     public interface ICardDA
     {
         List<CardBO> GetCards();
+        string getCardNameByID(int card);
     }
 }

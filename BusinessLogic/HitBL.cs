@@ -54,6 +54,13 @@ namespace BusinessLogic
             return AllHits;
         }
 
+        public List<CardPlayerBO> ShowLastHit(int currentGameID)
+        {
+            int LastHitID = conn.GetLastHitInGame(currentGameID);
+            List<CardPlayerBO> LastHit = conn.ShowLastHit(currentGameID, LastHitID);
+            return LastHit;
+        }
+
         public void WhoWonBid(int currentGameID, string trump)
         {
             //method to get HitID

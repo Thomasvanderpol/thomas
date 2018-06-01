@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BusinessObject;
 using Factory;
 using Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -44,6 +45,13 @@ namespace RikApplication.Controllers
             List<int> PlayersInGame = gamebl.GetPlayersIDs();
             List<int> AllHitsPlayers = hitbl.GetAllHits(CurrentGameID, PlayersInGame);
             return AllHitsPlayers;
+        }
+
+        [HttpGet("[action]/{CurrentGameID}")]
+        public List<CardPlayerBO> ShowLastHit(int CurrentGameID)
+        {
+            List<CardPlayerBO> LastHit = hitbl.ShowLastHit(CurrentGameID);
+            return LastHit;
         }
     }
 }

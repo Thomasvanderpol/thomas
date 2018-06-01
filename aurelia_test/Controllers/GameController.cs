@@ -20,7 +20,7 @@ namespace RikApplication.Controllers
         {
             return View();
         }
-        
+
         //start van de game
         [HttpGet("[action]/{Player1}/{Player2}/{Player3}/{Player4}")]
         public int BeginGame(string Player1, string Player2, string Player3, string Player4)
@@ -80,7 +80,7 @@ namespace RikApplication.Controllers
         public List<string> GetBidPlayer(int Player, int CurrentGameID)
         {
             List<string> bids = new List<string>();
-            bids.Add( igameBL.GetBidPlayer(Player, CurrentGameID));
+            bids.Add(igameBL.GetBidPlayer(Player, CurrentGameID));
             return bids;
         }
 
@@ -104,7 +104,7 @@ namespace RikApplication.Controllers
         {
             return igameBL.GetChoicesPlayer(CurrentGameID);
         }
- 
+
         //update the game met daarin de troef / aas en wat voor soort spel er gespeeld wordt.
         [HttpGet("[action]/{Trump}/{Ace}/{GameTypeGame}/{CurrentGameID}")]
         public void UpdateGame(string Trump, string Ace, string GameTypeGame, int CurrentGameID)
@@ -127,7 +127,7 @@ namespace RikApplication.Controllers
         {
             igameBL.UpdateTeams(PlayerID, CurrentGameID);
         }
-        
+
         [HttpGet("[action]/{CurrentGameID}")]
         public List<string> GetTeam1(int CurrentGameID)
         {
@@ -150,8 +150,22 @@ namespace RikApplication.Controllers
             {
                 Team2PlayerNames = iplayerBL.GetPlayerNames(Team2PlayerIDs);
             }
-            
+
             return Team2PlayerNames;
         }
+
+        [HttpGet("[action]/{cardID1}/{cardID2}/{cardID3}/{cardID4}")]
+        public List<string> GetCardNames(int cardID1, int cardID2, int cardID3, int cardID4)
+        {
+            List<int> CardIDs = new List<int>();
+            CardIDs.Add(cardID1);
+            CardIDs.Add(cardID2);
+            CardIDs.Add(cardID3);
+            CardIDs.Add(cardID4);
+            List<string> cardNames = icardBL.GetCardNames(CardIDs);
+
+            return cardNames;
+        }
+
     }
 }

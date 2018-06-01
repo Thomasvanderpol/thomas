@@ -260,5 +260,38 @@ namespace DataAccess
                 conn.CloseConnection();
             }
         }
+
+        public List<CardPlayerBO> ShowLastHit(int currentGameID, int LastHitID)
+        {
+            try
+            {
+                SqlDataReader dr;
+
+                string query = "SELECT * FROM dbo.CardPlayer WHERE HitID = " + LastHitID + " AND GameID = " + currentGameID;
+                SqlParameter[] sqlParameters = new SqlParameter[0];
+                dr = conn.executeSelectQuery(query, sqlParameters);
+                List<CardPlayerBO> lastHit = new List<CardPlayerBO>();
+                while (dr.Read())
+                {
+                    CardPlayerBO cardplayer = new CardPlayerBO();
+                    cardplayer.CardPlayerID = Convert.ToInt32(dr["CardPlayerID"]);
+                    cardplayer.HitID = Convert.ToInt32(dr["HitID"]);
+                    cardplayer.PlayerID = Convert.ToInt32(dr["PlayerID"]);
+                    cardplayer.GameID = Convert.ToInt32(dr["GameID"]);
+                    cardplayer.CardID = Convert.ToInt32(dr["CardID"]);
+                    lastHit.Add(cardplayer);
+                }
+
+                return lastHit;
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                conn.CloseConnection();
+            }
+        }
     }
 }
