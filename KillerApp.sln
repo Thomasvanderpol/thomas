@@ -11,9 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessObject", "BusinessO
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLogic", "BusinessLogic\BusinessLogic.csproj", "{BF10EB15-3ABE-4984-9967-E14F17B03AB4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interfaces", "Interfaces\Interfaces.csproj", "{04F4B2D2-2186-4751-A4FB-5ABD2709974F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interfaces", "Interfaces\Interfaces.csproj", "{04F4B2D2-2186-4751-A4FB-5ABD2709974F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Factory", "Factory\Factory.csproj", "{254952BE-761A-40B5-83B3-C88AAB68C589}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Factory", "Factory\Factory.csproj", "{254952BE-761A-40B5-83B3-C88AAB68C589}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject", "TestProject\TestProject.csproj", "{FC37205A-2D85-4023-B68B-18A5C64F151F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{254952BE-761A-40B5-83B3-C88AAB68C589}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{254952BE-761A-40B5-83B3-C88AAB68C589}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{254952BE-761A-40B5-83B3-C88AAB68C589}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC37205A-2D85-4023-B68B-18A5C64F151F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC37205A-2D85-4023-B68B-18A5C64F151F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC37205A-2D85-4023-B68B-18A5C64F151F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC37205A-2D85-4023-B68B-18A5C64F151F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
