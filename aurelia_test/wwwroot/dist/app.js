@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "61c8a98a55323540b767"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "355468606eeee0a7cac9"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -21448,6 +21448,10 @@ var Game = (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
+                        if (!(Trump == Ace)) return [3 /*break*/, 1];
+                        alert("you cant ask for this ace if your trump is the same!");
+                        return [3 /*break*/, 7];
+                    case 1:
                         re = /alleen/gi;
                         Re = /misère/gi;
                         if (this.GameTypeGame.search(re) != -1) {
@@ -21458,11 +21462,11 @@ var Game = (function () {
                             Trump = "No trump";
                         }
                         return [4 /*yield*/, this.http.fetch('api/Game/UpdateGame/' + Trump + '/' + Ace + '/' + this.GameTypeGame + '/' + this.CurrentGameID)];
-                    case 1:
+                    case 2:
                         result = _a.sent();
                         alert("the cards can be played now! the player in red is on the move");
                         return [4 /*yield*/, this.setTeams()];
-                    case 2:
+                    case 3:
                         _a.sent();
                         //method to decide who's turn it is
                         //for now it is always player1
@@ -21471,15 +21475,16 @@ var Game = (function () {
                         this.ShowRound2 = "none";
                         this.ShowTeams = "";
                         return [4 /*yield*/, this.GetTrumpAndAce()];
-                    case 3:
-                        _a.sent();
-                        return [4 /*yield*/, this.GetTeam1()];
                     case 4:
                         _a.sent();
-                        return [4 /*yield*/, this.GetTeam2()];
+                        return [4 /*yield*/, this.GetTeam1()];
                     case 5:
                         _a.sent();
-                        return [2 /*return*/];
+                        return [4 /*yield*/, this.GetTeam2()];
+                    case 6:
+                        _a.sent();
+                        _a.label = 7;
+                    case 7: return [2 /*return*/];
                 }
             });
         });

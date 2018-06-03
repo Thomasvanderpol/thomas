@@ -230,27 +230,32 @@ export class Game {
     }
     public async StartGame(Trump: string, Ace: string) {
 
-        var re = /alleen/gi;
-        var Re = /misère/gi;
-        if (this.GameTypeGame.search(re) != -1) {
-            Ace = "No ace";
+        if (Trump == Ace) {
+            alert("you cant ask for this ace if your trump is the same!");
         }
-        if (this.GameTypeGame.search(Re) != -1) {
-            Ace = "No ace";
-            Trump = "No trump";
+        else {
+            var re = /alleen/gi;
+            var Re = /misère/gi;
+            if (this.GameTypeGame.search(re) != -1) {
+                Ace = "No ace";
+            }
+            if (this.GameTypeGame.search(Re) != -1) {
+                Ace = "No ace";
+                Trump = "No trump";
+            }
+            let result = await this.http.fetch('api/Game/UpdateGame/' + Trump + '/' + Ace + '/' + this.GameTypeGame + '/' + this.CurrentGameID);
+            alert("the cards can be played now! the player in red is on the move");
+            await this.setTeams();
+            //method to decide who's turn it is
+            //for now it is always player1
+            this.turn = "Player1";
+            this.PlayingField = "";
+            this.ShowRound2 = "none";
+            this.ShowTeams = "";
+            await this.GetTrumpAndAce();
+            await this.GetTeam1();
+            await this.GetTeam2();
         }
-        let result = await this.http.fetch('api/Game/UpdateGame/' + Trump + '/' + Ace + '/' + this.GameTypeGame + '/' + this.CurrentGameID);
-        alert("the cards can be played now! the player in red is on the move");
-        await this.setTeams();
-        //method to decide who's turn it is
-        //for now it is always player1
-        this.turn = "Player1";
-        this.PlayingField = "";
-        this.ShowRound2 = "none";
-        this.ShowTeams = "";
-        await this.GetTrumpAndAce();
-        await this.GetTeam1();
-        await this.GetTeam2();
        
     }
     public Team1: string[];
