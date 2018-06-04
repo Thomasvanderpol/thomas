@@ -21,7 +21,7 @@ export class Game {
     public ShowRound2: string;
     public turn: string;
     public ShowTeams: string;
-    
+
 
     public CurrentGameID: number;
     public players: string[];
@@ -77,10 +77,10 @@ export class Game {
         let REsult = await this.http.fetch('api/Game/GetCardNames/' + this.LastHit[0].cardID + '/' + this.LastHit[1].cardID + '/' + this.LastHit[2].cardID + '/' + this.LastHit[3].cardID);
         this.CardsLastHit = await REsult.json() as Array<string>;
 
-  
+
         alert(this.PlayersLastHit[0] + " had " + this.CardsLastHit[0] + "\n" + this.PlayersLastHit[1] + " had " + this.CardsLastHit[1] + "\n" + this.PlayersLastHit[2] + " had " + this.CardsLastHit[2] + "\n" + this.PlayersLastHit[3] + " had " + this.CardsLastHit[3]);
 
- }
+    }
     public async Player1Plays(card: string) {
         await this.http.fetch('api/Hit/PlayedCard/' + this.CurrentGameID + '/' + this.playerIDs[0] + '/' + card);
         this.PlayingCard1 = card;
@@ -92,7 +92,7 @@ export class Game {
             await this.GetTeam1();
             await this.GetTeam2();
         }
-        
+
         if (this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "") {
             await this.http.fetch('api/Hit/WhoWonBid/' + this.CurrentGameID);
             await this.http.fetch('api/Hit/Delay');
@@ -122,7 +122,6 @@ export class Game {
             this.PlayingCard3 = "";
             this.PlayingCard4 = "";
             this.GetAllHits();
-            // await this.http.fetch('api/Hit/WhoWonBid/' + this.PlayingCard1 + '/' + this.PlayingCard2 + '/' + this.PlayingCard3 + '/' + this.PlayingCard4);
         }
 
     }
@@ -145,7 +144,6 @@ export class Game {
             this.PlayingCard3 = "";
             this.PlayingCard4 = "";
             this.GetAllHits();
-            //await this.http.fetch('api/Hit/WhoWonBid/' + this.PlayingCard1 + '/' + this.PlayingCard2 + '/' + this.PlayingCard3 + '/' + this.PlayingCard4);
         }
 
     }
@@ -167,7 +165,6 @@ export class Game {
             this.PlayingCard3 = "";
             this.PlayingCard4 = "";
             this.GetAllHits();
-            // await this.http.fetch('api/Hit/WhoWonBid/' + this.PlayingCard1 + '/' + this.PlayingCard2 + '/' + this.PlayingCard3 + '/' + this.PlayingCard4);
         }
 
     }
@@ -176,6 +173,7 @@ export class Game {
     public slagenSpeler2: number;
     public slagenSpeler3: number;
     public slagenSpeler4: number;
+    public TeamWon: string[];
 
     public async GetAllHits() {
         let result = await this.http.fetch('api/Hit/GetAllHits/' + this.CurrentGameID);
@@ -184,6 +182,22 @@ export class Game {
         this.slagenSpeler2 = this.slagenSpelers[1];
         this.slagenSpeler3 = this.slagenSpelers[2];
         this.slagenSpeler4 = this.slagenSpelers[3];
+
+        if (this.CardsPlayer1.length == 0 && this.CardsPlayer2.length == 0 && this.CardsPlayer3.length == 0 && this.CardsPlayer4.length == 0) {
+            //wo won the game
+            let result = await this.http.fetch('api/Game/WhoWonGame/' + this.CurrentGameID);
+            this.TeamWon = await result.json() as Array<string>;
+            if (this.TeamWon.length == 1) {
+                alert("Gongrats " + this.TeamWon[0] + "! you have won the game!");
+            }
+            else if (this.TeamWon.length == 2) {
+                alert("Gongrats " + this.TeamWon[0] + " and " + this.TeamWon[1] + "! you have won the game!");
+            }
+            else {
+                alert("Gongrats " + this.TeamWon[0] + ", " + this.TeamWon[1] + " and " + this.TeamWon[2] + "! you have won the game!");
+            }
+            
+        }
     }
 
     public GetIDPlayer() {
@@ -203,7 +217,7 @@ export class Game {
     public async setTeams() {
         let playerid = this.GetIDPlayer();
         await this.http.fetch('api/Game/SetTeam/' + this.CurrentGameID + '/' + playerid + '/' + this.GameTypeGame);
-        
+
     }
 
     public askedAce: string;
@@ -230,8 +244,10 @@ export class Game {
     }
     public async StartGame(Trump: string, Ace: string) {
 
-        if (Trump == Ace) {
+        if ((Trump == Ace) && (this.GameTypeGame != "misère")) {
+
             alert("you cant ask for this ace if your trump is the same!");
+
         }
         else {
             var re = /alleen/gi;
@@ -256,7 +272,7 @@ export class Game {
             await this.GetTeam1();
             await this.GetTeam2();
         }
-       
+
     }
     public Team1: string[];
     public Team2: string[];
@@ -291,7 +307,7 @@ export class Game {
 
         this.TrumpAce = [];
         this.Trump = "";
-        this.Ace = ""; 
+        this.Ace = "";
         this.CurrentGameID = 0;
 
 
@@ -389,7 +405,7 @@ export class Game {
         if (passes == 3) {
 
             //methode aanroepen die de hoogste bieding uithaalt, bij pas is volgende speler aan de beurt.
-            
+
             await this.GetHighestBidInGame();
             if (this.GameTypeGame == "pas") {
                 //kijk welke speler nog niks heeft ingevoerd
@@ -417,7 +433,7 @@ export class Game {
                 //method to start voorbereidingsronde 2!
                 this.nohide = "none";
                 this.ShowRound2 = "";
-                
+
 
                 for (var i = 0; i < 4; i++) {
                     if (this.GameTypePlayer == this.playerIDs[i]) {
@@ -436,7 +452,7 @@ export class Game {
                     }
                 }
 
-              
+
                 var Re = /alleen/gi;
                 var RE = /misère/gi;
                 var re = /beter/gi;
@@ -626,7 +642,7 @@ export class Game {
     }
     public HighestBid: Bieding;
     public Bids: Bieding[];
- 
+
 
     //alle biedingen in de game
     public async GetBidsCurrentGame() {

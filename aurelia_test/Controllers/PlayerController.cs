@@ -14,7 +14,6 @@ namespace RikApplication.Controllers
     public class PlayerController : Controller
     {
         IPlayerBL bl = BussinessLayerFactory.CreatePlayerBL();
-        IPlayerBL testbl = BussinessLayerFactory.CreateTestPlayerBL();
         public IActionResult Index()
         {
             return View();
@@ -25,7 +24,7 @@ namespace RikApplication.Controllers
         {
             bl.AddPlayer(player, 2.00);
         }
-        
+
         [HttpGet("[action]")]
         public List<string> allplayers()
         {
@@ -40,9 +39,11 @@ namespace RikApplication.Controllers
             playerids.Add(player2ID);
             playerids.Add(player3ID);
             playerids.Add(player4ID);
-            //return testbl.GetPlayerNames(playerids);
+
+
             return bl.GetPlayerNames(playerids);
+
         }
-        
+
     }
 }

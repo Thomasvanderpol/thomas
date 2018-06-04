@@ -25,5 +25,6 @@ namespace Interfaces
 
         void SetSecondTeam(int playerID, int CurrentGameID);
         List<int> GetTeam(int currentGameID, int bid);
+        int GetHitsByGame(int currentGameID, int playerid);
     }
 }

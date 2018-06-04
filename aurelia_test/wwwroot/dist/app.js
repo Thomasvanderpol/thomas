@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "355468606eeee0a7cac9"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "092fb312697163d16765"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -21362,21 +21362,39 @@ var Game = (function () {
     };
     Game.prototype.GetAllHits = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var result, _a;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var result, _a, result_1, _b;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
                     case 0: return [4 /*yield*/, this.http.fetch('api/Hit/GetAllHits/' + this.CurrentGameID)];
                     case 1:
-                        result = _b.sent();
+                        result = _c.sent();
                         _a = this;
                         return [4 /*yield*/, result.json()];
                     case 2:
-                        _a.slagenSpelers = (_b.sent());
+                        _a.slagenSpelers = (_c.sent());
                         this.slagenSpeler1 = this.slagenSpelers[0];
                         this.slagenSpeler2 = this.slagenSpelers[1];
                         this.slagenSpeler3 = this.slagenSpelers[2];
                         this.slagenSpeler4 = this.slagenSpelers[3];
-                        return [2 /*return*/];
+                        if (!(this.CardsPlayer1.length == 0 && this.CardsPlayer2.length == 0 && this.CardsPlayer3.length == 0 && this.CardsPlayer4.length == 0)) return [3 /*break*/, 5];
+                        return [4 /*yield*/, this.http.fetch('api/Game/WhoWonGame/' + this.CurrentGameID)];
+                    case 3:
+                        result_1 = _c.sent();
+                        _b = this;
+                        return [4 /*yield*/, result_1.json()];
+                    case 4:
+                        _b.TeamWon = (_c.sent());
+                        if (this.TeamWon.length == 1) {
+                            alert("Gongrats " + this.TeamWon[0] + "! you have won the game!");
+                        }
+                        else if (this.TeamWon.length == 2) {
+                            alert("Gongrats " + this.TeamWon[0] + " and " + this.TeamWon[1] + "! you have won the game!");
+                        }
+                        else {
+                            alert("Gongrats " + this.TeamWon[0] + ", " + this.TeamWon[1] + " and " + this.TeamWon[2] + "! you have won the game!");
+                        }
+                        _c.label = 5;
+                    case 5: return [2 /*return*/];
                 }
             });
         });
@@ -21448,7 +21466,7 @@ var Game = (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        if (!(Trump == Ace)) return [3 /*break*/, 1];
+                        if (!((Trump == Ace) && (this.GameTypeGame != "misère"))) return [3 /*break*/, 1];
                         alert("you cant ask for this ace if your trump is the same!");
                         return [3 /*break*/, 7];
                     case 1:

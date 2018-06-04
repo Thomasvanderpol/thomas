@@ -2,7 +2,7 @@
 using DataAccess;
 using Interfaces;
 using System;
-using TestProject;
+
 
 namespace Factory
 {
@@ -20,12 +20,7 @@ namespace Factory
             IPlayerDA da = new PlayerDA(db);
             return new PlayerBL(da);
         }
-        static public TestPlayerBL CreateTestPlayerBL()
-        {
-            IDb db = new DbConnection();
-            IPlayerDA da = new PlayerDA(db);
-            return new TestPlayerBL(da);
-        }
+    
 
         static public GameBL CreateGameBL()
         {

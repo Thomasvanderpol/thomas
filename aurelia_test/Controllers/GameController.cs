@@ -166,6 +166,13 @@ namespace RikApplication.Controllers
 
             return cardNames;
         }
-
+        [HttpGet("[action]/{currentGameID}")]
+        public List<string> WhoWonGame(int currentGameID)
+        {
+            List<int> WinTeam = igameBL.WhoWonGAme(currentGameID);
+            List<string> WinTeamNames = iplayerBL.GetPlayerNames(WinTeam);
+            return WinTeamNames;
+        }
+        
     }
 }

@@ -101,8 +101,11 @@ namespace DataAccess
             {
                 SqlDataReader dr;
 
-                string query = "SELECT COUNT(HitID)AS AantalSlagen , GameID FROM dbo.Hit WHERE WinPlayerID = " + playerID + " GROUP BY GameID";
+                string query = "SELECT COUNT(HitID)AS AantalSlagen , GameID FROM dbo.Hit WHERE WinPlayerID = " + @playerID + " GROUP BY GameID";
                 SqlParameter[] sqlParameters = new SqlParameter[0];
+                sqlParameters[0] = new SqlParameter("@playerID", SqlDbType.Int);
+                sqlParameters[0].Value = playerID;
+
                 dr = conn.executeSelectQuery(query, sqlParameters);
                 List<AllHitsBO> AllHits = new List<AllHitsBO>();
                 while (dr.Read())

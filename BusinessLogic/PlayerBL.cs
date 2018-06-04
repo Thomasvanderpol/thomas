@@ -3,7 +3,7 @@ using DataAccess;
 using Interfaces;
 using System;
 using System.Collections.Generic;
-using TestProject;
+
 
 namespace BusinessLogic
 {
@@ -67,12 +67,8 @@ namespace BusinessLogic
 
         public List<string> GetPlayers() 
         {
-            //in stead of conn.GetPlayers, use test getplayers
-            //test
-            TestClass test = new TestClass();
-            return test.Allplayers();
-            //normal
-            /*try
+       
+            try
             {
                 foreach (PlayerBO player in conn.GetPlayers())
                 {
@@ -85,7 +81,7 @@ namespace BusinessLogic
             catch
             {
                 throw;
-            }*/
+            }
         }
 
 

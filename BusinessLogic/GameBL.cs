@@ -227,5 +227,69 @@ namespace BusinessLogic
         {
             return conn.GetTeam(currentGameID, 0);
         }
+
+        public List<int> WhoWonGAme(int currentGameID)
+        {
+            //wat voor spel is er gespeeld
+            BidBO Gameplay = GetHighestBidInGame(currentGameID);
+
+            //wat is het doel voor elk spel
+            int SlagenDoel;
+            if (Gameplay.GameTypeName.Contains("rik") || Gameplay.GameTypeName.Contains("8"))
+            {
+                SlagenDoel = 8;
+            }
+
+            else if (Gameplay.GameTypeName.Contains("9"))
+            {
+                SlagenDoel = 9;
+            }
+            else if (Gameplay.GameTypeName.Contains("alleen"))
+            {
+                string sub = Gameplay.GameTypeName.Substring(0, 2);
+                SlagenDoel = Convert.ToInt32(sub);
+            }
+            else
+            {
+                SlagenDoel = 0;
+            }
+
+            //welke spelers doen er mee en in welk team spelen ze
+            List<int> Team1 = GetTeam1(currentGameID);
+            List<int> Team2 = GetTeam2(currentGameID);
+            int totaalTeam1 = 0;
+            int totaalTeam2 = 0;
+            foreach (int playerid in Team1)
+            {
+                totaalTeam1 += conn.GetHitsByGame(currentGameID, playerid);                
+            }
+            foreach (int playerid in Team2)
+            {
+                totaalTeam2 += conn.GetHitsByGame(currentGameID, playerid);
+            }
+
+           
+
+            if (SlagenDoel == 0)
+            {
+                if (SlagenDoel == totaalTeam1)
+                {
+                    return Team1;
+                }
+                else
+                {
+                    return Team2;
+                }
+            }
+            else if (totaalTeam1 >= SlagenDoel)
+            {
+                return Team1;
+            }
+            else
+            {
+                return Team2;
+            }
+            
+        }
     }
 }

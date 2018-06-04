@@ -539,5 +539,34 @@ namespace DataAccess
             }
         }
 
+        public int GetHitsByGame(int currentGameID, int playerid)
+        {
+            try
+            {
+              
+                SqlDataReader dr;
+                int Hitcounts = 0;
+                string query = "SELECT COUNT(HitID) AS AantalSlagen FROM Hit WHERE GameID = " + currentGameID + " AND WinPlayerID = " + playerid;
+                SqlParameter[] sqlParameters = new SqlParameter[0];
+                dr = conn.executeSelectQuery(query, sqlParameters);
+
+                while (dr.Read())
+                {
+
+                    Hitcounts = Convert.ToInt32(dr["AantalSlagen"]);
+
+                }
+
+                return Hitcounts;
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                conn.CloseConnection();
+            }
+        }
     }
 }
