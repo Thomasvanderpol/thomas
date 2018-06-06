@@ -8,5 +8,14 @@ namespace BusinessObject
     {
         public string GameTypeName { get; set; }
         public int LevelBidsID { get; set; } 
+        public BidLevelBO()
+        {
+
+        }
+        public BidLevelBO(int levelBidsID, string gameTypeName)
+        {
+            GameTypeName = gameTypeName;
+            LevelBidsID = levelBidsID;
+        }
     }
 }

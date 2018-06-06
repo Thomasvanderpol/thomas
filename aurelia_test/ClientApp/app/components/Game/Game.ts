@@ -86,6 +86,7 @@ export class Game {
         this.PlayingCard1 = card;
         var index = this.CardsPlayer1.indexOf(card);
         this.CardsPlayer1.splice(index, 1);
+        this.turn = "Player2";
 
         if (card == this.askedAce) {
             await this.http.fetch('api/Game/UpdateTeams/' + this.playerIDs[0] + '/' + this.CurrentGameID);
@@ -94,7 +95,8 @@ export class Game {
         }
 
         if (this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "") {
-            await this.http.fetch('api/Hit/WhoWonBid/' + this.CurrentGameID);
+            let result = await this.http.fetch('api/Hit/WhoWonBid/' + this.CurrentGameID);
+            this.PlayerIDWon = await result.json() as number;
             await this.http.fetch('api/Hit/Delay');
             this.PlayingCard1 = "";
             this.PlayingCard2 = "";
@@ -109,13 +111,16 @@ export class Game {
         this.PlayingCard2 = card;
         var index = this.CardsPlayer2.indexOf(card);
         this.CardsPlayer2.splice(index, 1);
+        this.turn = "Player3";
+
         if (card == this.askedAce) {
             await this.http.fetch('api/Game/UpdateTeams/' + this.playerIDs[1] + '/' + this.CurrentGameID);
             await this.GetTeam1();
             await this.GetTeam2();
         }
         if (this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "") {
-            await this.http.fetch('api/Hit/WhoWonBid/' + this.CurrentGameID);
+            let result = await this.http.fetch('api/Hit/WhoWonBid/' + this.CurrentGameID);
+            this.PlayerIDWon = await result.json() as number;
             await this.http.fetch('api/Hit/Delay');
             this.PlayingCard1 = "";
             this.PlayingCard2 = "";
@@ -130,6 +135,8 @@ export class Game {
         this.PlayingCard3 = card;
         var index = this.CardsPlayer3.indexOf(card);
         this.CardsPlayer3.splice(index, 1);
+        this.turn = "Player4";
+
         if (card == this.askedAce) {
             await this.http.fetch('api/Game/UpdateTeams/' + this.playerIDs[2] + '/' + this.CurrentGameID);
             await this.GetTeam1();
@@ -137,7 +144,8 @@ export class Game {
             this.GetAllHits();
         }
         if (this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "") {
-            await this.http.fetch('api/Hit/WhoWonBid/' + this.CurrentGameID);
+            let result = await this.http.fetch('api/Hit/WhoWonBid/' + this.CurrentGameID);
+            this.PlayerIDWon = await result.json() as number;
             await this.http.fetch('api/Hit/Delay');
             this.PlayingCard1 = "";
             this.PlayingCard2 = "";
@@ -152,13 +160,16 @@ export class Game {
         this.PlayingCard4 = card;
         var index = this.CardsPlayer4.indexOf(card);
         this.CardsPlayer4.splice(index, 1);
+        this.turn = "Player1";
+
         if (card == this.askedAce) {
             await this.http.fetch('api/Game/UpdateTeams/' + this.playerIDs[3] + '/' + this.CurrentGameID);
             await this.GetTeam1();
             await this.GetTeam2();
         }
         if (this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "") {
-            await this.http.fetch('api/Hit/WhoWonBid/' + this.CurrentGameID);
+            let result = await this.http.fetch('api/Hit/WhoWonBid/' + this.CurrentGameID);
+            this.PlayerIDWon = await result.json() as number;
             await this.http.fetch('api/Hit/Delay');
             this.PlayingCard1 = "";
             this.PlayingCard2 = "";
@@ -168,6 +179,7 @@ export class Game {
         }
 
     }
+    public PlayerIDWon: number;
     public slagenSpelers: number[];
     public slagenSpeler1: number;
     public slagenSpeler2: number;
@@ -243,36 +255,85 @@ export class Game {
 
     }
     public async StartGame(Trump: string, Ace: string) {
-
-        if ((Trump == Ace) && (this.GameTypeGame != "misère")) {
-
-            alert("you cant ask for this ace if your trump is the same!");
-
+        //zet klaveren om naar KZ enzovoort
+       /* var aceCard;
+        if (Ace == "Clubs") {
+            aceCard = "KZ";
         }
-        else {
-            var re = /alleen/gi;
-            var Re = /misère/gi;
-            if (this.GameTypeGame.search(re) != -1) {
-                Ace = "No ace";
-            }
-            if (this.GameTypeGame.search(Re) != -1) {
-                Ace = "No ace";
-                Trump = "No trump";
-            }
-            let result = await this.http.fetch('api/Game/UpdateGame/' + Trump + '/' + Ace + '/' + this.GameTypeGame + '/' + this.CurrentGameID);
-            alert("the cards can be played now! the player in red is on the move");
-            await this.setTeams();
-            //method to decide who's turn it is
-            //for now it is always player1
-            this.turn = "Player1";
-            this.PlayingField = "";
-            this.ShowRound2 = "none";
-            this.ShowTeams = "";
-            await this.GetTrumpAndAce();
-            await this.GetTeam1();
-            await this.GetTeam2();
+        if (Ace == "Hearts") {
+            aceCard = "HZ";
         }
+        if (Ace == "Diamonds") {
+            aceCard = "RZ";
+        }
+        if (Ace == "Spades") {
+            aceCard = "SZ";
+        }
+        var WelinHand = false;
+        //check of de speler die de aas vraagt de aas al in handen heeft. zo jaa geef melding. nee: doe niks
+        if (this.turn == "Player1") {
+            for (var i = 0; i < this.CardsPlayer1.length; i++) {
+                if (this.CardsPlayer1[i].search(aceCard)) {
+                    WelinHand = true;
+                }
+            }
+        }
+        else if (this.turn == "Player2") {
+            for (var i = 0; i < this.CardsPlayer2.length; i++) {
+                if (this.CardsPlayer2[i].search(aceCard)) {
+                    WelinHand = true;
+                }
+            }
+        }
+        else if (this.turn == "Player3") {
+            for (var i = 0; i < this.CardsPlayer3.length; i++) {
+                if (this.CardsPlayer3[i].search(aceCard)) {
+                    WelinHand = true;
+                }
+            }
+        }
+        else if (this.turn == "Player4") {
+            for (var i = 0; i < this.CardsPlayer4.length; i++) {
+                if (this.CardsPlayer4[i].search(aceCard)) {
+                    WelinHand = true;
+                }
+            }
+        }
+        if (WelinHand == true) {
+            alert("You have the ace of" + Ace + " in your hand! Chose another ace");
+        }*/
+        //else {
 
+            if ((Trump == Ace) && (this.GameTypeGame != "misère")) {
+
+                alert("you cant ask for this ace if your trump is the same!");
+
+            }
+
+            else {
+                var re = /alleen/gi;
+                var Re = /misère/gi;
+                if (this.GameTypeGame.search(re) != -1) {
+                    Ace = "No ace";
+                }
+                if (this.GameTypeGame.search(Re) != -1) {
+                    Ace = "No ace";
+                    Trump = "No trump";
+                }
+                let result = await this.http.fetch('api/Game/UpdateGame/' + Trump + '/' + Ace + '/' + this.GameTypeGame + '/' + this.CurrentGameID);
+                alert("the cards can be played now! the player in red is on the move");
+                await this.setTeams();
+                //method to decide who's turn it is
+                //for now it is always player1
+                this.turn = "Player1";
+                this.PlayingField = "";
+                this.ShowRound2 = "none";
+                this.ShowTeams = "";
+                await this.GetTrumpAndAce();
+                await this.GetTeam1();
+                await this.GetTeam2();
+            
+        }
     }
     public Team1: string[];
     public Team2: string[];

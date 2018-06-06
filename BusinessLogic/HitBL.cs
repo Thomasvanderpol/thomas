@@ -66,7 +66,7 @@ namespace BusinessLogic
             return LastHit;
         }
 
-        public void WhoWonBid(int currentGameID, string trump)
+        public int WhoWonBid(int currentGameID, string trump)
         {
             //method to get HitID
             int hitID = conn.GetLastHitInGame(currentGameID);
@@ -135,7 +135,7 @@ namespace BusinessLogic
 
             //method to set wonplayerid in Hit table
             conn.SetWinPlayerID(wonPlayerID, currentGameID, hitID);
-
+            return wonPlayerID;
         }
 
         private string GetTrumpChar(string trump)

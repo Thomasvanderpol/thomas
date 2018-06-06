@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "092fb312697163d16765"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "67ee551f71be9672939f"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -21197,165 +21197,185 @@ var Game = (function () {
     };
     Game.prototype.Player1Plays = function (card) {
         return __awaiter(this, void 0, void 0, function () {
-            var index;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var index, result, _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0: return [4 /*yield*/, this.http.fetch('api/Hit/PlayedCard/' + this.CurrentGameID + '/' + this.playerIDs[0] + '/' + card)];
                     case 1:
-                        _a.sent();
+                        _b.sent();
                         this.PlayingCard1 = card;
                         index = this.CardsPlayer1.indexOf(card);
                         this.CardsPlayer1.splice(index, 1);
+                        this.turn = "Player2";
                         if (!(card == this.askedAce)) return [3 /*break*/, 5];
                         return [4 /*yield*/, this.http.fetch('api/Game/UpdateTeams/' + this.playerIDs[0] + '/' + this.CurrentGameID)];
                     case 2:
-                        _a.sent();
+                        _b.sent();
                         return [4 /*yield*/, this.GetTeam1()];
                     case 3:
-                        _a.sent();
+                        _b.sent();
                         return [4 /*yield*/, this.GetTeam2()];
                     case 4:
-                        _a.sent();
-                        _a.label = 5;
+                        _b.sent();
+                        _b.label = 5;
                     case 5:
-                        if (!(this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "")) return [3 /*break*/, 8];
+                        if (!(this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "")) return [3 /*break*/, 9];
                         return [4 /*yield*/, this.http.fetch('api/Hit/WhoWonBid/' + this.CurrentGameID)];
                     case 6:
-                        _a.sent();
-                        return [4 /*yield*/, this.http.fetch('api/Hit/Delay')];
+                        result = _b.sent();
+                        _a = this;
+                        return [4 /*yield*/, result.json()];
                     case 7:
-                        _a.sent();
+                        _a.PlayerIDWon = (_b.sent());
+                        return [4 /*yield*/, this.http.fetch('api/Hit/Delay')];
+                    case 8:
+                        _b.sent();
                         this.PlayingCard1 = "";
                         this.PlayingCard2 = "";
                         this.PlayingCard3 = "";
                         this.PlayingCard4 = "";
                         this.GetAllHits();
-                        _a.label = 8;
-                    case 8: return [2 /*return*/];
+                        _b.label = 9;
+                    case 9: return [2 /*return*/];
                 }
             });
         });
     };
     Game.prototype.Player2Plays = function (card) {
         return __awaiter(this, void 0, void 0, function () {
-            var index;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var index, result, _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0: return [4 /*yield*/, this.http.fetch('api/Hit/PlayedCard/' + this.CurrentGameID + '/' + this.playerIDs[1] + '/' + card)];
                     case 1:
-                        _a.sent();
+                        _b.sent();
                         this.PlayingCard2 = card;
                         index = this.CardsPlayer2.indexOf(card);
                         this.CardsPlayer2.splice(index, 1);
+                        this.turn = "Player3";
                         if (!(card == this.askedAce)) return [3 /*break*/, 5];
                         return [4 /*yield*/, this.http.fetch('api/Game/UpdateTeams/' + this.playerIDs[1] + '/' + this.CurrentGameID)];
                     case 2:
-                        _a.sent();
+                        _b.sent();
                         return [4 /*yield*/, this.GetTeam1()];
                     case 3:
-                        _a.sent();
+                        _b.sent();
                         return [4 /*yield*/, this.GetTeam2()];
                     case 4:
-                        _a.sent();
-                        _a.label = 5;
+                        _b.sent();
+                        _b.label = 5;
                     case 5:
-                        if (!(this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "")) return [3 /*break*/, 8];
+                        if (!(this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "")) return [3 /*break*/, 9];
                         return [4 /*yield*/, this.http.fetch('api/Hit/WhoWonBid/' + this.CurrentGameID)];
                     case 6:
-                        _a.sent();
-                        return [4 /*yield*/, this.http.fetch('api/Hit/Delay')];
+                        result = _b.sent();
+                        _a = this;
+                        return [4 /*yield*/, result.json()];
                     case 7:
-                        _a.sent();
+                        _a.PlayerIDWon = (_b.sent());
+                        return [4 /*yield*/, this.http.fetch('api/Hit/Delay')];
+                    case 8:
+                        _b.sent();
                         this.PlayingCard1 = "";
                         this.PlayingCard2 = "";
                         this.PlayingCard3 = "";
                         this.PlayingCard4 = "";
                         this.GetAllHits();
-                        _a.label = 8;
-                    case 8: return [2 /*return*/];
+                        _b.label = 9;
+                    case 9: return [2 /*return*/];
                 }
             });
         });
     };
     Game.prototype.Player3Plays = function (card) {
         return __awaiter(this, void 0, void 0, function () {
-            var index;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var index, result, _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0: return [4 /*yield*/, this.http.fetch('api/Hit/PlayedCard/' + this.CurrentGameID + '/' + this.playerIDs[2] + '/' + card)];
                     case 1:
-                        _a.sent();
+                        _b.sent();
                         this.PlayingCard3 = card;
                         index = this.CardsPlayer3.indexOf(card);
                         this.CardsPlayer3.splice(index, 1);
+                        this.turn = "Player4";
                         if (!(card == this.askedAce)) return [3 /*break*/, 5];
                         return [4 /*yield*/, this.http.fetch('api/Game/UpdateTeams/' + this.playerIDs[2] + '/' + this.CurrentGameID)];
                     case 2:
-                        _a.sent();
+                        _b.sent();
                         return [4 /*yield*/, this.GetTeam1()];
                     case 3:
-                        _a.sent();
+                        _b.sent();
                         return [4 /*yield*/, this.GetTeam2()];
                     case 4:
-                        _a.sent();
+                        _b.sent();
                         this.GetAllHits();
-                        _a.label = 5;
+                        _b.label = 5;
                     case 5:
-                        if (!(this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "")) return [3 /*break*/, 8];
+                        if (!(this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "")) return [3 /*break*/, 9];
                         return [4 /*yield*/, this.http.fetch('api/Hit/WhoWonBid/' + this.CurrentGameID)];
                     case 6:
-                        _a.sent();
-                        return [4 /*yield*/, this.http.fetch('api/Hit/Delay')];
+                        result = _b.sent();
+                        _a = this;
+                        return [4 /*yield*/, result.json()];
                     case 7:
-                        _a.sent();
+                        _a.PlayerIDWon = (_b.sent());
+                        return [4 /*yield*/, this.http.fetch('api/Hit/Delay')];
+                    case 8:
+                        _b.sent();
                         this.PlayingCard1 = "";
                         this.PlayingCard2 = "";
                         this.PlayingCard3 = "";
                         this.PlayingCard4 = "";
                         this.GetAllHits();
-                        _a.label = 8;
-                    case 8: return [2 /*return*/];
+                        _b.label = 9;
+                    case 9: return [2 /*return*/];
                 }
             });
         });
     };
     Game.prototype.Player4Plays = function (card) {
         return __awaiter(this, void 0, void 0, function () {
-            var index;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var index, result, _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0: return [4 /*yield*/, this.http.fetch('api/Hit/PlayedCard/' + this.CurrentGameID + '/' + this.playerIDs[3] + '/' + card)];
                     case 1:
-                        _a.sent();
+                        _b.sent();
                         this.PlayingCard4 = card;
                         index = this.CardsPlayer4.indexOf(card);
                         this.CardsPlayer4.splice(index, 1);
+                        this.turn = "Player1";
                         if (!(card == this.askedAce)) return [3 /*break*/, 5];
                         return [4 /*yield*/, this.http.fetch('api/Game/UpdateTeams/' + this.playerIDs[3] + '/' + this.CurrentGameID)];
                     case 2:
-                        _a.sent();
+                        _b.sent();
                         return [4 /*yield*/, this.GetTeam1()];
                     case 3:
-                        _a.sent();
+                        _b.sent();
                         return [4 /*yield*/, this.GetTeam2()];
                     case 4:
-                        _a.sent();
-                        _a.label = 5;
+                        _b.sent();
+                        _b.label = 5;
                     case 5:
-                        if (!(this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "")) return [3 /*break*/, 8];
+                        if (!(this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "")) return [3 /*break*/, 9];
                         return [4 /*yield*/, this.http.fetch('api/Hit/WhoWonBid/' + this.CurrentGameID)];
                     case 6:
-                        _a.sent();
-                        return [4 /*yield*/, this.http.fetch('api/Hit/Delay')];
+                        result = _b.sent();
+                        _a = this;
+                        return [4 /*yield*/, result.json()];
                     case 7:
-                        _a.sent();
+                        _a.PlayerIDWon = (_b.sent());
+                        return [4 /*yield*/, this.http.fetch('api/Hit/Delay')];
+                    case 8:
+                        _b.sent();
                         this.PlayingCard1 = "";
                         this.PlayingCard2 = "";
                         this.PlayingCard3 = "";
                         this.PlayingCard4 = "";
                         this.GetAllHits();
-                        _a.label = 8;
-                    case 8: return [2 /*return*/];
+                        _b.label = 9;
+                    case 9: return [2 /*return*/];
                 }
             });
         });

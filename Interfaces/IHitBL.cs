@@ -8,7 +8,7 @@ namespace Interfaces
     public interface IHitBL
     {
         void AddCard(int currentGameID, int playerID, string cardPlayer);
-        void WhoWonBid(int currentGameID, string trump);
+        int WhoWonBid(int currentGameID, string trump);
         List<int> GetAllHits(int currentGameID, List<int> PlayersInGame);
         List<CardPlayerBO> ShowLastHit(int currentGameID);
         List<AllHitsBO> GetAllHitsByPlayer(int playerID);

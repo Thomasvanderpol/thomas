@@ -27,12 +27,12 @@ namespace RikApplication.Controllers
         }
 
         [HttpGet("[action]/{CurrentGameID}")]
-        public void WhoWonBid(int CurrentGameID)
+        public int WhoWonBid(int CurrentGameID)
         {
             //method to get Trump in current game
             List<string> TrumpAndAce = gamebl.GetTrumpAce(CurrentGameID);
             //methode in busines logic aanroepen met lijst van de kaarten erin.
-            hitbl.WhoWonBid(CurrentGameID, TrumpAndAce[0]);
+            return hitbl.WhoWonBid(CurrentGameID, TrumpAndAce[0]);
         }
         [HttpGet("[action]/{CurrentGameID}/{PlayerID}/{Card}")]
         public void PlayedCard(int CurrentGameID, int PlayerID, string Card)
