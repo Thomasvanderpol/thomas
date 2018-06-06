@@ -254,55 +254,61 @@ export class Game {
         }
 
     }
+    public aceCard: string;
     public async StartGame(Trump: string, Ace: string) {
         //zet klaveren om naar KZ enzovoort
-       /* var aceCard;
+        
         if (Ace == "Clubs") {
-            aceCard = "KZ";
+            this.aceCard = "KZ";
         }
-        if (Ace == "Hearts") {
-            aceCard = "HZ";
+        else if (Ace == "Hearts") {
+            this.aceCard = "HZ";
         }
-        if (Ace == "Diamonds") {
-            aceCard = "RZ";
+        else if (Ace == "Diamonds") {
+            this.aceCard = "RZ";
         }
-        if (Ace == "Spades") {
-            aceCard = "SZ";
+        else if (Ace == "Spades") {
+            this.aceCard = "SZ";
         }
         var WelinHand = false;
         //check of de speler die de aas vraagt de aas al in handen heeft. zo jaa geef melding. nee: doe niks
         if (this.turn == "Player1") {
+            
             for (var i = 0; i < this.CardsPlayer1.length; i++) {
-                if (this.CardsPlayer1[i].search(aceCard)) {
+                if (this.CardsPlayer1[i].search(this.aceCard) != -1) {
                     WelinHand = true;
+                    break;
                 }
             }
         }
         else if (this.turn == "Player2") {
             for (var i = 0; i < this.CardsPlayer2.length; i++) {
-                if (this.CardsPlayer2[i].search(aceCard)) {
+                if (this.CardsPlayer2[i].search(this.aceCard) != -1) {
                     WelinHand = true;
+                    break;
                 }
             }
         }
         else if (this.turn == "Player3") {
             for (var i = 0; i < this.CardsPlayer3.length; i++) {
-                if (this.CardsPlayer3[i].search(aceCard)) {
+                if (this.CardsPlayer3[i].search(this.aceCard) != -1) {
                     WelinHand = true;
+                    break;
                 }
             }
         }
         else if (this.turn == "Player4") {
             for (var i = 0; i < this.CardsPlayer4.length; i++) {
-                if (this.CardsPlayer4[i].search(aceCard)) {
+                if (this.CardsPlayer4[i].search(this.aceCard) != -1) {
                     WelinHand = true;
+                    break;
                 }
             }
         }
         if (WelinHand == true) {
             alert("You have the ace of" + Ace + " in your hand! Chose another ace");
-        }*/
-        //else {
+        }
+        else {
 
             if ((Trump == Ace) && (this.GameTypeGame != "misère")) {
 
@@ -332,7 +338,7 @@ export class Game {
                 await this.GetTrumpAndAce();
                 await this.GetTeam1();
                 await this.GetTeam2();
-            
+            }
         }
     }
     public Team1: string[];

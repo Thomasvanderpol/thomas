@@ -59,7 +59,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "67ee551f71be9672939f"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "acfdffa3dabbb5310137"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -21482,14 +21482,65 @@ var Game = (function () {
     };
     Game.prototype.StartGame = function (Trump, Ace) {
         return __awaiter(this, void 0, void 0, function () {
-            var re, Re, result;
+            var WelinHand, i, i, i, i, re, Re, result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        if (!((Trump == Ace) && (this.GameTypeGame != "misère"))) return [3 /*break*/, 1];
-                        alert("you cant ask for this ace if your trump is the same!");
-                        return [3 /*break*/, 7];
+                        //zet klaveren om naar KZ enzovoort
+                        if (Ace == "Clubs") {
+                            this.aceCard = "KZ";
+                        }
+                        else if (Ace == "Hearts") {
+                            this.aceCard = "HZ";
+                        }
+                        else if (Ace == "Diamonds") {
+                            this.aceCard = "RZ";
+                        }
+                        else if (Ace == "Spades") {
+                            this.aceCard = "SZ";
+                        }
+                        WelinHand = false;
+                        //check of de speler die de aas vraagt de aas al in handen heeft. zo jaa geef melding. nee: doe niks
+                        if (this.turn == "Player1") {
+                            for (i = 0; i < this.CardsPlayer1.length; i++) {
+                                if (this.CardsPlayer1[i].search(this.aceCard) != -1) {
+                                    WelinHand = true;
+                                    break;
+                                }
+                            }
+                        }
+                        else if (this.turn == "Player2") {
+                            for (i = 0; i < this.CardsPlayer2.length; i++) {
+                                if (this.CardsPlayer2[i].search(this.aceCard) != -1) {
+                                    WelinHand = true;
+                                    break;
+                                }
+                            }
+                        }
+                        else if (this.turn == "Player3") {
+                            for (i = 0; i < this.CardsPlayer3.length; i++) {
+                                if (this.CardsPlayer3[i].search(this.aceCard) != -1) {
+                                    WelinHand = true;
+                                    break;
+                                }
+                            }
+                        }
+                        else if (this.turn == "Player4") {
+                            for (i = 0; i < this.CardsPlayer4.length; i++) {
+                                if (this.CardsPlayer4[i].search(this.aceCard) != -1) {
+                                    WelinHand = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (!(WelinHand == true)) return [3 /*break*/, 1];
+                        alert("You have the ace of" + Ace + " in your hand! Chose another ace");
+                        return [3 /*break*/, 8];
                     case 1:
+                        if (!((Trump == Ace) && (this.GameTypeGame != "misère"))) return [3 /*break*/, 2];
+                        alert("you cant ask for this ace if your trump is the same!");
+                        return [3 /*break*/, 8];
+                    case 2:
                         re = /alleen/gi;
                         Re = /misère/gi;
                         if (this.GameTypeGame.search(re) != -1) {
@@ -21500,11 +21551,11 @@ var Game = (function () {
                             Trump = "No trump";
                         }
                         return [4 /*yield*/, this.http.fetch('api/Game/UpdateGame/' + Trump + '/' + Ace + '/' + this.GameTypeGame + '/' + this.CurrentGameID)];
-                    case 2:
+                    case 3:
                         result = _a.sent();
                         alert("the cards can be played now! the player in red is on the move");
                         return [4 /*yield*/, this.setTeams()];
-                    case 3:
+                    case 4:
                         _a.sent();
                         //method to decide who's turn it is
                         //for now it is always player1
@@ -21513,16 +21564,16 @@ var Game = (function () {
                         this.ShowRound2 = "none";
                         this.ShowTeams = "";
                         return [4 /*yield*/, this.GetTrumpAndAce()];
-                    case 4:
-                        _a.sent();
-                        return [4 /*yield*/, this.GetTeam1()];
                     case 5:
                         _a.sent();
-                        return [4 /*yield*/, this.GetTeam2()];
+                        return [4 /*yield*/, this.GetTeam1()];
                     case 6:
                         _a.sent();
-                        _a.label = 7;
-                    case 7: return [2 /*return*/];
+                        return [4 /*yield*/, this.GetTeam2()];
+                    case 7:
+                        _a.sent();
+                        _a.label = 8;
+                    case 8: return [2 /*return*/];
                 }
             });
         });
