@@ -79,105 +79,197 @@ export class Game {
 
 
         alert(this.PlayersLastHit[0] + " had " + this.CardsLastHit[0] + "\n" + this.PlayersLastHit[1] + " had " + this.CardsLastHit[1] + "\n" + this.PlayersLastHit[2] + " had " + this.CardsLastHit[2] + "\n" + this.PlayersLastHit[3] + " had " + this.CardsLastHit[3]);
-
     }
+    public CountCard: number = 0;
+    public FirstCard: string = "";
+    public FirstLetter: string = "";
     public async Player1Plays(card: string) {
-        await this.http.fetch('api/Hit/PlayedCard/' + this.CurrentGameID + '/' + this.playerIDs[0] + '/' + card);
-        this.PlayingCard1 = card;
-        var index = this.CardsPlayer1.indexOf(card);
-        this.CardsPlayer1.splice(index, 1);
-        this.turn = "Player2";
-
-        if (card == this.askedAce) {
-            await this.http.fetch('api/Game/UpdateTeams/' + this.playerIDs[0] + '/' + this.CurrentGameID);
-            await this.GetTeam1();
-            await this.GetTeam2();
+        this.FirstLetter = this.FirstCard.substring(0, 1);
+        var WelInhand = false;
+        for (var i = 0; i < this.CardsPlayer1.length; i++) {
+            if (this.CardsPlayer1[i].search(this.FirstLetter) != -1) {
+                WelInhand = true;
+                break;
+            }
         }
 
-        if (this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "") {
-            let result = await this.http.fetch('api/Hit/WhoWonBid/' + this.CurrentGameID);
-            this.PlayerIDWon = await result.json() as number;
-            await this.http.fetch('api/Hit/Delay');
-            this.PlayingCard1 = "";
-            this.PlayingCard2 = "";
-            this.PlayingCard3 = "";
-            this.PlayingCard4 = "";
-            this.GetAllHits();
-        }
+        if (card.search(this.FirstLetter) == -1 && WelInhand == true) {
 
+            alert("You have to throw the right card with the same sort");
+        }
+        else {
+            await this.http.fetch('api/Hit/PlayedCard/' + this.CurrentGameID + '/' + this.playerIDs[0] + '/' + card);
+            this.PlayingCard1 = card;
+            var index = this.CardsPlayer1.indexOf(card);
+            this.CardsPlayer1.splice(index, 1);
+            this.turn = "Player2";
+            this.CountCard += 1;
+
+            if (this.CountCard == 1) {
+                this.FirstCard = card;
+            }
+
+
+            if (card == this.askedAce) {
+                await this.http.fetch('api/Game/UpdateTeams/' + this.playerIDs[0] + '/' + this.CurrentGameID);
+                await this.GetTeam1();
+                await this.GetTeam2();
+            }
+
+            if (this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "") {
+                let result = await this.http.fetch('api/Hit/WhoWonBid/' + this.CurrentGameID);
+                this.PlayerIDWon = await result.json() as number;
+                await this.http.fetch('api/Hit/Delay');
+                this.PlayingCard1 = "";
+                this.PlayingCard2 = "";
+                this.PlayingCard3 = "";
+                this.PlayingCard4 = "";
+                this.GetAllHits();
+                this.CountCard = 0;
+                this.FirstCard = "";
+                this.FirstLetter = "";
+            }
+        }
     }
     public async Player2Plays(card: string) {
-        await this.http.fetch('api/Hit/PlayedCard/' + this.CurrentGameID + '/' + this.playerIDs[1] + '/' + card);
-        this.PlayingCard2 = card;
-        var index = this.CardsPlayer2.indexOf(card);
-        this.CardsPlayer2.splice(index, 1);
-        this.turn = "Player3";
-
-        if (card == this.askedAce) {
-            await this.http.fetch('api/Game/UpdateTeams/' + this.playerIDs[1] + '/' + this.CurrentGameID);
-            await this.GetTeam1();
-            await this.GetTeam2();
-        }
-        if (this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "") {
-            let result = await this.http.fetch('api/Hit/WhoWonBid/' + this.CurrentGameID);
-            this.PlayerIDWon = await result.json() as number;
-            await this.http.fetch('api/Hit/Delay');
-            this.PlayingCard1 = "";
-            this.PlayingCard2 = "";
-            this.PlayingCard3 = "";
-            this.PlayingCard4 = "";
-            this.GetAllHits();
+        this.FirstLetter = this.FirstCard.substring(0, 1);
+        var WelInhand = false;
+        for (var i = 0; i < this.CardsPlayer2.length; i++) {
+            if (this.CardsPlayer2[i].search(this.FirstLetter) != -1) {
+                WelInhand = true;
+                break;
+            }
         }
 
+        if (card.search(this.FirstLetter) == -1 && WelInhand == true) {
+
+            alert("You have to throw the right card with the same sort");
+        }
+        else {
+            await this.http.fetch('api/Hit/PlayedCard/' + this.CurrentGameID + '/' + this.playerIDs[1] + '/' + card);
+            this.PlayingCard2 = card;
+            var index = this.CardsPlayer2.indexOf(card);
+            this.CardsPlayer2.splice(index, 1);
+            this.turn = "Player3";
+            this.CountCard += 1;
+
+            if (this.CountCard == 1) {
+                this.FirstCard = card;
+            }
+
+            if (card == this.askedAce) {
+                await this.http.fetch('api/Game/UpdateTeams/' + this.playerIDs[1] + '/' + this.CurrentGameID);
+                await this.GetTeam1();
+                await this.GetTeam2();
+            }
+            if (this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "") {
+                let result = await this.http.fetch('api/Hit/WhoWonBid/' + this.CurrentGameID);
+                this.PlayerIDWon = await result.json() as number;
+                await this.http.fetch('api/Hit/Delay');
+                this.PlayingCard1 = "";
+                this.PlayingCard2 = "";
+                this.PlayingCard3 = "";
+                this.PlayingCard4 = "";
+                this.GetAllHits();
+                this.CountCard = 0;
+                this.FirstCard = "";
+                this.FirstLetter = "";
+            }
+        }
     }
     public async Player3Plays(card: string) {
-        await this.http.fetch('api/Hit/PlayedCard/' + this.CurrentGameID + '/' + this.playerIDs[2] + '/' + card);
-        this.PlayingCard3 = card;
-        var index = this.CardsPlayer3.indexOf(card);
-        this.CardsPlayer3.splice(index, 1);
-        this.turn = "Player4";
-
-        if (card == this.askedAce) {
-            await this.http.fetch('api/Game/UpdateTeams/' + this.playerIDs[2] + '/' + this.CurrentGameID);
-            await this.GetTeam1();
-            await this.GetTeam2();
-            this.GetAllHits();
-        }
-        if (this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "") {
-            let result = await this.http.fetch('api/Hit/WhoWonBid/' + this.CurrentGameID);
-            this.PlayerIDWon = await result.json() as number;
-            await this.http.fetch('api/Hit/Delay');
-            this.PlayingCard1 = "";
-            this.PlayingCard2 = "";
-            this.PlayingCard3 = "";
-            this.PlayingCard4 = "";
-            this.GetAllHits();
+        this.FirstLetter = this.FirstCard.substring(0, 1);
+        var WelInhand = false;
+        for (var i = 0; i < this.CardsPlayer3.length; i++) {
+            if (this.CardsPlayer3[i].search(this.FirstLetter) != -1) {
+                WelInhand = true;
+                break;
+            }
         }
 
+        if (card.search(this.FirstLetter) == -1 && WelInhand == true) {
+
+            alert("You have to throw the right card with the same sort");
+        }
+        else {
+
+            await this.http.fetch('api/Hit/PlayedCard/' + this.CurrentGameID + '/' + this.playerIDs[2] + '/' + card);
+            this.PlayingCard3 = card;
+            var index = this.CardsPlayer3.indexOf(card);
+            this.CardsPlayer3.splice(index, 1);
+            this.turn = "Player4";
+            this.CountCard += 1;
+
+            if (this.CountCard == 1) {
+                this.FirstCard = card;
+            }
+
+            if (card == this.askedAce) {
+                await this.http.fetch('api/Game/UpdateTeams/' + this.playerIDs[2] + '/' + this.CurrentGameID);
+                await this.GetTeam1();
+                await this.GetTeam2();
+                this.GetAllHits();
+            }
+            if (this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "") {
+                let result = await this.http.fetch('api/Hit/WhoWonBid/' + this.CurrentGameID);
+                this.PlayerIDWon = await result.json() as number;
+                await this.http.fetch('api/Hit/Delay');
+                this.PlayingCard1 = "";
+                this.PlayingCard2 = "";
+                this.PlayingCard3 = "";
+                this.PlayingCard4 = "";
+                this.GetAllHits();
+                this.CountCard = 0;
+                this.FirstCard = "";
+                this.FirstLetter = "";
+            }
+        }
     }
     public async Player4Plays(card: string) {
-        await this.http.fetch('api/Hit/PlayedCard/' + this.CurrentGameID + '/' + this.playerIDs[3] + '/' + card);
-        this.PlayingCard4 = card;
-        var index = this.CardsPlayer4.indexOf(card);
-        this.CardsPlayer4.splice(index, 1);
-        this.turn = "Player1";
-
-        if (card == this.askedAce) {
-            await this.http.fetch('api/Game/UpdateTeams/' + this.playerIDs[3] + '/' + this.CurrentGameID);
-            await this.GetTeam1();
-            await this.GetTeam2();
-        }
-        if (this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "") {
-            let result = await this.http.fetch('api/Hit/WhoWonBid/' + this.CurrentGameID);
-            this.PlayerIDWon = await result.json() as number;
-            await this.http.fetch('api/Hit/Delay');
-            this.PlayingCard1 = "";
-            this.PlayingCard2 = "";
-            this.PlayingCard3 = "";
-            this.PlayingCard4 = "";
-            this.GetAllHits();
+        this.FirstLetter = this.FirstCard.substring(0, 1);
+        var WelInhand = false;
+        for (var i = 0; i < this.CardsPlayer4.length; i++) {
+            if (this.CardsPlayer4[i].search(this.FirstLetter) != -1) {
+                WelInhand = true;
+                break;
+            }
         }
 
+        if (card.search(this.FirstLetter) == -1 && WelInhand == true) {
+
+            alert("You have to throw the right card with the same sort");
+        }
+        else {
+            await this.http.fetch('api/Hit/PlayedCard/' + this.CurrentGameID + '/' + this.playerIDs[3] + '/' + card);
+            this.PlayingCard4 = card;
+            var index = this.CardsPlayer4.indexOf(card);
+            this.CardsPlayer4.splice(index, 1);
+            this.turn = "Player1";
+            this.CountCard += 1;
+
+            if (this.CountCard == 1) {
+                this.FirstCard = card;
+            }
+
+            if (card == this.askedAce) {
+                await this.http.fetch('api/Game/UpdateTeams/' + this.playerIDs[3] + '/' + this.CurrentGameID);
+                await this.GetTeam1();
+                await this.GetTeam2();
+            }
+            if (this.PlayingCard1 != "" && this.PlayingCard2 != "" && this.PlayingCard3 != "" && this.PlayingCard4 != "") {
+                let result = await this.http.fetch('api/Hit/WhoWonBid/' + this.CurrentGameID);
+                this.PlayerIDWon = await result.json() as number;
+                await this.http.fetch('api/Hit/Delay');
+                this.PlayingCard1 = "";
+                this.PlayingCard2 = "";
+                this.PlayingCard3 = "";
+                this.PlayingCard4 = "";
+                this.GetAllHits();
+                this.CountCard = 0;
+                this.FirstCard = "";
+                this.FirstLetter = "";
+            }
+        }
     }
     public PlayerIDWon: number;
     public slagenSpelers: number[];
@@ -208,7 +300,7 @@ export class Game {
             else {
                 alert("Gongrats " + this.TeamWon[0] + ", " + this.TeamWon[1] + " and " + this.TeamWon[2] + "! you have won the game!");
             }
-            
+
         }
     }
 
@@ -233,6 +325,7 @@ export class Game {
     }
 
     public askedAce: string;
+    public PlayerWhoHasAce: number;
     public async GetTrumpAndAce() {
         let result = await this.http.fetch('api/Game/GetTrumpAce/' + this.CurrentGameID);
         this.TrumpAce = await result.json() as Array<string>;
@@ -253,11 +346,36 @@ export class Game {
             this.askedAce = "SZ";
         }
 
+
+        for (var i = 0; i < this.CardsPlayer1.length; i++) {
+            if (this.CardsPlayer1[i].search(this.askedAce) != -1) {
+                this.PlayerWhoHasAce = this.playerIDs[0];
+            }
+        }
+
+        for (var i = 0; i < this.CardsPlayer2.length; i++) {
+            if (this.CardsPlayer2[i].search(this.askedAce) != -1) {
+                this.PlayerWhoHasAce = this.playerIDs[1];
+            }
+        }
+
+        for (var i = 0; i < this.CardsPlayer3.length; i++) {
+            if (this.CardsPlayer3[i].search(this.askedAce) != -1) {
+                this.PlayerWhoHasAce = this.playerIDs[2];
+            }
+        }
+
+        for (var i = 0; i < this.CardsPlayer4.length; i++) {
+            if (this.CardsPlayer4[i].search(this.askedAce) != -1) {
+                this.PlayerWhoHasAce = this.playerIDs[3];
+            }
+        }
+
     }
     public aceCard: string;
     public async StartGame(Trump: string, Ace: string) {
         //zet klaveren om naar KZ enzovoort
-        
+
         if (Ace == "Clubs") {
             this.aceCard = "KZ";
         }
@@ -273,7 +391,7 @@ export class Game {
         var WelinHand = false;
         //check of de speler die de aas vraagt de aas al in handen heeft. zo jaa geef melding. nee: doe niks
         if (this.turn == "Player1") {
-            
+
             for (var i = 0; i < this.CardsPlayer1.length; i++) {
                 if (this.CardsPlayer1[i].search(this.aceCard) != -1) {
                     WelinHand = true;
