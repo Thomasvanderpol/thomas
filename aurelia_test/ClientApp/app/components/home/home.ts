@@ -7,7 +7,7 @@ export class Home {
     public players: string[];
 
     public beginGame: string;
-    public gelukt: string;
+    public gelukt: string[];
     constructor(private http: HttpClient) {
 
     }
@@ -16,8 +16,9 @@ export class Home {
 
     public async addPlayer(player1: string) {
 
-        await this.http.fetch('api/Player/AddPlayers/' + player1);
-       
+        let result = await this.http.fetch('api/Player/AddPlayers/' + player1);
+        this.gelukt = await result.json() as Array<string>;
+        alert(this.gelukt);
     }
     
 

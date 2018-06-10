@@ -102,7 +102,7 @@ namespace DataAccess
                 SqlDataReader dr;
 
                 string query = "SELECT COUNT(HitID)AS AantalSlagen , GameID FROM dbo.Hit WHERE WinPlayerID = " + @playerID + " GROUP BY GameID";
-                SqlParameter[] sqlParameters = new SqlParameter[0];
+                SqlParameter[] sqlParameters = new SqlParameter[1];
                 sqlParameters[0] = new SqlParameter("@playerID", SqlDbType.Int);
                 sqlParameters[0].Value = playerID;
 

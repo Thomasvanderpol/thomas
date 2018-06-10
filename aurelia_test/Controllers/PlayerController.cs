@@ -20,9 +20,9 @@ namespace RikApplication.Controllers
         }
 
         [HttpGet("[action]/{player}")]
-        public void AddPlayers(string player)
+        public List<string> AddPlayers(string player)
         {
-            bl.AddPlayer(player, 2.00);
+            return bl.AddPlayer(player, 2.00);
         }
 
         [HttpGet("[action]")]

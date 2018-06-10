@@ -113,5 +113,20 @@ namespace DataAccess
             }
             return PlayerID;
         }
+
+        public bool CheckForPlayer(string playerName)
+        {
+            bool playerInDb = false;
+            SqlDataReader dr;
+            string query = "SELECT * FROM Player WHERE PlayerName = '" + playerName + "'";
+            SqlParameter[] sqlParameters = new SqlParameter[0];
+            dr = conn.executeSelectQuery(query, sqlParameters);
+
+            while (dr.Read())
+            {
+                playerInDb = true;
+            }
+            return playerInDb;
+        }
     }
 }

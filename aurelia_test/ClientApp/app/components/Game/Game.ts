@@ -11,6 +11,7 @@ export class Game {
     public TrumpKinds: string[];
     public AceKinds: string[];
     public cards: string[];
+
     public Player1Cards: string[];
     public Player2Cards: string[];
     public Player3Cards: string[];
@@ -63,6 +64,9 @@ export class Game {
         this.PlayingField = "none";
         this.TrumpAcehide = "none";
         this.ShowTeams = "none";
+        if (this.players.length < 4) {
+            alert("you don't have enough players. Go to the home page to add some more!");
+        }
     }
     public LastHit: cardplayer[];
     public PlayersLastHit: string[];
@@ -456,6 +460,7 @@ export class Game {
                 await this.GetTrumpAndAce();
                 await this.GetTeam1();
                 await this.GetTeam2();
+
             }
         }
     }
@@ -816,6 +821,10 @@ export class Game {
     public async GetPlayerNames() {
         let result = await this.http.fetch('api/Player/GetPlayerNames/' + this.playerIDs[0] + '/' + this.playerIDs[1] + '/' + this.playerIDs[2] + '/' + this.playerIDs[3]);
         this.PlayerNames = await result.json() as Array<string>;
+        (<HTMLSelectElement>(document.getElementById('Player1'))).style.display = "none";
+        (<HTMLSelectElement>(document.getElementById('Player2'))).style.display = "none";
+        (<HTMLSelectElement>(document.getElementById('Player3'))).style.display = "none";
+        (<HTMLSelectElement>(document.getElementById('Player4'))).style.display = "none";
     }
 
     //bepalen van de hoogste bieding
@@ -833,7 +842,7 @@ export class Game {
     public async GetBidsCurrentGame() {
         let result = await this.http.fetch('api/Game/GetBidsCurrentGame/' + this.CurrentGameID);
         this.Bids = await result.json() as Bieding[];
-
+        
     }
 
 }

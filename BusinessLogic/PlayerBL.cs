@@ -18,15 +18,30 @@ namespace BusinessLogic
             this.conn = conn;
         }
 
-        public void AddPlayer(string PlayerName, double pot)
+        public List<string> AddPlayer(string PlayerName, double pot)
         {
-            PlayerBO player = new PlayerBO();
+            List<string> gelukt = new List<string>();
 
-            player.PlayerName = PlayerName;
-            player.PlayerMoney = pot;
-         
 
-            conn.AddPlayer(player);
+           
+            bool PlayerInDb =  conn.CheckForPlayer(PlayerName);
+
+            if (PlayerInDb)
+            {
+                gelukt.Add("The player you want to add already exist");
+            }
+            else
+            {
+                PlayerBO player = new PlayerBO();
+
+                player.PlayerName = PlayerName;
+                player.PlayerMoney = pot;
+
+
+                conn.AddPlayer(player);
+                gelukt.Add("The player has been added");
+            }
+            return gelukt;
         }
 
         public List<int> GetFourPlayers(List<string> playersInGame)
